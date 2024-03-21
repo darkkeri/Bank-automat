@@ -6,8 +6,10 @@ const cards = {
         return db.query("SELECT * FROM cards", callback);
     },
     addCards(newCards, callback){
-        return db.query("INSERT INTO cards VALUES(?,?,?,?,?,?)",
-        [idCards, pincode, type, tries, active, creditlimit], callback);
+        bcrypt.hash(user.password, saltRounds, function(err, hash) {
+            return db.query("INSERT INTO cards VALUES(?,?,?,?,?,?)",
+            [user.username, hash], callback);
+        })
     },
     updateCards(id, callback){
         return db.query("UPDATE cards SET(?,?,?,?,?,?) WHERE idCards=?",
