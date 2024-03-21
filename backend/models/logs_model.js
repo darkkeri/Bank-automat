@@ -7,6 +7,13 @@ const logs = {
     addLogs(newLogs, callback){
         return db.query("INSERT INTO logs VALUES(?,?,?,?,?)",
         [newLogs.idLogs,newLogs.date,newLogs.event,newLogs.amount,newLogs.idAccount], callback);
+    },
+    updateLogs(log, updateData, callback){
+        return db.query("UPDATE logs SET date=?, event=?, amount=?, idAccount=? WHERE idLogs=?",
+        [updateData.date, updateData.event, updateData.amount, updateData.idAccount, log],callback);
+    },
+    getOneLog(log, callback){
+        return db.query("SELECT * FROM logs WHERE idLogs=?",[log],callback);
     }
 }
 
