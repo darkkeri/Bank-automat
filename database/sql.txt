@@ -1,2 +1,2 @@
 CREATE USER 'bankuser'@'localhost' IDENTIFIED BY 'bankpass';
-GRANT ALL ON pankkiautomaatti.* TO 'bankuser'@'localhost';
+GRANT ALL ON atm.* TO 'bankuser'@'localhost';
