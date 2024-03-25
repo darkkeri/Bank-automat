@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `pankkiautomaatti` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `pankkiautomaatti`;
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `atm` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `atm`;
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: pankkiautomaatti
+-- Host: localhost    Database: atm
 -- ------------------------------------------------------
 -- Server version	8.2.0
 
@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account` (
-  `idAccount` int NOT NULL,
+  `idAccount` int NOT NULL AUTO_INCREMENT,
   `balance` decimal(10,2) NOT NULL,
   `accountnumber` varchar(45) NOT NULL,
   PRIMARY KEY (`idAccount`)
@@ -42,30 +42,30 @@ LOCK TABLES `account` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `accout_cards`
+-- Table structure for table `card_account`
 --
 
-DROP TABLE IF EXISTS `accout_cards`;
+DROP TABLE IF EXISTS `card_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `accout_cards` (
-  `idCards` varchar(20) NOT NULL,
+CREATE TABLE `card_account` (
+  `idCards` int NOT NULL,
   `idAccount` int NOT NULL,
   PRIMARY KEY (`idCards`,`idAccount`),
-  KEY `fk_multicards_has_account_account1_idx` (`idAccount`),
-  KEY `fk_multicards_has_account_multicards1_idx` (`idCards`),
-  CONSTRAINT `fk_multicards_has_account_account1` FOREIGN KEY (`idAccount`) REFERENCES `account` (`idAccount`),
-  CONSTRAINT `fk_multicards_has_account_multicards1` FOREIGN KEY (`idCards`) REFERENCES `cards` (`idCards`)
+  KEY `fk_cards_has_account_account1_idx` (`idAccount`),
+  KEY `fk_cards_has_account_cards1_idx` (`idCards`),
+  CONSTRAINT `fk_cards_has_account_account1` FOREIGN KEY (`idAccount`) REFERENCES `account` (`idAccount`),
+  CONSTRAINT `fk_cards_has_account_cards1` FOREIGN KEY (`idCards`) REFERENCES `cards` (`idCards`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `accout_cards`
+-- Dumping data for table `card_account`
 --
 
-LOCK TABLES `accout_cards` WRITE;
-/*!40000 ALTER TABLE `accout_cards` DISABLE KEYS */;
-/*!40000 ALTER TABLE `accout_cards` ENABLE KEYS */;
+LOCK TABLES `card_account` WRITE;
+/*!40000 ALTER TABLE `card_account` DISABLE KEYS */;
+/*!40000 ALTER TABLE `card_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -76,7 +76,8 @@ DROP TABLE IF EXISTS `cards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cards` (
-  `idCards` varchar(20) NOT NULL,
+  `idCards` int NOT NULL AUTO_INCREMENT,
+  `cardnumber` varchar(45) NOT NULL,
   `pincode` varchar(72) NOT NULL,
   `type` varchar(45) NOT NULL,
   `tries` int NOT NULL,
@@ -103,7 +104,7 @@ DROP TABLE IF EXISTS `logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `logs` (
-  `idLogs` int NOT NULL,
+  `idLogs` int NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
   `event` varchar(45) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
@@ -131,11 +132,12 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `idUser` int NOT NULL,
+  `idUser` int NOT NULL AUTO_INCREMENT,
   `fname` varchar(45) NOT NULL,
   `lname` varchar(45) NOT NULL,
   `address` varchar(45) NOT NULL,
   `phone` varchar(45) NOT NULL,
+  `background` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -175,6 +177,10 @@ LOCK TABLES `user_account` WRITE;
 /*!40000 ALTER TABLE `user_account` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_account` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'atm'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -185,4 +191,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-20 14:55:35
+-- Dump completed on 2024-03-25 14:09:38
