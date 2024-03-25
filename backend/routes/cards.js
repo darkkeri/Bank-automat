@@ -27,7 +27,7 @@ router.post('/',function(request, response){
 });
 
 router.put('/',function(request, response){
-    logs.updateCards(request.params.cardid, function(err, result){
+    logs.updateCards(request.body, function(err, result){
         if(err){
             response.send(err);
         }
@@ -39,7 +39,7 @@ router.put('/',function(request, response){
 });
 
 router.delete('/',function(request, response){
-    logs.deleteCards(request.params.cardid, function(err, result){
+    logs.deleteCards(request.body, function(err, result){
         if(err){
             response.send(err);
         }
