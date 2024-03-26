@@ -18,7 +18,7 @@ const logs = {
     deleteLogs(log, callback){
         return db.query("DELETE FROM logs WHERE idLogs=?",[log],callback);
     },
-    getOneLog(log, callback){
+    getOneLogs(log, callback){
         return db.query("SELECT * FROM logs WHERE idLogs=?",[log],callback);
     }
 }
