@@ -1,4 +1,5 @@
 const db = require('../database');
+//const bcryptjs=req('bcryptjs');
 
 const cards = {
     getAllCards(callback){
@@ -15,6 +16,7 @@ const cards = {
     deleteCards(idCards, callback){
         return db.query("DELETE FROM cards WHERE idCards=?",[idCards], callback);
     }   
+
 }
 
 module.exports = cards;
