@@ -50,4 +50,18 @@ router.delete('/:accountN', function(request, response){
     });
 });
 
+
+router.get('/:accountN', function(request, response){
+    account.getOneAccount(request.params.accountN, function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else{
+            console.log(result);
+            response.json(result[0]);
+        }
+    });
+});
+
+
 module.exports = router;
