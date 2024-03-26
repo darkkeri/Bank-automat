@@ -14,6 +14,9 @@ const account = {
     },
     deleteAccount(id_, callback){
         return db.query("DELETE FROM account WHERE idAccount=?",[id_],callback);
+    },
+    getOneAccount(id_, callback){
+        return db.query("SELECT * FROM account WHERE idAccount=?",[id_],callback);
     }
 }   
 
