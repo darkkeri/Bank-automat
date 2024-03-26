@@ -14,6 +14,8 @@ router.get('/',function(request, response){
     });
 });
 
+
+
 router.post('/',function(request, response){
     logs.addLogs(request.body, function(err, result){
         if(err){

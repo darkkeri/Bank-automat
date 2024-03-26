@@ -12,6 +12,9 @@ const logs = {
         return db.query("UPDATE logs SET date=?, event=?, amount=?, idAccount=? WHERE idLogs=?",
         [updateData.date, updateData.event, updateData.amount, updateData.idAccount, log],callback);
     },
+    getOneLog(log, callback){
+        return db.query("SELECT * FROM logs WHERE idLogs=?",[log],callback);
+    },
     deleteLogs(log, callback){
         return db.query("DELETE FROM logs WHERE idLogs=?",[log],callback);
     },

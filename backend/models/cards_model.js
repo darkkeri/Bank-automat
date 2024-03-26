@@ -16,6 +16,7 @@ const cards = {
     deleteCards(idCards, callback){
         return db.query("DELETE FROM cards WHERE idCards=?",[idCards], callback);
     }   
+
 }
 
 module.exports = cards;
