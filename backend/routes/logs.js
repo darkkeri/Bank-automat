@@ -14,9 +14,7 @@ router.get('/',function(request, response){
     });
 });
 
-router.get('/:logsid',function(request,response)){
-    
-}
+
 
 router.post('/',function(request, response){
     logs.addLogs(request.body, function(err, result){
@@ -37,6 +35,17 @@ router.put('/:logsid', function(request, response){
         }
         else{
             console.log(result);
+            response.json(result);
+        }
+    });
+});
+
+router.delete('/:logsid', function(request, response){
+    logs.deleteLogs(request.params.logsid, function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else {
             response.json(result);
         }
     });

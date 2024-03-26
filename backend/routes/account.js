@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const cards = require('../models/cards_model');
+const account = require('../models/account_model');
 
 router.get('/',function(request, response){
-    logs.getAllCards(function(err, result){
+    account.getAllAccount(function(err, result){
         if(err){
             response.send(err);
         }
@@ -15,7 +15,7 @@ router.get('/',function(request, response){
 });
 
 router.post('/',function(request, response){
-    cards.addCards(request.body, function(err, result){
+    account.addAccount(request.body, function(err, result){
         if(err){
             response.send(err);
         }
@@ -26,8 +26,8 @@ router.post('/',function(request, response){
     });
 });
 
-router.put('/:cardsid', function(request, response){
-    cards.updateCards(request.params.cardsid, request.body, function(err, result){
+router.put('/:accountN', function(request, response){
+    account.updateAccount(request.params.accountN, request.body, function(err, result){
         if(err){
             response.send(err);
         }
@@ -38,12 +38,13 @@ router.put('/:cardsid', function(request, response){
     });
 });
 
-router.delete('/:cardsid', function(request, response){
-    cards.deleteCards(request.params.cardsid, function(err, result){
+router.delete('/:accountN', function(request, response){
+    account.deleteAccount(request.params.accountN, function(err, result){
         if(err){
             response.send(err);
         }
-        else {
+        else{
+            console.log(result);
             response.json(result);
         }
     });
