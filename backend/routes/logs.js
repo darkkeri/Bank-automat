@@ -14,8 +14,6 @@ router.get('/',function(request, response){
     });
 });
 
-
-
 router.post('/',function(request, response){
     logs.addLogs(request.body, function(err, result){
         if(err){
@@ -49,6 +47,17 @@ router.delete('/:logsid', function(request, response){
             response.json(result);
         }
     });
+});
+
+router.get('/:logsid',function(request, response){
+    logs.getOneLogs(request.params.logsid, function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else {
+            response.json(result[0]);
+        }
+    })
 });
 
 module.exports = router;
