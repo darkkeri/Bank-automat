@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const logs = require('../models/logs_model');
+const cards = require('../models/cards_model');
 
 router.get('/',function(request, response){
-    logs.getAllLogs(function(err, result){
+    logs.getAllCards(function(err, result){
         if(err){
             response.send(err);
         }
@@ -15,7 +15,7 @@ router.get('/',function(request, response){
 });
 
 router.post('/',function(request, response){
-    logs.addLogs(request.body, function(err, result){
+    cards.addCards(request.body, function(err, result){
         if(err){
             response.send(err);
         }
@@ -26,8 +26,8 @@ router.post('/',function(request, response){
     });
 });
 
-router.put('/:logsid', function(request, response){
-    logs.updateLogs(request.params.logsid, request.body, function(err, result){
+router.put('/:cardsid', function(request, response){
+    cards.updateCards(request.params.cardsid, request.body, function(err, result){
         if(err){
             response.send(err);
         }
@@ -38,8 +38,8 @@ router.put('/:logsid', function(request, response){
     });
 });
 
-router.delete('/:logsid', function(request, response){
-    logs.deleteLogs(request.params.logsid, function(err, result){
+router.delete('/:cardsid', function(request, response){
+    cards.deleteCards(request.params.cardsid, function(err, result){
         if(err){
             response.send(err);
         }
@@ -47,17 +47,6 @@ router.delete('/:logsid', function(request, response){
             response.json(result);
         }
     });
-});
-
-router.get('/:logsid',function(request, response){
-    logs.getOneLogs(request.params.logsid, function(err, result){
-        if(err){
-            response.send(err);
-        }
-        else {
-            response.json(result[0]);
-        }
-    })
 });
 
 module.exports = router;
