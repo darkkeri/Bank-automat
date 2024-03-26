@@ -1,4 +1,5 @@
 const db = require('../database');
+//const bcryptjs=req('bcryptjs');
 
 const cards = {
     getAllCards(callback){

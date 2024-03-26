@@ -3,7 +3,7 @@ const router = express.Router();
 const cards = require('../models/cards_model');
 
 router.get('/',function(request, response){
-    cards.getAllCards(function(err, result){
+    logs.getAllCards(function(err, result){
         if(err){
             response.send(err);
         }
