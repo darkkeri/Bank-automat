@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const logs = require('../models/logs_model');
+const account = require('../models/account_model');
 
 router.get('/',function(request, response){
-    logs.getAllLogs(function(err, result){
+    account.getAllAccount(function(err, result){
         if(err){
             response.send(err);
         }
@@ -13,11 +13,9 @@ router.get('/',function(request, response){
         }
     });
 });
-
-
 
 router.post('/',function(request, response){
-    logs.addLogs(request.body, function(err, result){
+    account.addAccount(request.body, function(err, result){
         if(err){
             response.send(err);
         }
@@ -28,8 +26,8 @@ router.post('/',function(request, response){
     });
 });
 
-router.put('/:logsid', function(request, response){
-    logs.updateLogs(request.params.logsid, request.body, function(err, result){
+router.put('/:accountN', function(request, response){
+    account.updateAccount(request.params.accountN, request.body, function(err, result){
         if(err){
             response.send(err);
         }
@@ -40,12 +38,13 @@ router.put('/:logsid', function(request, response){
     });
 });
 
-router.delete('/:logsid', function(request, response){
-    logs.deleteLogs(request.params.logsid, function(err, result){
+router.delete('/:accountN', function(request, response){
+    account.deleteAccount(request.params.accountN, function(err, result){
         if(err){
             response.send(err);
         }
-        else {
+        else{
+            console.log(result);
             response.json(result);
         }
     });

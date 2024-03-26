@@ -3,7 +3,7 @@ const router = express.Router();
 const cards = require('../models/cards_model');
 
 router.get('/',function(request, response){
-    logs.getAllCards(function(err, result){
+    cards.getAllCards(function(err, result){
         if(err){
             response.send(err);
         }
@@ -15,7 +15,7 @@ router.get('/',function(request, response){
 });
 
 router.post('/',function(request, response){
-    logs.addCards(request.body, function(err, result){
+    cards.addCards(request.body, function(err, result){
         if(err){
             response.send(err);
         }
@@ -26,8 +26,8 @@ router.post('/',function(request, response){
     });
 });
 
-router.put('/',function(request, response){
-    logs.updateCards(request.body, function(err, result){
+router.put('/:cardsid', function(request, response){
+    cards.updateCards(request.params.cardsid, request.body, function(err, result){
         if(err){
             response.send(err);
         }
@@ -38,13 +38,12 @@ router.put('/',function(request, response){
     });
 });
 
-router.delete('/',function(request, response){
-    logs.deleteCards(request.body, function(err, result){
+router.delete('/:cardsid', function(request, response){
+    cards.deleteCards(request.params.cardsid, function(err, result){
         if(err){
             response.send(err);
         }
-        else{
-            console.log(result);
+        else {
             response.json(result);
         }
     });
