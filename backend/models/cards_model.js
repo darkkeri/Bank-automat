@@ -15,7 +15,10 @@ const cards = {
     },
     deleteCards(idCards, callback){
         return db.query("DELETE FROM cards WHERE idCards=?",[idCards], callback);
-    }   
+    },   
+    getOneCard(idCards, callback){
+        return db.query("SELECT * FROM cards WHERE idCards=?",[idCards],callback);
+    }
 
 }
 
