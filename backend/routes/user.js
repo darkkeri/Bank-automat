@@ -45,6 +45,16 @@ router.delete('/:id', function(request, response){
         else{
             response.send(result);   
         }});
-});        
+}); 
+
+router.get('/:id', function(request, response){
+    user.getOneUser(request.params.id, function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else{
+            response.send(result);
+        }});
+});
 
 module.exports = router;
