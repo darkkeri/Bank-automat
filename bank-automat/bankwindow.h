@@ -31,7 +31,9 @@ private slots:
 private:
     Ui::bankwindow *ui;
 
-    short buttonmode = 0;
+    short buttonMode = 0;
+
+    void modeChange(short);
 };
 
 #endif // BANKWINDOW_H

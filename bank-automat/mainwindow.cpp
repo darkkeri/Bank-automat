@@ -40,6 +40,7 @@ void MainWindow::secondViewOpen(){
 
 void MainWindow::on_OKButton_clicked()
 {
+    hide();
     qDebug()<< "OK-button clicked";
     connect(this, SIGNAL(secondViewOpenSignal()), this, SLOT(secondViewOpen()));
     emit secondViewOpenSignal();
