@@ -12,3 +12,39 @@ bankwindow::~bankwindow()
 {
     delete ui;
 }
+
+void bankwindow::on_Button1_clicked()
+{
+
+}
+
+
+void bankwindow::on_Button2_clicked()
+{
+
+}
+
+
+void bankwindow::on_Button3_clicked()
+{
+
+}
+
+
+void bankwindow::on_Button4_clicked()
+{
+
+}
+
+
+void bankwindow::on_Button5_clicked()
+{
+
+}
+
+
+void bankwindow::on_Button6_clicked()
+{
+
+}
+
