@@ -5,6 +5,7 @@
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
+#include "restdll.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,19 +23,10 @@ public:
 
 private slots:
 
-    void on_get_clicked();
-
-    void on_post_clicked();
-
-    void postSlot(QNetworkReply *reply);
-    void getSlot(QNetworkReply *reply);
 
 private:
     Ui::MainWindow *ui;
 
-    QNetworkAccessManager *getManager;
-    QNetworkAccessManager *postManager;
-    QNetworkReply *reply;
-    QByteArray response_data;
+    RestDLL *ptr_dll;
 };
 #endif // MAINWINDOW_H
