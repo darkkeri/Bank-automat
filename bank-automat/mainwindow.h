@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QObject>
+#include <QDebug>
+#include <QThread>
+#include "bankwindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,5 +23,17 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    bool cardSignal;
+    bool pinSignal;
+
+private slots:
+    void cardSignalHandler();
+    void secondViewOpen();
+
+    void on_OKButton_clicked();
+
+signals:
+    void secondViewOpenSignal();
+
 };
 #endif // MAINWINDOW_H
