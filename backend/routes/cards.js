@@ -3,7 +3,7 @@ const router = express.Router();
 const cards = require('../models/cards_model');
 
 router.get('/',function(request, response){
-    logs.getAllCards(function(err, result){
+    cards.getAllCards(function(err, result){
         if(err){
             response.send(err);
         }
@@ -48,5 +48,17 @@ router.delete('/:cardsid', function(request, response){
         }
     });
 });
+
+router.get('/:cardsid', function(request, response){
+    cards.getOneCard(request.params.cardsid, function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else{
+            console.log(result);
+            response.json(result[0]);
+        }
+        });
+    });
 
 module.exports = router;
