@@ -2,9 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QtNetwork>
-#include <QNetworkAccessManager>
-#include <QJsonDocument>
+
 #include "restdll.h"
 
 QT_BEGIN_NAMESPACE
@@ -23,6 +21,10 @@ public:
 
 private slots:
 
+
+    void get_handler();
+
+    void post_handler();
 
 private:
     Ui::MainWindow *ui;

@@ -1,12 +1,18 @@
 #include "restdll.h"
 
-RestDLL::RestDLL()
+RestDLL::RestDLL(QObject *parent):QObject(parent)
 {
     qDebug()<<"DLL luotu";
 }
 
-void RestDLL::on_get_clicked()
+RestDLL::~RestDLL()
 {
+    qDebug()<<"DLL RÄJÄHTI";
+}
+
+void RestDLL::get_clicked()
+{
+    qDebug()<<"sfadfadsf jejejejejejjejejjeje";
     QString site_url="http://localhost:3000/account";
     QNetworkRequest request((site_url));
     getManager = new QNetworkAccessManager(this);
@@ -41,6 +47,7 @@ void RestDLL::postSlot(QNetworkReply *reply)
 
 void RestDLL::getSlot(QNetworkReply *reply)
 {
+
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
