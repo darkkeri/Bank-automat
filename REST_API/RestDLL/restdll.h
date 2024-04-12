@@ -9,28 +9,30 @@
 
 class RESTDLL_EXPORT RestDLL : public QObject
 {
-
+    Q_OBJECT
 public:
     RestDLL(QObject *parent);
     ~RestDLL();
-signals:
 
+    void get_Clicked();
+    void post_Clicked();
+signals:
+    void getResult(QString);
 public slots:
 
-    void get_clicked();
 
-    void on_post_clicked();
-    void postSlot(QNetworkReply *reply);
-    void getSlot(QNetworkReply *reply);
 
 private slots:
 
+    void postSlot(QNetworkReply *reply);
+    void getSlot(QNetworkReply *reply);
+
 private:
+
     QNetworkAccessManager *getManager;
     QNetworkAccessManager *postManager;
     QNetworkReply *reply;
     QByteArray response_data;
-
 
 };
 

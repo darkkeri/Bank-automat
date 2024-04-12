@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>260</width>
-    <height>110</height>
+    <width>264</width>
+    <height>223</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="get">
+   <widget class="QPushButton" name="btnGet">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -27,7 +27,7 @@
      <string>get</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="post">
+   <widget class="QPushButton" name="btnPost">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -40,14 +40,24 @@
      <string>post</string>
     </property>
    </widget>
+   <widget class="QTextEdit" name="textEdit">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>60</y>
+      <width>104</width>
+      <height>85</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>260</width>
-     <height>21</height>
+     <width>264</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>

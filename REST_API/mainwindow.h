@@ -21,10 +21,9 @@ public:
 
 private slots:
 
-
-    void get_handler();
-
-    void post_handler();
+    void get_Click_Handler();
+    void post_Click_Handler();
+    void get_Handler(QString);
 
 private:
     Ui::MainWindow *ui;

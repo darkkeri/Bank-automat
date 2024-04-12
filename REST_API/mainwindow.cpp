@@ -7,13 +7,15 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ptr_dll = new RestDLL(this);
-    connect(ui->get,SIGNAL(clicked(bool)),
-            this,SLOT(get_handler()));
-    connect(ui->post,SIGNAL(clicked(bool)),
-            this,SLOT(post_handler()));
-
-    //t(restdll, SIGNAL(get(QString),
-    //this, SLOT(getSlot(QString))
+    //btnGet
+    connect(ui->btnGet,SIGNAL(clicked(bool)),
+            this,SLOT(get_Click_Handler()));
+    //btnPost
+    connect(ui->btnPost,SIGNAL(clicked(bool)),
+            this,SLOT(post_Click_Handler()));
+    //Kun emitataan getResult() qstring arvolla, kutsutaan get_handler()
+    connect(ptr_dll,SIGNAL(getResult(QString)),
+            this,SLOT(get_Handler(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -22,19 +24,23 @@ MainWindow::~MainWindow()
 }
 
 
-
-void MainWindow::get_handler()
+//Kun nappia btnGet painetaan, suoritetaan:
+void MainWindow::get_Click_Handler()
 {
-    ptr_dll->get_clicked();
-
-    qDebug()<<"fasdfaf";
+    ptr_dll->get_Clicked();
+}
+void MainWindow::get_Handler(QString n)
+{
+    ui->textEdit->setText(n);
 }
 
-void MainWindow::post_handler()
+//Kun nappia btnPost painetaan, suoritetaan:
+void MainWindow::post_Click_Handler()
 {
-    ptr_dll->on_post_clicked();
-
-    qDebug()<<"jeejee hauskaa";
+    ptr_dll->post_Clicked();
 }
+
+
+
 
 
