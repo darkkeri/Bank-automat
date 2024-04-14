@@ -2,6 +2,7 @@
 #define BANKWINDOW_H
 
 #include <QDialog>
+#include "exe_dll.h"
 
 namespace Ui {
 class bankwindow;
@@ -34,6 +35,8 @@ private:
     short buttonMode = 0;
 
     void modeChange(short);
+
+    void cardCheck();
 };
 
 #endif // BANKWINDOW_H
