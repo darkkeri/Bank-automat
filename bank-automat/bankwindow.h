@@ -2,7 +2,6 @@
 #define BANKWINDOW_H
 
 #include <QDialog>
-#include "exe_dll.h"
 
 namespace Ui {
 class bankwindow;

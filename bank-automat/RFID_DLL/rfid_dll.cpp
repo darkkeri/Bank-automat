@@ -1,12 +1,10 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "rfid_dll.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+
+
+
+RFID_DLL::RFID_DLL(QObject *parent):QObject(parent)
 {
-    ui->setupUi(this);
-
     COMPORT = new QSerialPort();
     COMPORT->setPortName("COM3");
     COMPORT->setBaudRate(QSerialPort::BaudRate::Baud9600);
@@ -31,40 +29,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(COMPORT,SIGNAL(readyRead()),this,SLOT(Read_Data()));
 
-    connect(ui->listBox,SIGNAL(activated(QModelIndex)),
-            this,SLOT(Read_Data()));
-
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    if (COMPORT->isOpen())
-    {
-        qDebug()<<"PushButtonClicked";
-    }
-}
-
-
-void MainWindow::Read_Data()
+void RFID_DLL::Read_Data()
 {
     if (COMPORT->isOpen())
     {
         while (COMPORT->bytesAvailable())
         {
 
-            auto cardNumber = COMPORT->readAll();
-            ui->listBox->addItem(QString(cardNumber));
-            emit cardNumber(QString(cardNumber));
-            qDebug()<<"Syötetyn kortin numero on "<<cardNumber<<". Onko tämä syöttämäsi kortti?";
-            pinUiPtr = new pinUI(this);
-            pinUiPtr->show();
+            QString cardNumber = COMPORT->readAll();
+            emit signalCard(cardNumber);
+            qDebug()<<"DLL kortti "<<cardNumber;
         }
     }
 }
-
-

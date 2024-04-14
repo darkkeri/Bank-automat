@@ -36,8 +36,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QSerialPort* COMPORT;
-    QString Data_From_SerialPort;
-    bool IS_Data_Recieved = false;
 
     pinUI * pinUiPtr;
 };
