@@ -25,3 +25,14 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+win32: LIBS += -L$$PWD/../EXE_TEST/EXE_DLL/build/debug/ -lEXE_DLL
+
+INCLUDEPATH += $$PWD/../EXE_TEST/EXE_DLL
+DEPENDPATH += $$PWD/../EXE_TEST/EXE_DLL
+
+DISTFILES += \
+    styles/myStyle.qss
+
+RESOURCES += \
+    resources.qrc
