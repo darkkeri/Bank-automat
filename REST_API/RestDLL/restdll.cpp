@@ -24,7 +24,6 @@ void RestDLL::getSlot(QNetworkReply *reply)
     columnName[0]="idAccount";
     columnName[1]="balance";
     columnName[2]="accountnumber";
-   // columnName = {"idAccount","balance","accountnumber"};
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
