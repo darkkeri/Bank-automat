@@ -22,7 +22,7 @@ void bankwindow::on_Button1_clicked()
 
     case 1:
         //deduct chosen sum from balance
-        modeChange(4);
+        cardCheck();
         break;
 
     case 2:
@@ -52,7 +52,7 @@ void bankwindow::on_Button2_clicked()
 
     case 1:
         //deduct chosen sum from balance
-        modeChange(4);
+        cardCheck();
         break;
 
     case 2:
@@ -65,6 +65,8 @@ void bankwindow::on_Button2_clicked()
         break;
 
     case 5:
+        //valitse kortin debit ominaisuus jos multikortti
+        modeChange(4);
         break;
 
     case 6:
@@ -82,7 +84,7 @@ void bankwindow::on_Button3_clicked()
 
     case 1:
         //input desired sum using pin_ui and then deduct
-        modeChange(4);
+        cardCheck();
         break;
 
     case 2:
@@ -111,7 +113,7 @@ void bankwindow::on_Button4_clicked()
 
     case 1:
         //deduct chosen sum from balance
-        modeChange(4);
+        cardCheck();
         break;
 
     case 2:
@@ -140,7 +142,7 @@ void bankwindow::on_Button5_clicked()
 
     case 1:
         //deduct chosen sum from balance
-        modeChange(4);
+        cardCheck();
         break;
 
     case 2:
@@ -154,7 +156,8 @@ void bankwindow::on_Button5_clicked()
         break;
 
     case 5:
-
+        //valitse kortin credit ominaisuus jos multikortti
+        modeChange(4);
         break;
 
     case 6:
@@ -189,6 +192,7 @@ void bankwindow::on_Button6_clicked()
         break;
 
     case 5:
+        modeChange(0);
         break;
 
     case 6:
@@ -228,10 +232,10 @@ void bankwindow::modeChange(short newmode)
     case 2: //tilitapahtumat
     ui->statusLabel->setText("Tilitapahtumat");
     ui->buttonLabel1->setText("");
-    ui->buttonLabel2->setText("");
+    ui->buttonLabel2->setText("Edelliset");
     ui->buttonLabel3->setText("");
     ui->buttonLabel4->setText("");
-    ui->buttonLabel5->setText("");
+    ui->buttonLabel5->setText("Seuraavat");
     ui->buttonLabel6->setText("Takaisin");
     ui->infoLabel1->setText("tapahtumia");
     ui->infoLabel2->setText("tapahtumia");
@@ -256,7 +260,7 @@ void bankwindow::modeChange(short newmode)
     break;
 
 
-    case 4: //ota rahat
+    case 4: //ota rahat (maybe oma funktio)
     ui->statusLabel->setText("Ota rahat");
     ui->buttonLabel1->setText("");
     ui->buttonLabel2->setText("");
@@ -270,6 +274,30 @@ void bankwindow::modeChange(short newmode)
     ui->infoLabel4->setText("");
     ui->infoLabel5->setText("");
     break;
+
+    case 5: //credit vai debit
+        ui->statusLabel->setText("Valitse credit tai debit");
+        ui->buttonLabel1->setText("");
+        ui->buttonLabel2->setText("Credit");
+        ui->buttonLabel3->setText("");
+        ui->buttonLabel4->setText("");
+        ui->buttonLabel5->setText("Debit");
+        ui->buttonLabel6->setText("Takaisin");
+        ui->infoLabel1->setText("");
+        ui->infoLabel2->setText("");
+        ui->infoLabel3->setText("");
+        ui->infoLabel4->setText("");
+        ui->infoLabel5->setText("");
+        break;
+    }
+}
+
+void bankwindow::cardCheck(){
+    bool cardtest = true;
+    if(cardtest == true) {
+        modeChange(5);
+    } else {
+        modeChange(4);
     }
 }
 
