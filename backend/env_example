@@ -1,0 +1,1 @@
+MySQL_DB="mysql://bankuser:bankpass@127.0.0.1:3306/atm"

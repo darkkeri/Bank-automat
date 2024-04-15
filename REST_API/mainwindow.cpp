@@ -31,9 +31,3 @@ void MainWindow::get_Handler(QString n)
 {
     ui->textEdit->setText(n);
 }
-
-
-
-
-
-
