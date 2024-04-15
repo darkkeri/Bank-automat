@@ -24,6 +24,7 @@ void RestDLL::getSlot(QNetworkReply *reply)
     columnName[0]="idAccount";
     columnName[1]="balance";
     columnName[2]="accountnumber";
+    columnName[3]="accounttype";
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
@@ -31,7 +32,8 @@ void RestDLL::getSlot(QNetworkReply *reply)
     QString get;
     foreach(const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
-        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+"\r";
+        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
+               " | "+QString::number(json_obj[columnName[3]].toInt())+"\r";
     }
     qDebug()<<get;
     //get qstring menee get_handleriin exessä:
@@ -46,6 +48,7 @@ void RestDLL::post_Clicked()
     QJsonObject jsonObj;
     jsonObj.insert("balance","3833333");
     jsonObj.insert("accountnumber","FI23499942666");
+    jsonObj.insert("accounttype","1");
 
     QString site_url="http://localhost:3000/account";
     QNetworkRequest request((site_url));
