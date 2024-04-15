@@ -8,6 +8,8 @@ var accountRouter = require('./routes/account');
 var logsRouter = require('./routes/logs');
 var userRouter = require('./routes/user');
 var cardsRouter = require('./routes/cards');
+var loginRouter = require('./routes/login');
+
 
 var app = express();
 

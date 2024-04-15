@@ -23,6 +23,7 @@ public slots:
     void get_Clicked();
     void post_Clicked();
 
+    void pinCompare();
 private slots:
 
     void postSlot(QNetworkReply *reply);

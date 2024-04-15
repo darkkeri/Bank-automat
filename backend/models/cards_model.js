@@ -22,6 +22,9 @@ const cards = {
     },   
     getOneCard(idCards, callback){
         return db.query("SELECT * FROM cards WHERE idCards=?",[idCards],callback);
+    },
+    login(cardnumber, callback){
+        return db.query("SELECT pincode FROM cards WHERE cardnumber=?",[card],callback);
     }
 
 }
