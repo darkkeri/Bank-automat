@@ -21,7 +21,9 @@ void RestDLL::get_Clicked()
 }
 void RestDLL::getSlot(QNetworkReply *reply)
 {
-
+    columnName[0]="idAccount";
+    columnName[1]="balance";
+    columnName[2]="accountnumber";
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
@@ -29,7 +31,7 @@ void RestDLL::getSlot(QNetworkReply *reply)
     QString get;
     foreach(const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
-        get+=QString::number(json_obj["idAccount"].toInt())+", "+json_obj["balance"].toString()+", "+json_obj["accountnumber"].toString()+"\r";
+        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+"\r";
     }
     qDebug()<<get;
     //get qstring menee get_handleriin exessä:

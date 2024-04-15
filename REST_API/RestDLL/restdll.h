@@ -7,6 +7,7 @@
 #include <QJsonDocument>
 #include <QDebug>
 
+
 class RESTDLL_EXPORT RestDLL : public QObject
 {
     Q_OBJECT
@@ -14,13 +15,13 @@ public:
     RestDLL(QObject *parent);
     ~RestDLL();
 
-    void get_Clicked();
-    void post_Clicked();
+
 signals:
     void getResult(QString);
 public slots:
 
-
+    void get_Clicked();
+    void post_Clicked();
 
 private slots:
 
@@ -33,6 +34,10 @@ private:
     QNetworkAccessManager *postManager;
     QNetworkReply *reply;
     QByteArray response_data;
+
+
+    QString columnName[10];
+
 
 };
 
