@@ -24,6 +24,8 @@ app.use('/account', accountRouter);
 app.use('/logs', logsRouter);
 app.use('/user', userRouter);
 app.use('/cards', cardsRouter);
+app.use('/login', loginRouter);
+
 
 module.exports = app;
 
