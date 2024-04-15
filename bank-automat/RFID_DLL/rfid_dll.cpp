@@ -6,7 +6,7 @@
 RFID_DLL::RFID_DLL(QObject *parent):QObject(parent)
 {
     COMPORT = new QSerialPort();
-    COMPORT->setPortName("COM3");
+    COMPORT->setPortName("COM8");
     COMPORT->setBaudRate(QSerialPort::BaudRate::Baud9600);
     COMPORT->setParity(QSerialPort::Parity::NoParity);
     COMPORT->setDataBits(QSerialPort::DataBits::Data8);
@@ -37,10 +37,10 @@ void RFID_DLL::Read_Data()
     {
         while (COMPORT->bytesAvailable())
         {
-
-            QString cardNumber = COMPORT->readAll();
+            QString originalCard = COMPORT->readAll();
+            QString cardNumber = originalCard.sliced(3, 9);
             emit signalCard(cardNumber);
-            qDebug()<<"DLL kortti "<<cardNumber;
+            qDebug()<<"DLL toimii myös -> "<<cardNumber;
         }
     }
 }

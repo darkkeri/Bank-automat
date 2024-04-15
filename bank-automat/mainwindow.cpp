@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->cardSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
     connect(ui->pinSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
     connect(ptr_rfid,SIGNAL(signalCard(QString&)),
-            this,SLOT(testi(QString&)));
+            this,SLOT(cardHandler(QString&)));
     ptr_rfid->Read_Data();
 }
 
@@ -27,7 +27,7 @@ void MainWindow::cardSignalHandler(){
     qDebug()<< "cardSignalHandler ran";
     QPushButton *clickedButton = qobject_cast<QPushButton *>(sender());
     QString name = clickedButton->objectName();
-    if (name == "cardSimButton"){
+    if (name == "cardSimButton" || name == "ptr_rfid"){
         cardSignal = true;
         qDebug()<< "cardSignal value changed";
     } else if (name == "pinSimButton"){
@@ -54,8 +54,9 @@ void MainWindow::on_OKButton_clicked()
     emit secondViewOpenSignal();
 }
 
-void MainWindow::testi(QString& card)
+void MainWindow::cardHandler(QString& card)
 {
-    qDebug()<<"Kortti on "<<card<<". Onko oikein?";
+        cardSignal = true;
+        qDebug()<< "cardSignal value changed";
 }
 
