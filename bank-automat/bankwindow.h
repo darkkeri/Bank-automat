@@ -34,6 +34,8 @@ private:
     short buttonMode = 0;
 
     void modeChange(short);
+
+    void cardCheck();
 };
 
 #endif // BANKWINDOW_H

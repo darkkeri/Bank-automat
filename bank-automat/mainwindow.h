@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QThread>
 #include "bankwindow.h"
+#include "RFID_DLL/rfid_dll.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,11 +27,15 @@ private:
     bool cardSignal;
     bool pinSignal;
 
+    RFID_DLL *ptr_rfid;
+
 private slots:
     void cardSignalHandler();
     void secondViewOpen();
 
     void on_OKButton_clicked();
+
+    void testi(QString&);
 
 signals:
     void secondViewOpenSignal();

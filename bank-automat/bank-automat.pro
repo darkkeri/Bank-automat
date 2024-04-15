@@ -1,5 +1,7 @@
 QT       += core gui
 
+QT += serialport
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -25,3 +27,19 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+# win32: LIBS += -L$$PWD/../EXE_TEST/EXE_DLL/build/debug/ -lEXE_DLL
+
+# INCLUDEPATH += $$PWD/../EXE_TEST/EXE_DLL
+# DEPENDPATH += $$PWD/../EXE_TEST/EXE_DLL
+
+DISTFILES += \
+    styles/myStyle.qss
+
+RESOURCES += \
+    resources.qrc
+
+win32: LIBS += -L$$PWD/RFID_DLL/build/debug/ -lRFID_DLL
+
+INCLUDEPATH += $$PWD/RFID_DLL
+DEPENDPATH += $$PWD/RFID_DLL
