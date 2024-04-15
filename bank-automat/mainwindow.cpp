@@ -6,12 +6,20 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ptr_rfid = new RFID_DLL(this);
+
+
     connect(ui->cardSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
     connect(ui->pinSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
+    connect(ptr_rfid,SIGNAL(signalCard(QString&)),
+            this,SLOT(testi(QString&)));
+    ptr_rfid->Read_Data();
 }
 
 MainWindow::~MainWindow()
 {
+    delete ptr_rfid;
     delete ui;
 }
 
@@ -44,5 +52,10 @@ void MainWindow::on_OKButton_clicked()
     qDebug()<< "OK-button clicked";
     connect(this, SIGNAL(secondViewOpenSignal()), this, SLOT(secondViewOpen()));
     emit secondViewOpenSignal();
+}
+
+void MainWindow::testi(QString& card)
+{
+    qDebug()<<"Kortti on "<<card<<". Onko oikein?";
 }
 

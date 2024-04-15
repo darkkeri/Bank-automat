@@ -2,8 +2,15 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDebug>
+#include <QMessageBox>
+#include <QString>
+#include <QSerialPort>
+#include <QSerialPortInfo>
 
-#include "restdll.h"
+#include "pinui.h"
+
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,11 +27,16 @@ public:
     ~MainWindow();
 
 private slots:
-    void get_Handler(QString);
+    void Read_Data();
+
+    void on_pushButton_clicked();
+
+
 
 private:
     Ui::MainWindow *ui;
+    QSerialPort* COMPORT;
 
-    RestDLL *ptr_dll;
+    pinUI * pinUiPtr;
 };
 #endif // MAINWINDOW_H
