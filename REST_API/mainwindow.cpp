@@ -32,8 +32,8 @@ void MainWindow::get_Handler(QString n)
     ui->textEdit->setText(n);
 }
 
-
-
-
-
-
+//Kun nappia btnPost painetaan, suoritetaan:
+void MainWindow::post_Click_Handler()
+{
+    ptr_dll->post_Clicked();
+}

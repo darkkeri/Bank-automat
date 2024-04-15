@@ -12,7 +12,7 @@ RestDLL::~RestDLL()
 
 void RestDLL::get_Clicked()
 {
-    QString site_url="http://localhost:3000/account";
+    QString site_url="http://localhost:3000/account/1";
     QNetworkRequest request((site_url));
     getManager = new QNetworkAccessManager(this);
     connect(getManager, SIGNAL(finished(QNetworkReply*)),
