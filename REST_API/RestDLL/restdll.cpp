@@ -14,7 +14,7 @@ RestDLL::~RestDLL()
 
 void RestDLL::get_Clicked()
 {
-    QString site_url=Environment::getBaseURL()+"/cards/2";
+    QString site_url=Environment::getBaseURL()+"/cards";
     QNetworkRequest request((site_url));
     getManager = new QNetworkAccessManager(this);
     connect(getManager, SIGNAL(finished(QNetworkReply*)),
@@ -49,7 +49,8 @@ void RestDLL::getSlot(QNetworkReply *reply)
     QString get;
     foreach(const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
-        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+" | "+json_obj[columnName[3]].toString()+" | "+json_obj[columnName[4]].toString()+" | "+json_obj[columnName[5]].toString()+" | "+json_obj[columnName[6]].toString();
+        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
+               " | "+QString::number(json_obj[columnName[3]].toInt())+" | "+QString::number(json_obj[columnName[4]].toInt())+" | "+QString::number(json_obj[columnName[5]].toInt())+" | "+QString::number(json_obj[columnName[6]].toInt())+"\r";
     }
     qDebug()<<get;
     //get qstring menee get_handleriin exessä:
