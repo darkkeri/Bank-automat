@@ -35,7 +35,7 @@ private slots:
 
     void on_OKButton_clicked();
 
-    void testi(QString&);
+    void cardHandler(QString&);
 
 signals:
     void secondViewOpenSignal();
