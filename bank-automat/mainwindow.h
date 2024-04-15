@@ -30,12 +30,12 @@ private:
     RFID_DLL *ptr_rfid;
 
 private slots:
-    void cardSignalHandler();
+    void cardSignalHandler(); //Delete after testing is done
+    void on_OKButton_clicked(); //Delete after testing is done
+
     void secondViewOpen();
-
-    void on_OKButton_clicked();
-
     void cardHandler(QString&);
+    void pinHandler(QString&);
 
 signals:
     void secondViewOpenSignal();

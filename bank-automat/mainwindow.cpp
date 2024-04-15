@@ -6,7 +6,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     ptr_rfid = new RFID_DLL(this);
 
 
@@ -23,7 +22,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::cardSignalHandler(){
+void MainWindow::cardSignalHandler(){ //TEST
     qDebug()<< "cardSignalHandler ran";
     QPushButton *clickedButton = qobject_cast<QPushButton *>(sender());
     QString name = clickedButton->objectName();
@@ -46,7 +45,7 @@ void MainWindow::secondViewOpen(){
     }
 }
 
-void MainWindow::on_OKButton_clicked()
+void MainWindow::on_OKButton_clicked() //TEST
 {
     hide();
     qDebug()<< "OK-button clicked";
@@ -56,7 +55,26 @@ void MainWindow::on_OKButton_clicked()
 
 void MainWindow::cardHandler(QString& card)
 {
+    qDebug()<< "cardHandler ran";
         cardSignal = true;
         qDebug()<< "cardSignal value changed";
+        //Open PIN_UI here
 }
+
+void MainWindow::pinHandler(QString& pin)
+{
+    qDebug()<< "pinHandler ran";
+    /*
+    bool pincheck = ptr_restapi->RESTAPIDLL_PIN_function(pin);
+
+    if(pincheck = true){
+        qDebug()<< "pin is correct";
+        hide();
+        bankwindow secWindow;
+        secWindow.exec();
+    }
+    */
+}
+
+
 
