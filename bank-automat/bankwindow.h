@@ -36,6 +36,9 @@ private:
     void modeChange(short);
 
     void cardCheck();
+
+signals:
+    void restartSignal();
 };
 
 #endif // BANKWINDOW_H
