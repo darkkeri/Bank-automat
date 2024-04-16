@@ -171,7 +171,8 @@ void bankwindow::on_Button6_clicked()
 {
     switch(buttonMode){
     case 0:
-        QApplication::quit();
+        //QApplication::quit();
+        emit restartSignal();
         //close program
         break;
 
@@ -188,7 +189,8 @@ void bankwindow::on_Button6_clicked()
         break;
 
     case 4:
-        QApplication::quit();
+        //QApplication::quit();
+        emit restartSignal();
         break;
 
     case 5:
