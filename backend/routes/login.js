@@ -22,20 +22,20 @@ router.post('/',function(request, response){
                             response.send(token);
                         }
                         else{
-                            console.log("Väärä salasana");
+                            console.log("Väärä pinkoodi");
                             response.send(false);
                         }
                     })
                 }
                 else{
-                    console.log("Tunnusta ei ole");
+                    console.log("Korttia ei ole");
                     response.send(false);
                 }
             }
         });
     }
     else{
-        console.log("Tunnus tai salasana puuttuu");
+        console.log("Pinkoodi puuttuu");
         response.send(false);
     }
 });
