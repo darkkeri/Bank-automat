@@ -103,7 +103,6 @@ void RestDLL::checkPin(QString cardnumber, QString pincode)
     connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
 
     reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
-
 }
 
 void RestDLL::loginSlot(QNetworkReply *reply)
