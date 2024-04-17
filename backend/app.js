@@ -23,12 +23,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 //suojaamattomat reitit
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
-app.use(authenticateToken);
-//suojatut reitit
 app.use('/account', accountRouter);
 app.use('/logs', logsRouter);
 app.use('/user', userRouter);
 app.use('/cards', cardsRouter);
+app.use(authenticateToken);
+//suojatut reitit
+//app.use('/account', accountRouter);
+//app.use('/logs', logsRouter);
+//app.use('/user', userRouter);
+//app.use('/cards', cardsRouter);
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']

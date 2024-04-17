@@ -20,7 +20,7 @@ signals:
     void getResult(QString);
 public slots:
 
-    void get_Clicked();
+    void get_Clicked(int id);
     void post_Clicked();
 
     void pinCompare();
@@ -28,6 +28,8 @@ private slots:
 
     void postSlot(QNetworkReply *reply);
     void getSlot(QNetworkReply *reply);
+
+    void getLogs(QNetworkReply *reply);
 
 private:
 

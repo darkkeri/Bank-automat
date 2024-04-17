@@ -12,13 +12,20 @@ RestDLL::~RestDLL()
     qDebug()<<"DLL RÄJÄHTI";
 }
 
-void RestDLL::get_Clicked()
+void RestDLL::get_Clicked(int id)
 {
-    QString site_url=Environment::getBaseURL()+"/cards";
+    qDebug()<<id;
+    QString urlAddress = "/logs/";
+    QString site_url=Environment::getBaseURL()+urlAddress+QString::number(id);
     QNetworkRequest request((site_url));
     getManager = new QNetworkAccessManager(this);
+    if(urlAddress == "/logs/"){
     connect(getManager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(getSlot(QNetworkReply*)));
+            this, SLOT(getLogs(QNetworkReply*)));
+    } else if (urlAddress == "/cards"){
+    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+                this, SLOT(getSlot(QNetworkReply*)));
+    }
     reply = getManager->get(request);
 }
 
@@ -50,7 +57,8 @@ void RestDLL::getSlot(QNetworkReply *reply)
     foreach(const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
         get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
-               " | "+QString::number(json_obj[columnName[3]].toInt())+" | "+QString::number(json_obj[columnName[4]].toInt())+" | "+QString::number(json_obj[columnName[5]].toInt())+" | "+QString::number(json_obj[columnName[6]].toInt())+"\r";
+               " | "+QString::number(json_obj[columnName[3]].toInt())+" | "+QString::number(json_obj[columnName[4]].toInt())+
+               " | "+QString::number(json_obj[columnName[5]].toInt())+" | "+QString::number(json_obj[columnName[6]].toInt())+"\r";
     }
     qDebug()<<get;
     //get qstring menee get_handleriin exessä:
@@ -78,6 +86,29 @@ void RestDLL::post_Clicked()
     connect(postManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(postSlot(QNetworkReply*)));
     reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
+}
+void RestDLL::getLogs(QNetworkReply *reply){
+    columnName[0]="idLogs";
+    columnName[1]="date";
+    columnName[2]="event";
+    columnName[3]="amount";
+    columnName[4]="idAccount";
+    response_data=reply->readAll();
+    //qDebug()<<"DATA : "+response_data;
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonArray json_array = json_doc.array();
+    QString get;
+    foreach(const QJsonValue &value, json_array) {
+        QJsonObject json_obj = value.toObject();
+        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
+        " | "+QString::number(json_obj[columnName[3]].toInt())+" | "+QString::number(json_obj[columnName[4]].toInt())+"\r";
+    }
+    qDebug()<<get;
+    //get qstring menee get_handleriin exessä:
+    emit getResult(get);
+
+    reply->deleteLater();
+    getManager->deleteLater();
 }
 
 void RestDLL::postSlot(QNetworkReply *reply)
