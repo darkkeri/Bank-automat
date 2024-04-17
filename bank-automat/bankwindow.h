@@ -37,6 +37,8 @@ private:
 
     void cardCheck();
 
+    void closeWindow();
+
 signals:
     void restartSignal();
 };
