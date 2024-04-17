@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>633</width>
-    <height>529</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,44 +17,54 @@
    <widget class="QPushButton" name="btnGet">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>40</y>
-      <width>80</width>
-      <height>24</height>
+      <x>400</x>
+      <y>30</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>get</string>
+     <string>Get</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnPost">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>40</y>
-      <width>80</width>
-      <height>24</height>
+      <x>590</x>
+      <y>30</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>post</string>
+     <string>Post</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="textEdit">
+   <widget class="QLineEdit" name="cardnumberLineEdit">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>80</y>
-      <width>431</width>
-      <height>231</height>
+      <x>50</x>
+      <y>130</y>
+      <width>113</width>
+      <height>28</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="pincodeLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>220</y>
+      <width>113</width>
+      <height>28</height>
      </rect>
     </property>
    </widget>
    <widget class="QLineEdit" name="getByIdLineEdit">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>390</y>
+      <x>410</x>
+      <y>340</y>
       <width>113</width>
       <height>28</height>
      </rect>
@@ -63,71 +73,63 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>360</y>
-      <width>121</width>
+      <x>50</x>
+      <y>100</y>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Hae accountID:llä</string>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>90</y>
-      <width>71</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>cardnumber</string>
+     <string>card number</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>140</y>
-      <width>49</width>
-      <height>16</height>
+      <x>50</x>
+      <y>190</y>
+      <width>91</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>pincode</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="cardnumberLineEdit">
+   <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>90</y>
-      <width>113</width>
-      <height>24</height>
+      <x>410</x>
+      <y>310</y>
+      <width>121</width>
+      <height>20</height>
      </rect>
     </property>
+    <property name="text">
+     <string>get by accountID</string>
+    </property>
    </widget>
-   <widget class="QLineEdit" name="pincodeLineEdit">
+   <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>140</y>
-      <width>113</width>
-      <height>24</height>
+      <x>400</x>
+      <y>80</y>
+      <width>301</width>
+      <height>201</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="BtnLogin">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>200</y>
-      <width>80</width>
-      <height>24</height>
+      <x>200</x>
+      <y>220</y>
+      <width>83</width>
+      <height>29</height>
      </rect>
     </property>
     <property name="text">
-     <string>login</string>
+     <string>Login</string>
     </property>
    </widget>
   </widget>
@@ -136,8 +138,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>842</width>
-     <height>21</height>
+     <width>800</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>
