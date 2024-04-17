@@ -35,3 +35,10 @@ void MainWindow::on_btnGet_clicked()
     int idvalue = ui->getByIdLineEdit->text().toInt();
     ptr_dll->get_Clicked(idvalue);
 }
+void MainWindow::on_BtnLogin_clicked()
+{
+    QString cardnumber = ui->cardnumberLineEdit->text();
+    QString pincode = ui->pincodeLineEdit->text();
+    ptr_dll->checkPin(cardnumber,pincode);
+}
+
