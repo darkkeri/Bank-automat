@@ -27,6 +27,12 @@ app.use('/account', accountRouter);
 app.use('/logs', logsRouter);
 app.use('/user', userRouter);
 app.use('/cards', cardsRouter);
+app.use(authenticateToken);
+//suojatut reitit
+//app.use('/account', accountRouter);
+//app.use('/logs', logsRouter);
+//app.use('/user', userRouter);
+//app.use('/cards', cardsRouter);
 
 app.use(authenticateToken);
 

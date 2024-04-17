@@ -8,8 +8,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ptr_dll = new RestDLL(this);
     //btnGet -> get_Clicked()
-    connect(ui->btnGet,SIGNAL(clicked(bool)),
-            ptr_dll,SLOT(get_Clicked()));
     //btnPost -> post_Clicked()
     connect(ui->btnPost,SIGNAL(clicked(bool)),
             ptr_dll,SLOT(post_Clicked()));
@@ -32,6 +30,11 @@ void MainWindow::get_Handler(QString n)
     ui->textEdit->setText(n);
 }
 
+void MainWindow::on_btnGet_clicked()
+{
+    int idvalue = ui->getByIdLineEdit->text().toInt();
+    ptr_dll->get_Clicked(idvalue);
+}
 void MainWindow::on_BtnLogin_clicked()
 {
     QString cardnumber = ui->cardnumberLineEdit->text();
