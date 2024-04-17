@@ -9,21 +9,20 @@ MainWindow::MainWindow(QWidget *parent)
     ui->creditButton->setVisible(false);
     ui->debitButton->setVisible(false);
     ptr_rfid = new RFID_DLL(this);
-    ptr_bwindow = new bankwindow(this);
+    secWindow = new bankwindow(this);
 
     //TEST
     connect(ui->cardSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
     connect(ui->pinSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
     //TEST
-
+    connect(secWindow,SIGNAL(restartSignal()), this,SLOT(restart()));
     connect(ptr_rfid,SIGNAL(signalCard(QString&)), this,SLOT(cardHandler(QString&)));
-    connect(ptr_bwindow,SIGNAL(restartSignal()), this,SLOT(restart()));
     ptr_rfid->Read_Data();
 }
 
 MainWindow::~MainWindow()
 {
-    delete ptr_rfid;
+    //delete ptr_rfid;
     delete ui;
 }
 
@@ -51,8 +50,7 @@ void MainWindow::on_OKButton_clicked() //TEST
 void MainWindow::secondViewOpen(){
     if (cardSignal == true && pinSignal == true){
         hide();
-        bankwindow secWindow;
-        secWindow.exec();
+        secWindow->exec();
         cardSignal = false;
         pinSignal = false;
     }
@@ -110,12 +108,15 @@ void MainWindow::on_creditButton_clicked()
 
 void MainWindow::restart()
 {
+    qDebug()<< "restart ran";
+    show();
     ui->startStatuslabel->setText("Syötä pankkikortti kortinlukijaan");
     ui->creditButton->setVisible(false);
     ui->debitButton->setVisible(false);
-    qDebug()<< "restart ran";
-    show();
 }
 
-
+void MainWindow::on_OFFButton_clicked()
+{
+    QApplication::quit();
+}
 

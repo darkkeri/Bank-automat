@@ -27,8 +27,8 @@ private:
     bool cardSignal;
     bool pinSignal;
 
+    bankwindow *secWindow;
     RFID_DLL *ptr_rfid;
-    bankwindow *ptr_bwindow;
 
 private slots:
     void cardSignalHandler(); //Delete after testing is done
@@ -42,6 +42,8 @@ private slots:
     void on_debitButton_clicked();
 
     void on_creditButton_clicked();
+
+    void on_OFFButton_clicked();
 
 signals:
     void secondViewOpenSignal();
