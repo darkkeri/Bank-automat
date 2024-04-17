@@ -1,6 +1,5 @@
 backend/node_modules/
 */build/
 */*.user
-*/*/build/
 */*/*.user
 .env

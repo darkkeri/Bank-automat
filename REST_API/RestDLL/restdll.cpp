@@ -18,7 +18,7 @@ void RestDLL::get_Clicked()
     QNetworkRequest request((site_url));
     getManager = new QNetworkAccessManager(this);
     connect(getManager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(getSlot(QNetworkReply*)));
+            this, SLOT(getCards(QNetworkReply*)));
     reply = getManager->get(request);
 }
 
@@ -33,7 +33,7 @@ void RestDLL::pinCompare()
 }
 
 
-void RestDLL::getSlot(QNetworkReply *reply)
+void RestDLL::getCards(QNetworkReply *reply)
 {
     columnName[0]="idCards";
     columnName[1]="cardnumber";
@@ -50,7 +50,7 @@ void RestDLL::getSlot(QNetworkReply *reply)
     foreach(const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
         get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
-               " | "+QString::number(json_obj[columnName[3]].toInt())+" | "+QString::number(json_obj[columnName[4]].toInt())+" | "+QString::number(json_obj[columnName[5]].toInt())+" | "+QString::number(json_obj[columnName[6]].toInt())+"\r";
+               " | "+json_obj[columnName[3]].toString()+" | "+json_obj[columnName[4]].toString()+" | "+json_obj[columnName[5]].toString()+" | "+json_obj[columnName[6]].toString()+"\r";
     }
     qDebug()<<get;
     //get qstring menee get_handleriin exessä:
@@ -89,4 +89,26 @@ void RestDLL::postSlot(QNetworkReply *reply)
     postManager->deleteLater();
 }
 
+void RestDLL::checkPin(QString cardnumber, QString pincode)
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("idCards", cardnumber);
+    jsonObj.insert("pincode", pincode);
 
+    QString site_url="http://localhost:3000/cards";
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    loginManager = new QNetworkAccessManager(this);
+    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
+
+    reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
+
+}
+
+void RestDLL::loginSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    qDebug()<<response_data;
+
+}

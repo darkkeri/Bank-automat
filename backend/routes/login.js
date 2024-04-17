@@ -18,24 +18,24 @@ router.post('/',function(request, response){
                     bcrypt.compare(request.body.pincode, result[0].pincode, function(err, compareResult){
                         if(compareResult){
                             console.log("Kirjautuminen ok")
-                            const token = genToken({username: request.body.idCards});
+                            const token = genToken({cardnumber: request.body.idCards});
                             response.send(token);
                         }
                         else{
-                            console.log("Väärä salasana");
+                            console.log("Väärä pinkoodi");
                             response.send(false);
                         }
                     })
                 }
                 else{
-                    console.log("Tunnusta ei ole");
+                    console.log("Korttia ei ole");
                     response.send(false);
                 }
             }
         });
     }
     else{
-        console.log("Tunnus tai salasana puuttuu");
+        console.log("Pinkoodi puuttuu");
         response.send(false);
     }
 });

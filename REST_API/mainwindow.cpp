@@ -31,3 +31,11 @@ void MainWindow::get_Handler(QString n)
 {
     ui->textEdit->setText(n);
 }
+
+void MainWindow::on_BtnLogin_clicked()
+{
+    QString cardnumber = ui->cardnumberLineEdit->text();
+    QString pincode = ui->pincodeLineEdit->text();
+    ptr_dll->checkPin(cardnumber,pincode);
+}
+
