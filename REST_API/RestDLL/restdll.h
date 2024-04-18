@@ -40,6 +40,8 @@ private:
     QNetworkReply *reply;
     QByteArray response_data;
 
+    QMessageBox msgBox;
+
     QString columnName[10];
 
 

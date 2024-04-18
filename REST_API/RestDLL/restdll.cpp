@@ -142,7 +142,19 @@ void RestDLL::loginSlot(QNetworkReply *reply)
     response_data=reply->readAll();
     qDebug()<<response_data;
     if(response_data=="-4078"){
-
+        msgBox.setText("Tietokantayhteydessä virhe");
+        msgBox.exec();
+    }
+    else {
+        if(response_data!="false") {
+            //Kirjautuminen onnistui
+            msgBox.setText("OK");
+            msgBox.exec();
+        }
+        else {
+            msgBox.setText("Tunnus tai salasana ei täsmää");
+            msgBox.exec();
+        }
     }
 
 }
