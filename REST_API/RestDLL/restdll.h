@@ -6,6 +6,7 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <QDebug>
+#include <QMessageBox>
 
 
 class RESTDLL_EXPORT RestDLL : public QObject
@@ -21,7 +22,7 @@ public slots:
 
     void get_Clicked(int id);
     void post_Clicked();
-    void checkPin(QString idCard, QString pincode);
+    void checkPin(QString cardnumber, QString pincode);
     void pinCompare();
 private slots:
 

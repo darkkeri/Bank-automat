@@ -124,10 +124,10 @@ void RestDLL::postSlot(QNetworkReply *reply)
 void RestDLL::checkPin(QString cardnumber, QString pincode)
 {
     QJsonObject jsonObj;
-    jsonObj.insert("idCards", cardnumber);
+    jsonObj.insert("cardnumber", cardnumber);
     jsonObj.insert("pincode", pincode);
 
-    QString site_url="http://localhost:3000/cards";
+    QString site_url="http://localhost:3000/login";
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -141,5 +141,8 @@ void RestDLL::loginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
     qDebug()<<response_data;
+    if(response_data=="-4078"){
+
+    }
 
 }
