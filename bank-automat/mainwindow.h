@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QThread>
 #include "bankwindow.h"
+#include "RestDLL/restdll.h"
 #include "RFID_DLL/rfid_dll.h"
 
 QT_BEGIN_NAMESPACE
