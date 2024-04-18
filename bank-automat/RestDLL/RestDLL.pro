@@ -1,5 +1,5 @@
 QT -= gui
-QT += core network widgets
+QT += network
 
 TEMPLATE = lib
 DEFINES += RESTDLL_LIBRARY
