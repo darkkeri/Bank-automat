@@ -2,6 +2,7 @@
 #define BANKWINDOW_H
 
 #include <QDialog>
+#include "RestDLL/restdll.h"
 
 namespace Ui {
 class bankwindow;

@@ -6,7 +6,6 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <QDebug>
-#include <QMessageBox>
 
 
 class RESTDLL_EXPORT RestDLL : public QObject
