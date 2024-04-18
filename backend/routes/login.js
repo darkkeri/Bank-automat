@@ -7,11 +7,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 router.post('/',function(request, response){
-    if(request.body.idCards && request.body.pincode){
-        cards.login(request.body.idCards, function(err,result){
+    if(request.body.cardnumber && request.body.pincode){
+        cards.login(request.body.cardnumber, function(err,result){
             if(err){
-                console.log(err);
-                response.send(err);
+                console.log(err.errno);
+                response.json(err.errno);
             }
             else{
                 if(result.length > 0){
