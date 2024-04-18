@@ -20,6 +20,7 @@ router.post('/',function(request, response){
                             console.log("Kirjautuminen ok")
                             const token = genToken({cardnumber: request.body.idCards});
                             response.send(token);
+                            response.send(true);
                         }
                         else{
                             console.log("Väärä pinkoodi");
