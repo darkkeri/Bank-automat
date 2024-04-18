@@ -199,7 +199,6 @@ QString RestDLL::data_seperator(QString data)
 
 }
 
-
 void RestDLL::postSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
@@ -207,29 +206,6 @@ void RestDLL::postSlot(QNetworkReply *reply)
     emit getResult(response_data);
     reply->deleteLater();
     postManager->deleteLater();
-}
-
-void RestDLL::checkPin(QString cardnumber, QString pincode)
-{
-    QJsonObject jsonObj;
-    jsonObj.insert("idCards", cardnumber);
-    jsonObj.insert("pincode", pincode);
-
-    QString site_url="http://localhost:3000/cards";
-    QNetworkRequest request((site_url));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    loginManager = new QNetworkAccessManager(this);
-    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
-
-    reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
-}
-
-void RestDLL::loginSlot(QNetworkReply *reply)
-{
-    response_data=reply->readAll();
-    qDebug()<<response_data;
-
 }
 
 void RestDLL::getAccount(QNetworkReply *reply)
@@ -254,4 +230,53 @@ void RestDLL::getAccount(QNetworkReply *reply)
 
     reply->deleteLater();
     getManager->deleteLater();
+}
+
+
+void RestDLL::setWebToken(const QByteArray &newWebToken)
+{
+    webToken = newWebToken;
+    qDebug()<<webToken;
+}
+
+void RestDLL::checkPin(QString cardnumber, QString pincode)
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("cardnumber", cardnumber);
+    jsonObj.insert("pincode", pincode);
+
+    QString site_url="http://localhost:3000/login";
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    loginManager = new QNetworkAccessManager(this);
+    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
+
+    reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
+}
+
+void RestDLL::loginSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    //qDebug()<<response_data;
+    if(response_data=="-4078") {
+        msgBox.setText("Virhe tietokantayhteydessä");
+        msgBox.exec();
+    }
+    else {
+        if(response_data!="false") {
+            //Kirjautuminen onnistui
+            //Kortti ID
+            //Tähän true signaali mainiin
+
+            setWebToken(response_data);
+            msgBox.setText("OK");
+            msgBox.exec();
+        }
+        else {
+            //Tähän false signaali mainiin
+            msgBox.setText("Väärä pinkoodi");
+            msgBox.exec();
+        }
+    }
 }
