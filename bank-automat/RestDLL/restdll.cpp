@@ -9,7 +9,7 @@ RestDLL::RestDLL(QObject *parent):QObject(parent)
 
 RestDLL::~RestDLL()
 {
-    qDebug()<<"DLL RÄJÄHTI";
+    qDebug()<<"RESTDLL RÄJÄHTI";
 }
 
 void RestDLL::setupGetConnection(int switchCase)
@@ -78,23 +78,31 @@ void RestDLL::pinCompare()
 
 QString RestDLL::getBalance(QNetworkReply *reply)
 {
-    columnName[0]="idAccount";
-    columnName[1]="balance";
+    qDebug()<<"GETBALANCESSA!";
     response_data=reply->readAll();
+    qDebug()<<response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
-    QJsonArray json_array = json_doc.array();
-    QString get;
-    foreach(const QJsonValue &value, json_array) {
-        QJsonObject json_obj = value.toObject();
-        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+QString::number(json_obj[columnName[1]].toDouble())+"\r";
-    }
-    qDebug()<<get;
+    QJsonObject json_obj = json_doc.object();
+    QString balance=json_obj["balance"].toString();
+
+    // foreach(const QJsonValue &value, json_array) {
+    //     QJsonObject json_obj = value.toObject();
+    //     get+=QString::number(json_obj[columnName[0]].toInt())+" | "+QString::number(json_obj[columnName[1]].toDouble())+"\r";
+    // }
+    qDebug()<<balance;
     //get qstring menee get_handleriin exessä:
-    emit getResult(get);
+    emit getResult(balance);
+
 
     reply->deleteLater();
     getManager->deleteLater();
-    return get;
+    return balance;
+
+
+
+
+
+
 }
 
 void RestDLL::checkBalance(float nostomaara)
@@ -120,8 +128,8 @@ void RestDLL::getCards(QNetworkReply *reply)
     foreach(const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
         get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
-               " | "+QString::number(json_obj[columnName[3]].toInt())+" | "+QString::number(json_obj[columnName[4]].toInt())+
-               " | "+QString::number(json_obj[columnName[5]].toInt())+" | "+QString::number(json_obj[columnName[6]].toInt())+"\r";
+               " | "+json_obj[columnName[3]].toString()+" | "+QString::number(json_obj[columnName[4]].toInt())+
+               " | "+QString::number(json_obj[columnName[5]].toInt())+" | "+json_obj[columnName[6]].toString()+"\r";
     }
     qDebug()<<get;
     //get qstring menee get_handleriin exessä:
@@ -164,7 +172,7 @@ void RestDLL::getLogs(QNetworkReply *reply){
     foreach(const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
         get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
-        " | "+QString::number(json_obj[columnName[3]].toDouble())+" | "+QString::number(json_obj[columnName[4]].toInt())+"\r";
+               " | "+json_obj[columnName[3]].toString()+" | "+QString::number(json_obj[columnName[4]].toInt())+"\r";
     }
     qDebug()<<get;
     //get qstring menee get_handleriin exessä:
@@ -240,13 +248,13 @@ void RestDLL::getAccount(QNetworkReply *reply)
     columnName[2]="accountnumber";
     columnName[3]="accounttype";
     response_data=reply->readAll();
-    //qDebug()<<"DATA : "+response_data;
+    qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonArray json_array = json_doc.array();
     QString get;
     foreach(const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
-        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+QString::number(json_obj[columnName[1]].toDouble())+
+        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+
                " | "+json_obj[columnName[2]].toString()+" | "+QString::number(json_obj[columnName[3]].toInt())+"\r";
     }
     qDebug()<<get;
