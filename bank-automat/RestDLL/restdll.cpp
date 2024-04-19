@@ -259,7 +259,7 @@ void RestDLL::loginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
     //qDebug()<<response_data;
-    if(response_data=="-4078") {
+    if(response_data=="-4078" || response_data=="") {
         msgBox.setText("Virhe tietokantayhteydessä");
         msgBox.exec();
     }
@@ -270,8 +270,7 @@ void RestDLL::loginSlot(QNetworkReply *reply)
             //Tähän true signaali mainiin
 
             setWebToken(response_data);
-            msgBox.setText("OK");
-            msgBox.exec();
+
         }
         else {
             //Tähän false signaali mainiin
