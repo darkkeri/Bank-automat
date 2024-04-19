@@ -50,3 +50,9 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/RestDLL/build/debug/ -l
 
 INCLUDEPATH += $$PWD/RestDLL
 DEPENDPATH += $$PWD/RestDLL
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/PIN_UI_DLL/build/release/ -lPIN_UI_DLL
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/PIN_UI_DLL/build/debug/ -lPIN_UI_DLL
+
+INCLUDEPATH += $$PWD/PIN_UI_DLL
+DEPENDPATH += $$PWD/PIN_UI_DLL

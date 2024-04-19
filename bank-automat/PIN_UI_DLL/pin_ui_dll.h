@@ -22,7 +22,7 @@ public:
     ~PIN_UI_DLL();
 
 signals:
-    void sendNumberToMainWindow(short);
+    void sendNumberToMainWindow(QString);
 
 private slots:
     void handleClick();
