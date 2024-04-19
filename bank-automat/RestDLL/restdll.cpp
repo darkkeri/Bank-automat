@@ -176,7 +176,7 @@ void RestDLL::getLogs(QNetworkReply *reply){
 
 
 
-void RestDLL::postLogs(QString date, QString event, float amount, int idAccount)
+void RestDLL::postLogs(QString date, QString event, float amount, int idAccount) //kutsutaan mainista
 {
     QJsonObject jsonObj;
     jsonObj.insert(columnName[1],"2023-04-01 09:03:00");

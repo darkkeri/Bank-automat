@@ -11,11 +11,13 @@ CONFIG += c++17
 
 SOURCES += \
     bankwindow.cpp \
+    logs.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     bankwindow.h \
+    logs.h \
     mainwindow.h
 
 FORMS += \
