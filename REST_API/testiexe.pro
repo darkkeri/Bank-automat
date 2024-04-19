@@ -23,7 +23,12 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32: LIBS += -L$$PWD/RestDLL/build/debug/ -lRestDLL
+# win32: LIBS += -L$$PWD/RestDLL/build/debug/ -lRestDLL
 
-INCLUDEPATH += $$PWD/RestDLL
-DEPENDPATH += $$PWD/RestDLL
+# INCLUDEPATH += $$PWD/RestDLL
+# DEPENDPATH += $$PWD/RestDLL
+
+win32: LIBS += -L$$PWD/../bank-automat/RestDLL/build/debug/ -lRestDLL
+
+INCLUDEPATH += $$PWD/../bank-automat/RestDLL
+DEPENDPATH += $$PWD/../bank-automat/RestDLL
