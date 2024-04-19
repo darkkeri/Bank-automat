@@ -22,13 +22,14 @@ signals:
     void getResult(QString);
 public slots:
 
-    void setupGetConnection(int switchCase);
+    void setupGetConnection(int switchCase, int id);
     void post_Clicked();
     void checkPin(QString idCard, QString pincode);
     void pinCompare();
+    void test();
 private slots:
-    QString getBalance(QNetworkReply *reply);
-    void checkBalance(float nostomaara);
+    void getBalance(QNetworkReply *reply);
+    void checkBalance(float nostomaara,int id);
     void postSlot(QNetworkReply *reply);
     void getCards(QNetworkReply *reply);
     void loginSlot(QNetworkReply *reply);

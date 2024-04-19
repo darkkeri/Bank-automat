@@ -33,10 +33,11 @@ void MainWindow::get_Handler(QString n)
 void MainWindow::on_btnGet_clicked()
 {
     int idvalue = ui->getByIdLineEdit->text().toInt();
-    ptr_dll->setupGetConnection(idvalue);
+    ptr_dll->setupGetConnection(idvalue,1);
 }
 void MainWindow::on_BtnLogin_clicked()
 {
+    ptr_dll->test();
     QString cardnumber = ui->cardnumberLineEdit->text();
     QString pincode = ui->pincodeLineEdit->text();
     ptr_dll->checkPin(cardnumber,pincode);

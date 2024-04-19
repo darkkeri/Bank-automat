@@ -12,7 +12,7 @@ RestDLL::~RestDLL()
     qDebug()<<"RESTDLL RÄJÄHTI";
 }
 
-void RestDLL::setupGetConnection(int switchCase)
+void RestDLL::setupGetConnection(int switchCase, int id)
 {
 
     QString urlAddress = "/logs/";
@@ -37,6 +37,10 @@ void RestDLL::setupGetConnection(int switchCase)
     QString site_url=Environment::getBaseURL()+urlAddress+stringID;
     qDebug()<<site_url;
     QNetworkRequest request((site_url));
+    // hasu weebtoken??!?!?!?
+    // QByteArray myToken="Bearer "+webToken;
+    // request.setRawHeader(QByteArray("Authorization"),(myToken));
+
     getManager = new QNetworkAccessManager(this);
     switch (switchCase){
     case 1:
@@ -76,7 +80,41 @@ void RestDLL::pinCompare()
     reply = getManager->get(request);
 }
 
-QString RestDLL::getBalance(QNetworkReply *reply)
+void RestDLL::test()
+{
+    QString urlAddress = "/logs/";
+    QString site_url=Environment::getBaseURL()+urlAddress;
+    qDebug()<<site_url;
+    QNetworkRequest request((site_url));
+    getManager = new QNetworkAccessManager(this);
+    reply = getManager->get(request);
+    columnName[0]="idLogs";
+    columnName[1]="date";
+    columnName[2]="event";
+    columnName[3]="amount";
+    columnName[4]="idAccount";
+    response_data=reply->readAll();
+    qDebug()<<"DATA : "+response_data;
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonArray json_array = json_doc.array();
+    QString get;
+    foreach(const QJsonValue &value, json_array) {
+        QJsonObject json_obj = value.toObject();
+        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
+               " | "+json_obj[columnName[3]].toString()+" | "+QString::number(json_obj[columnName[4]].toInt())+"\r";
+    }
+    qDebug()<<get;
+    //get qstring menee get_handleriin exessä:
+    emit getResult(get);
+
+    reply->deleteLater();
+    getManager->deleteLater();
+
+
+
+}
+
+void RestDLL::getBalance(QNetworkReply *reply)
 {
     qDebug()<<"GETBALANCESSA!";
     response_data=reply->readAll();
@@ -87,21 +125,18 @@ QString RestDLL::getBalance(QNetworkReply *reply)
     qDebug()<<balance;
     //get qstring menee get_handleriin exessä:
     emit getResult(balance);
-
-
     reply->deleteLater();
     getManager->deleteLater();
-    return balance;
-
-
-
-
-
 
 }
 
-void RestDLL::checkBalance(float nostomaara)
+
+
+
+void RestDLL::checkBalance(float nostomaara, int id)
 {
+    setupGetConnection(4,id);
+
 
 }
 
