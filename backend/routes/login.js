@@ -14,7 +14,6 @@ router.post('/',function(request, response){
                 response.json(err.errno);
             }
             else{
-                console.log(result);
                 if(result.length > 0){
                     bcrypt.compare(request.body.pincode, result[0].pincode, function(err, compareResult){
                         if(compareResult){
