@@ -50,7 +50,7 @@ router.delete('/:logsid', function(request, response){
 });
 
 router.get('/:logsid',function(request, response){
-    logs.getOneLogs(request.params.logsid, function(err, result){
+    logs.getLogsByAccount(request.params.logsid, function(err, result){
         if(err){
             response.send(err);
         }

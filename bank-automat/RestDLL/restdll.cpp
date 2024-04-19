@@ -12,12 +12,12 @@ RestDLL::~RestDLL()
     qDebug()<<"DLL RÄJÄHTI";
 }
 
-void RestDLL::get_Clicked(int id, int switchCase)
+void RestDLL::setupGetConnection(int switchCase)
 {
-    qDebug()<<id;
+
     QString urlAddress = "/logs/";
-    QString stringID = QString::number(id);
-    if(id == 0) stringID="";
+    QString stringID = QString::number(accountID);
+    if(accountID == 0) stringID="";
     switch (switchCase){
     case 1:
         urlAddress = "/logs/";
@@ -42,21 +42,22 @@ void RestDLL::get_Clicked(int id, int switchCase)
     case 1:
         connect(getManager, SIGNAL(finished(QNetworkReply*)),
                 this, SLOT(getLogs(QNetworkReply*)));
-        qDebug()<<"YKKÖNEN";
+        qDebug()<<"getLogs!";
         break;
     case 2:
         connect(getManager, SIGNAL(finished(QNetworkReply*)),
                 this, SLOT(getCards(QNetworkReply*)));
-        qDebug()<<"KAKKONEN!";
+        qDebug()<<"getCards!";
         break;
     case 3:
         connect(getManager, SIGNAL(finished(QNetworkReply*)),
                 this, SLOT(getAccount(QNetworkReply*)));
-        qDebug()<<"KOLMONEN!";
+        qDebug()<<"getAccount!";
         break;
     case 4:
         connect(getManager, SIGNAL(finished(QNetworkReply*)),
                 this, SLOT(getBalance(QNetworkReply*)));
+        qDebug()<<"getBalance!";
         break;
     default:
         qDebug()<<"Error";

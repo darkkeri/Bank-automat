@@ -3,4 +3,5 @@ backend/node_modules/
 */*.user
 */*/*.user
 */*/build/
+*/*/*/build/
 .env

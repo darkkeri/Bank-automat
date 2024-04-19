@@ -19,7 +19,7 @@ signals:
     void getResult(QString);
 public slots:
 
-    void get_Clicked(int id,int switchCase);
+    void setupGetConnection(int switchCase);
     void post_Clicked();
     void checkPin(QString idCard, QString pincode);
     void pinCompare();
@@ -38,6 +38,8 @@ private slots:
 
 
 private:
+
+    int accountID = 1;
 
     QNetworkAccessManager *getManager;
     QNetworkAccessManager *postManager;

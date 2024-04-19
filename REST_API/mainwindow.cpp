@@ -33,7 +33,7 @@ void MainWindow::get_Handler(QString n)
 void MainWindow::on_btnGet_clicked()
 {
     int idvalue = ui->getByIdLineEdit->text().toInt();
-    ptr_dll->get_Clicked(idvalue);
+    ptr_dll->setupGetConnection(idvalue);
 }
 void MainWindow::on_BtnLogin_clicked()
 {
