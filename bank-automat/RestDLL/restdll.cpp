@@ -12,21 +12,56 @@ RestDLL::~RestDLL()
     qDebug()<<"DLL RÄJÄHTI";
 }
 
-void RestDLL::get_Clicked(int id)
+void RestDLL::get_Clicked(int id, int switchCase)
 {
     qDebug()<<id;
     QString urlAddress = "/logs/";
-    QString site_url=Environment::getBaseURL()+urlAddress+QString::number(id);
-    QNetworkRequest request((site_url));
-    getManager = new QNetworkAccessManager(this);
-    if(urlAddress == "/logs/"){
-    connect(getManager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(getLogs(QNetworkReply*)));
-    } else if (urlAddress == "/cards"){
-    connect(getManager, SIGNAL(finished(QNetworkReply*)),
-                this, SLOT(getSlot(QNetworkReply*)));
+    QString stringID = QString::number(id);
+    if(id == 0) stringID="";
+    switch (switchCase){
+    case 1:
+        urlAddress = "/logs/";
+        break;
+    case 2:
+        urlAddress = "/cards/";
+        break;
+    case 3:
+        urlAddress = "/account/";
+        break;
+    case 4:
+        urlAddress = "/account/";
+        break;
+    default: qDebug()<<"URL error"; break;
     }
 
+    QString site_url=Environment::getBaseURL()+urlAddress+stringID;
+    qDebug()<<site_url;
+    QNetworkRequest request((site_url));
+    getManager = new QNetworkAccessManager(this);
+    switch (switchCase){
+    case 1:
+        connect(getManager, SIGNAL(finished(QNetworkReply*)),
+                this, SLOT(getLogs(QNetworkReply*)));
+        qDebug()<<"YKKÖNEN";
+        break;
+    case 2:
+        connect(getManager, SIGNAL(finished(QNetworkReply*)),
+                this, SLOT(getCards(QNetworkReply*)));
+        qDebug()<<"KAKKONEN!";
+        break;
+    case 3:
+        connect(getManager, SIGNAL(finished(QNetworkReply*)),
+                this, SLOT(getAccount(QNetworkReply*)));
+        qDebug()<<"KOLMONEN!";
+        break;
+    case 4:
+        connect(getManager, SIGNAL(finished(QNetworkReply*)),
+                this, SLOT(getBalance(QNetworkReply*)));
+        break;
+    default:
+        qDebug()<<"Error";
+        break;
+    }
     reply = getManager->get(request);
 }
 
@@ -40,6 +75,32 @@ void RestDLL::pinCompare()
     reply = getManager->get(request);
 }
 
+QString RestDLL::getBalance(QNetworkReply *reply)
+{
+    columnName[0]="idAccount";
+    columnName[1]="balance";
+    response_data=reply->readAll();
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonArray json_array = json_doc.array();
+    QString get;
+    foreach(const QJsonValue &value, json_array) {
+        QJsonObject json_obj = value.toObject();
+        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+QString::number(json_obj[columnName[1]].toDouble())+"\r";
+    }
+    qDebug()<<get;
+    //get qstring menee get_handleriin exessä:
+    emit getResult(get);
+
+    reply->deleteLater();
+    getManager->deleteLater();
+    return get;
+}
+
+void RestDLL::checkBalance(float nostomaara)
+{
+
+}
+
 
 void RestDLL::getCards(QNetworkReply *reply)
 {
@@ -51,7 +112,7 @@ void RestDLL::getCards(QNetworkReply *reply)
     columnName[5]="active";
     columnName[6]="creditlimit";
     response_data=reply->readAll();
-    //qDebug()<<"DATA : "+response_data;
+    qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonArray json_array = json_doc.array();
     QString get;
@@ -102,7 +163,7 @@ void RestDLL::getLogs(QNetworkReply *reply){
     foreach(const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
         get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
-        " | "+QString::number(json_obj[columnName[3]].toInt())+" | "+QString::number(json_obj[columnName[4]].toInt())+"\r";
+        " | "+QString::number(json_obj[columnName[3]].toDouble())+" | "+QString::number(json_obj[columnName[4]].toInt())+"\r";
     }
     qDebug()<<get;
     //get qstring menee get_handleriin exessä:
@@ -112,6 +173,32 @@ void RestDLL::getLogs(QNetworkReply *reply){
     getManager->deleteLater();
 }
 
+
+
+
+void RestDLL::postLogs(QString date, QString event, float amount, int idAccount)
+{
+    QJsonObject jsonObj;
+    jsonObj.insert(columnName[1],"2023-04-01 09:03:00");
+    jsonObj.insert(columnName[2],"testinges");
+    jsonObj.insert(columnName[3],"20.45");
+    jsonObj.insert(columnName[4],2);
+
+    QString site_url=Environment::getBaseURL()+"/logs";
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    postManager = new QNetworkAccessManager(this);
+    connect(postManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(postSlot(QNetworkReply*)));
+    reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
+}
+
+QString RestDLL::data_seperator(QString data)
+{
+
+}
+
 void RestDLL::postSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
@@ -119,6 +206,37 @@ void RestDLL::postSlot(QNetworkReply *reply)
     emit getResult(response_data);
     reply->deleteLater();
     postManager->deleteLater();
+}
+
+void RestDLL::getAccount(QNetworkReply *reply)
+{
+    columnName[0]="idAccount";
+    columnName[1]="balance";
+    columnName[2]="accountnumber";
+    columnName[3]="accounttype";
+    response_data=reply->readAll();
+    //qDebug()<<"DATA : "+response_data;
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonArray json_array = json_doc.array();
+    QString get;
+    foreach(const QJsonValue &value, json_array) {
+        QJsonObject json_obj = value.toObject();
+        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+QString::number(json_obj[columnName[1]].toDouble())+
+               " | "+json_obj[columnName[2]].toString()+" | "+QString::number(json_obj[columnName[3]].toInt())+"\r";
+    }
+    qDebug()<<get;
+    //get qstring menee get_handleriin exessä:
+    emit getResult(get);
+
+    reply->deleteLater();
+    getManager->deleteLater();
+}
+
+
+void RestDLL::setWebToken(const QByteArray &newWebToken)
+{
+    webToken = newWebToken;
+    qDebug()<<webToken;
 }
 
 void RestDLL::checkPin(QString cardnumber, QString pincode)
@@ -140,9 +258,25 @@ void RestDLL::checkPin(QString cardnumber, QString pincode)
 void RestDLL::loginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-    qDebug()<<response_data;
-    if(response_data=="-4078"){
-
+    //qDebug()<<response_data;
+    if(response_data=="-4078" || response_data=="") {
+        //Virhe tietokantayhteydessä
+        //msgBox.setText("Virhe tietokantayhteydessä");
+        //msgBox.exec();
     }
+    else {
+        if(response_data!="false") {
+            //Kirjautuminen onnistui
+            //Kortti ID
+            //Tähän true signaali mainiin
 
+            setWebToken(response_data);
+
+        }
+        else {
+            //Tähän false signaali mainiin
+            //msgBox.setText("Väärä pinkoodi");
+            //msgBox.exec();
+        }
+    }
 }

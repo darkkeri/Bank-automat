@@ -30,6 +30,7 @@ private:
 
     bankwindow *secWindow;
     RFID_DLL *ptr_rfid;
+    RestDLL *ptr_dll;
 
 private slots:
     void cardSignalHandler(); //Delete after testing is done
@@ -45,6 +46,8 @@ private slots:
     void on_creditButton_clicked();
 
     void on_OFFButton_clicked();
+
+    void on_btnLogin_clicked();
 
 signals:
     void secondViewOpenSignal();

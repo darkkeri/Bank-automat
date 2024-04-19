@@ -34,9 +34,6 @@ app.use(authenticateToken);
 //app.use('/user', userRouter);
 //app.use('/cards', cardsRouter);
 
-app.use(authenticateToken);
-
-//suojatut reitit
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
