@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QThread>
 #include "bankwindow.h"
+#include "RestDLL/restdll.h"
 #include "RFID_DLL/rfid_dll.h"
 
 QT_BEGIN_NAMESPACE
@@ -27,8 +28,8 @@ private:
     bool cardSignal;
     bool pinSignal;
 
+    bankwindow *secWindow;
     RFID_DLL *ptr_rfid;
-    bankwindow *ptr_bwindow;
 
 private slots:
     void cardSignalHandler(); //Delete after testing is done
@@ -42,6 +43,8 @@ private slots:
     void on_debitButton_clicked();
 
     void on_creditButton_clicked();
+
+    void on_OFFButton_clicked();
 
 signals:
     void secondViewOpenSignal();

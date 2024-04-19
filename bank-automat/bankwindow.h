@@ -2,6 +2,7 @@
 #define BANKWINDOW_H
 
 #include <QDialog>
+#include "RestDLL/restdll.h"
 
 namespace Ui {
 class bankwindow;
@@ -36,6 +37,8 @@ private:
     void modeChange(short);
 
     void cardCheck();
+
+    void closeWindow();
 
 signals:
     void restartSignal();

@@ -21,9 +21,11 @@ public:
 private slots:
     void get_Handler(QString);
 
+    void on_btnGet_clicked();
+    void on_BtnLogin_clicked();
+
 private:
     Ui::MainWindow *ui;
-
     RestDLL *ptr_dll;
 };
 #endif // MAINWINDOW_H

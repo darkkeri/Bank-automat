@@ -171,9 +171,7 @@ void bankwindow::on_Button6_clicked()
 {
     switch(buttonMode){
     case 0:
-        //QApplication::quit();
-        emit restartSignal();
-        //close program
+        closeWindow();
         break;
 
     case 1:
@@ -189,8 +187,7 @@ void bankwindow::on_Button6_clicked()
         break;
 
     case 4:
-        //QApplication::quit();
-        emit restartSignal();
+        closeWindow();
         break;
 
     case 5:
@@ -301,5 +298,11 @@ void bankwindow::cardCheck(){
     } else {
         modeChange(4);
     }
+}
+
+void bankwindow::closeWindow(){
+    hide();
+    emit restartSignal();
+    //QApplication::quit();
 }
 
