@@ -34,7 +34,6 @@ app.use(authenticateToken);
 //app.use('/user', userRouter);
 //app.use('/cards', cardsRouter);
 
-app.use(authenticateToken);
 
 //suojatut reitit
 

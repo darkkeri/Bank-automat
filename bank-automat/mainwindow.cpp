@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->debitButton->setVisible(false);
     ptr_rfid = new RFID_DLL(this);
     secWindow = new bankwindow(this);
+    ptr_dll = new RestDLL(this);
 
     //TEST
     connect(ui->cardSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
@@ -118,5 +119,14 @@ void MainWindow::restart()
 void MainWindow::on_OFFButton_clicked()
 {
     QApplication::quit();
+}
+
+
+void MainWindow::on_btnLogin_clicked()
+{
+    QString cardnumber = ui->cardnumberLineEdit->text();
+    QString pincode = ui->pincodeLineEdit->text();
+    ptr_dll->checkPin(cardnumber,pincode);
+
 }
 

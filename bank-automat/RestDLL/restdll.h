@@ -16,6 +16,8 @@ public:
     RestDLL(QObject *parent);
     ~RestDLL();
 
+    void setWebToken(const QByteArray &newWebToken);
+
 signals:
     void getResult(QString);
 public slots:
@@ -45,6 +47,9 @@ private:
     QNetworkAccessManager *loginManager;
     QNetworkReply *reply;
     QByteArray response_data;
+
+    QByteArray webToken;
+    QMessageBox msgBox;
 
     QString columnName[10];
 
