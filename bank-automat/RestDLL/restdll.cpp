@@ -260,8 +260,9 @@ void RestDLL::loginSlot(QNetworkReply *reply)
     response_data=reply->readAll();
     //qDebug()<<response_data;
     if(response_data=="-4078" || response_data=="") {
-        msgBox.setText("Virhe tietokantayhteydessä");
-        msgBox.exec();
+        //Virhe tietokantayhteydessä
+        //msgBox.setText("Virhe tietokantayhteydessä");
+        //msgBox.exec();
     }
     else {
         if(response_data!="false") {
@@ -274,8 +275,8 @@ void RestDLL::loginSlot(QNetworkReply *reply)
         }
         else {
             //Tähän false signaali mainiin
-            msgBox.setText("Väärä pinkoodi");
-            msgBox.exec();
+            //msgBox.setText("Väärä pinkoodi");
+            //msgBox.exec();
         }
     }
 }
