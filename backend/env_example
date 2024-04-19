@@ -1,0 +1,2 @@
+MySQL_DB="mysql://bankuser:bankpass@127.0.0.1:3306/atm"
+MY_TOKEN=koKm+yjLNkiCA0u2ypyFixGmetRc5i/OMVlHEI6MulUOoNEJG6GzSkxhJoRVftXH67gr/8QNnn5Kfr8Mymh1WA==
