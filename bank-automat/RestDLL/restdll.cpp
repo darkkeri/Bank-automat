@@ -274,8 +274,10 @@ void RestDLL::loginSlot(QNetworkReply *reply)
         }
         else {
             //Tähän false signaali mainiin
-            msgBox.setText("Väärä pinkoodi");
-            msgBox.exec();
+            //msgBox.setText("Väärä pinkoodi");
+            //msgBox.exec();
         }
     }
+    reply->deleteLater();
+    loginManager->deleteLater();
 }

@@ -1,4 +1,4 @@
-QT       += core gui
+QT += core gui
 QT += network serialport widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
