@@ -1,2 +1,0 @@
-CREATE USER 'bankuser'@'localhost' IDENTIFIED BY 'bankpass';
-GRANT ALL ON atm.* TO 'bankuser'@'localhost';
