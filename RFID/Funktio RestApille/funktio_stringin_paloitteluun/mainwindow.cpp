@@ -18,7 +18,8 @@ void MainWindow::on_pushButton_clicked()
 
 //    4 | 2022-01-01T06:00:00.000Z | testievent | 200 | 1
 
-
+    do{
+    //5 | 2022-01-01T06:00:00.000Z | testievent | 3000.45 | 2\r7 | 2023-04-01T06:03:00.000Z | testausEvent | 20040.00 | 2\r
     //Alla sijoitetaan jokainen sana jokaiselle tapahtumalle
     dateStart = data.section(" | ", 1, 1);
     dateEnd = data.section(" | ", 1, 1);
@@ -39,7 +40,13 @@ void MainWindow::on_pushButton_clicked()
 
     //Lisätään "06:00" perään väli eli = "06:00 ". Tämän jälkeen lisätään date 1 ja date 2 yhteen kokonaisuuteen = "06:00 2022-01-01"
     date2.append(" ");
+
     finalDate = date2 + date1;
+
+    logDateVector.fill(finalDate);
+    logEventVector.fill(event);
+    logAmountVector.fill(amount);
+    } while()
 
     qDebug()<<" finalDate ="<<finalDate<<"\n\ event = "<<event<<"\n\ amount = "<<amount;
 }
