@@ -272,7 +272,7 @@ void RestDLL::loginSlot(QNetworkReply *reply)
         if(response_data!="false") {
             //Kirjautuminen onnistui
             //Kortti ID
-            //Tähän true signaali mainiin
+            emit pinCheckSignal(true);//Tähän true signaali mainiin
 
             setWebToken(response_data);
 
