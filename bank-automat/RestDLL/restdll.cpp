@@ -84,11 +84,6 @@ QString RestDLL::getBalance(QNetworkReply *reply)
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonObject json_obj = json_doc.object();
     QString balance=json_obj["balance"].toString();
-
-    // foreach(const QJsonValue &value, json_array) {
-    //     QJsonObject json_obj = value.toObject();
-    //     get+=QString::number(json_obj[columnName[0]].toInt())+" | "+QString::number(json_obj[columnName[1]].toDouble())+"\r";
-    // }
     qDebug()<<balance;
     //get qstring menee get_handleriin exessä:
     emit getResult(balance);
@@ -123,17 +118,13 @@ void RestDLL::getCards(QNetworkReply *reply)
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
-    QJsonArray json_array = json_doc.array();
-    QString get;
-    foreach(const QJsonValue &value, json_array) {
-        QJsonObject json_obj = value.toObject();
-        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
-               " | "+json_obj[columnName[3]].toString()+" | "+QString::number(json_obj[columnName[4]].toInt())+
-               " | "+QString::number(json_obj[columnName[5]].toInt())+" | "+json_obj[columnName[6]].toString()+"\r";
-    }
-    qDebug()<<get;
+    QJsonObject json_obj = json_doc.object();
+    QString cardData=json_obj["cardnumber"].toString()+" | "+json_obj["pincode"].toString()+" | "+json_obj["type"].toString()+
+                       " | "+QString::number(json_obj["tries"].toInt())+" | "+QString::number(json_obj["active"].toInt());
+
+    qDebug()<<cardData;
     //get qstring menee get_handleriin exessä:
-    emit getResult(get);
+    emit getResult(cardData);
 
     reply->deleteLater();
     getManager->deleteLater();
@@ -226,16 +217,20 @@ void RestDLL::getAccount(QNetworkReply *reply)
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
-    QJsonArray json_array = json_doc.array();
-    QString get;
-    foreach(const QJsonValue &value, json_array) {
-        QJsonObject json_obj = value.toObject();
-        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+
-               " | "+json_obj[columnName[2]].toString()+" | "+QString::number(json_obj[columnName[3]].toInt())+"\r";
-    }
-    qDebug()<<get;
+    QJsonObject json_obj = json_doc.object();
+    QString accountData = json_obj["balance"].toString()+" | "+json_obj["accountnumber"].toString()+
+                          " | "+QString::number(json_obj["accounttype"].toInt());
+
+
+
+    // foreach(const QJsonValue &value, json_array) {
+    //     QJsonObject json_obj = value.toObject();
+    //     get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+
+    //            " | "+json_obj[columnName[2]].toString()+" | "+QString::number(json_obj[columnName[3]].toInt())+"\r";
+    // }
+    qDebug()<<accountData;
     //get qstring menee get_handleriin exessä:
-    emit getResult(get);
+    emit getResult(accountData);
 
     reply->deleteLater();
     getManager->deleteLater();
