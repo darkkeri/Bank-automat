@@ -18,7 +18,7 @@ router.post('/',function(request, response){
                     bcrypt.compare(request.body.pincode, result[0].pincode, function(err, compareResult){
                         if(compareResult){
                             console.log("Kirjautuminen ok")
-                            const token = genToken({cardnumber: request.body.idCards});
+                            const token = genToken({cardnumber: request.body.cardnumber});
                             response.send(token);
                         }
                         else{
