@@ -118,7 +118,7 @@
      <x>289</x>
      <y>190</y>
      <width>241</width>
-     <height>161</height>
+     <height>183</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -296,6 +296,29 @@
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>34</x>
+     <y>140</y>
+     <width>91</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ListTestButton</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="logsTableView">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>160</y>
+     <width>311</width>
+     <height>211</height>
+    </rect>
    </property>
   </widget>
  </widget>

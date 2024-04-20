@@ -1,4 +1,4 @@
-QT       += core gui
+QT += core gui
 QT += network serialport widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -11,11 +11,13 @@ CONFIG += c++17
 
 SOURCES += \
     bankwindow.cpp \
+    logs.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     bankwindow.h \
+    logs.h \
     mainwindow.h
 
 FORMS += \
@@ -48,3 +50,9 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/RestDLL/build/debug/ -l
 
 INCLUDEPATH += $$PWD/RestDLL
 DEPENDPATH += $$PWD/RestDLL
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/PIN_UI_DLL/build/release/ -lPIN_UI_DLL
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/PIN_UI_DLL/build/debug/ -lPIN_UI_DLL
+
+INCLUDEPATH += $$PWD/PIN_UI_DLL
+DEPENDPATH += $$PWD/PIN_UI_DLL
