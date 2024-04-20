@@ -47,6 +47,7 @@ void bankwindow::on_Button2_clicked()
 {
     switch(buttonMode){
     case 0:
+        addLogs();
         modeChange(2);
         break;
 
@@ -303,6 +304,83 @@ void bankwindow::cardCheck(){
 void bankwindow::closeWindow(){
     hide();
     emit restartSignal();
-    //QApplication::quit();
+}
+
+void bankwindow::openWindow(){
+    show();
+    modeChange(0);
+}
+
+void bankwindow::logsHandler(QString& rawlogs){
+    //    4 | 2022-01-01T06:00:00.000Z | testievent | 200 | 1
+    /*
+    QString data ="5 | 2022-01-01T06:00:00.000Z | testievent | 3000.45 | 2\r7 | 2023-04-01T06:03:00.000Z | testausEvent | 20040.00 | 2\r";
+
+    //Alla sijoitetaan jokainen sana jokaiselle tapahtumalle
+    dateStart = data.section(" | ", 1, 1);
+    dateEnd = data.section(" | ", 1, 1);
+    event = data.section(" | ", 2, 100);
+    amount = data.section(" | ", 3, 3);
+
+
+    //Lisätään amountin eteen "-" ja perään "€"
+    amount.prepend("-");
+    amount.append("€");
+
+
+    //Rikotaan päivämäärä paloihin, joista palat on date1 = "2022-01-01" ja date2 = "06:00"
+    date1 = dateStart.remove(10, 14);
+    date2 = dateEnd.remove(0, 11);
+    date2 = dateEnd.remove(5, 8);
+
+
+    //Lisätään "06:00" perään väli eli = "06:00 ". Tämän jälkeen lisätään date 1 ja date 2 yhteen kokonaisuuteen = "06:00 2022-01-01"
+    date2.append(" ");
+    finalDate = date2 + date1;
+
+    qDebug()<<" finalDate ="<<finalDate<<"\n\ event = "<<event<<"\n\ amount = "<<amount;
+*/
+    QStandardItemModel *table_model = new QStandardItemModel(logList.size(),2);
+    table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Type"));
+    table_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Amount"));
+    table_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Date & Time"));
+
+    for (int row = 0; row < logList.size(); ++row) {
+        QStandardItem *typei = new QStandardItem(logList[row].getType());
+        table_model->setItem(row, 0, typei);
+        QStandardItem *amounti = new QStandardItem(logList[row].getAmount());
+        table_model->setItem(row, 1, amounti);
+        QStandardItem *datei = new QStandardItem(logList[row].getDate());
+        table_model->setItem(row, 2, datei);
+    }
+    ui->logsTableView->setModel(table_model);
+    //ui->logsTableView->setRowHidden(/*row, true*/);
+}
+
+void bankwindow::addLogs(){
+    Logs logObj;
+
+    logObj.setType("asdasdasdas"); logObj.setAmount("asdasd"); logObj.setDate("afgafgg"); logList.append(logObj);
+
+}
+
+
+
+void bankwindow::on_pushButton_clicked()
+{
+    QStandardItemModel *table_model = new QStandardItemModel(logList.size(),2);
+    table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Type"));
+    table_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Amount"));
+    table_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Date & Time"));
+
+    for (int row = 0; row < logList.size(); ++row) {
+        QStandardItem *typei = new QStandardItem(logList[row].getType());
+        table_model->setItem(row, 0, typei);
+        QStandardItem *amounti = new QStandardItem(logList[row].getAmount());
+        table_model->setItem(row, 1, amounti);
+        QStandardItem *datei = new QStandardItem(logList[row].getDate());
+        table_model->setItem(row, 2, datei);
+    }
+    ui->logsTableView->setModel(table_model);
 }
 

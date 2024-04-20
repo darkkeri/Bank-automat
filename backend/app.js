@@ -10,6 +10,7 @@ var logsRouter = require('./routes/logs');
 var userRouter = require('./routes/user');
 var cardsRouter = require('./routes/cards');
 var loginRouter = require('./routes/login');
+var accountIdRouter = require('./routes/accountId');
 
 
 var app = express();
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //suojaamattomat reitit
 app.use('/', indexRouter);
+app.use('/accountId', accountIdRouter);
 app.use('/login', loginRouter);
 app.use('/account', accountRouter);
 app.use('/logs', logsRouter);
