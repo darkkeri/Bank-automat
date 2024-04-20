@@ -30,7 +30,8 @@ PIN_UI_DLL::~PIN_UI_DLL()
 void PIN_UI_DLL::handleClick()
 {
     QString number = ui->lineEdit->text();
-    emit sendNumberToMainWindow(number.toUShort());
+    emit sendNumberToMainWindow(number);
+    //number.toUShort()
 }
 
 void PIN_UI_DLL::clearClicked()

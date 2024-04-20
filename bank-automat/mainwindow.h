@@ -8,6 +8,7 @@
 #include "bankwindow.h"
 #include "RestDLL/restdll.h"
 #include "RFID_DLL/rfid_dll.h"
+#include "PIN_UI_DLL/pin_ui_dll.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,12 +26,17 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    bool cardSignal;
-    bool pinSignal;
+    bool cardSignal; //TEST
+    bool pinSignal; //TEST
+    QString cardnumberTEST; //TEST
+
+    bool bviewflag = false;
+    bool pinuiflag = false;
 
     bankwindow *secWindow;
     RFID_DLL *ptr_rfid;
-    RestDLL *ptr_dll;
+    PIN_UI_DLL *ptr_pinui;
+    RestDLL *ptr_rest;
 
 private slots:
     void cardSignalHandler(); //Delete after testing is done
@@ -38,7 +44,8 @@ private slots:
 
     void secondViewOpen();
     void cardHandler(QString&);
-    void pinHandler(QString&);
+    void pinHandler(QString);
+    void pinCheckHandler(bool);
     void restart();
 
     void on_debitButton_clicked();
@@ -51,6 +58,7 @@ private slots:
 
 signals:
     void secondViewOpenSignal();
+
 
 };
 #endif // MAINWINDOW_H

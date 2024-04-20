@@ -304,7 +304,11 @@ void bankwindow::cardCheck(){
 void bankwindow::closeWindow(){
     hide();
     emit restartSignal();
-    //QApplication::quit();
+}
+
+void bankwindow::openWindow(){
+    show();
+    modeChange(0);
 }
 
 void bankwindow::logsHandler(QString& rawlogs){
