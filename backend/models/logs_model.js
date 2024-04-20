@@ -16,7 +16,7 @@ const logs = {
         return db.query("DELETE FROM logs WHERE idLogs=?",[log],callback);
     },
     getLogsByAccount(log, callback){
-        return db.query("SELECT * FROM logs WHERE idAccount=?",[log],callback);
+        return db.query("SELECT * FROM logs WHERE idAccount=? ORDER BY date DESC",[log],callback);
     }
 }
 

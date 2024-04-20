@@ -142,9 +142,9 @@ void MainWindow::on_OFFButton_clicked()
 
 void MainWindow::on_btnLogin_clicked() //TEST
 {
-    QString cardnumber = ui->cardnumberLineEdit->text();
-    QString pincode = ui->pincodeLineEdit->text();
-    ptr_rest->checkPin(cardnumber,pincode);
+    QString cardID = ui->cardnumberLineEdit->text();
+    QString accountType = ui->pincodeLineEdit->text();
+    ptr_rest->getAccountID(cardID,accountType);
 
 }
 
