@@ -34,16 +34,21 @@ private slots:
 
     void on_Button6_clicked();
 
-    void logsHandler(QString& rawlogs);
+    void logsHandler(QString rawlogs);
 
     void on_pushButton_clicked();
 
 private:
     Ui::bankwindow *ui;
 
+    RestDLL *ptr_restb;
+
     short buttonMode = 0; //Changes mode of mainmenu
 
     //Logs editor
+    int amountOfLogs;
+    bool logFlag = false;
+    QString oneLog;
     QString event;
     QString amount;
     QString dateStart;
@@ -52,13 +57,12 @@ private:
     QString date2;
     QString finalDate;
     //
+    QVector<QString> oneLogVector;
     QVector<QString> logDateVector;
     QVector<QString> logEventVector;
     QVector<QString> logAmountVector;
 
     QList<Logs> logList;
-
-    void addLogs();
 
     void modeChange(short);
 
@@ -66,6 +70,9 @@ private:
 
     void closeWindow();
 
+    void manageLogTable(short);
+
+    int logStage;
 signals:
     void restartSignal();
 };
