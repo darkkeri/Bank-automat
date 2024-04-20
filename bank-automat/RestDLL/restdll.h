@@ -18,6 +18,10 @@ public:
 
     void setWebToken(const QByteArray &newWebToken);
 
+    void setAccountID(int newAccountID);
+
+    void setAccountBalance(int newAccountBalance);
+
 signals:
     void getResult(QString);
 public slots:
@@ -27,9 +31,10 @@ public slots:
     void checkPin(QString idCard, QString pincode);
     void pinCompare();
     void test();
+    void checkBalance(float nostomaara,int id);
 private slots:
     void getBalance(QNetworkReply *reply);
-    void checkBalance(float nostomaara,int id);
+
     void postSlot(QNetworkReply *reply);
     void getCards(QNetworkReply *reply);
     void loginSlot(QNetworkReply *reply);
@@ -44,7 +49,8 @@ private slots:
 private:
 
     int accountID = 3;
-
+    int cardsID = 1;
+    int accountBalance;
     QNetworkAccessManager *getManager;
     QNetworkAccessManager *postManager;
     QNetworkAccessManager *loginManager;

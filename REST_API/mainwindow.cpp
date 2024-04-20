@@ -37,7 +37,9 @@ void MainWindow::on_btnGet_clicked()
 }
 void MainWindow::on_BtnLogin_clicked()
 {
-    ptr_dll->test();
+    ptr_dll->setupGetConnection(4,1);
+
+    ptr_dll->checkBalance(2.22,1);
     QString cardnumber = ui->cardnumberLineEdit->text();
     QString pincode = ui->pincodeLineEdit->text();
     ptr_dll->checkPin(cardnumber,pincode);

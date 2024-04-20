@@ -20,16 +20,28 @@ void RestDLL::setupGetConnection(int switchCase, int id)
     if(accountID == 0) stringID="";
     switch (switchCase){
     case 1:
+        //HAETAAN LOGIT idAccountin perusteella
         urlAddress = "/logs/";
+        stringID = QString::number(accountID);
+        if(accountID == 0) stringID="";
         break;
     case 2:
+        //CARDS-TAULUN TIEDOT idCards perusteella
         urlAddress = "/cards/";
+        stringID = QString::number(cardsID);
+        if(accountID == 0) stringID="";
         break;
     case 3:
+        //ACCOUNT TIEDOT idAccountin perusteella
         urlAddress = "/account/";
+        stringID = QString::number(accountID);
+        if(accountID == 0) stringID="";
         break;
     case 4:
+        //ACCOUNTIN balance sarake idAccountin perusteella
         urlAddress = "/account/";
+        stringID = QString::number(accountID);
+        if(accountID == 0) stringID="";
         break;
     default: qDebug()<<"URL error"; break;
     }
@@ -124,6 +136,7 @@ void RestDLL::getBalance(QNetworkReply *reply)
     QString balance=json_obj["balance"].toString();
     qDebug()<<balance;
     //get qstring menee get_handleriin exessä:
+    setAccountBalance(balance.toInt());
     emit getResult(balance);
     reply->deleteLater();
     getManager->deleteLater();
@@ -133,10 +146,10 @@ void RestDLL::getBalance(QNetworkReply *reply)
 
 
 
-void RestDLL::checkBalance(float nostomaara, int id)
+void RestDLL::checkBalance(float balance, int id)
 {
-    setupGetConnection(4,id);
 
+    qDebug()<<"fasfa";
 
 }
 
@@ -232,6 +245,16 @@ void RestDLL::postLogs(QString date, QString event, float amount, int idAccount)
 QString RestDLL::data_seperator(QString data)
 {
 
+}
+
+void RestDLL::setAccountBalance(int newAccountBalance)
+{
+    accountBalance = newAccountBalance;
+}
+
+void RestDLL::setAccountID(int newAccountID)
+{
+    accountID = newAccountID;
 }
 
 void RestDLL::postSlot(QNetworkReply *reply)
