@@ -19,6 +19,7 @@ class bankwindow : public QDialog
 public:
     explicit bankwindow(QWidget *parent = nullptr);
     ~bankwindow();
+    void openWindow();
 
 private slots:
     void on_Button1_clicked();

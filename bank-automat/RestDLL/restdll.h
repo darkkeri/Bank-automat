@@ -20,6 +20,7 @@ public:
 
 signals:
     void getResult(QString);
+    void pinCheckSignal(bool);
 public slots:
 
     void setupGetConnection(int switchCase);
