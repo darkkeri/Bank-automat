@@ -243,7 +243,7 @@ void RestDLL::setWebToken(const QByteArray &newWebToken)
     qDebug()<<webToken;
 }
 
-void RestDLL::getAccountID(QString cardID, QString accountType) //Gets accountid by cardID and accountType
+void RestDLL::setAccountID(QString cardID, QString accountType) //Gets accountid by cardID and accountType
 {
     QJsonObject jsonObj;
     jsonObj.insert("idCards", cardID);
@@ -254,7 +254,7 @@ void RestDLL::getAccountID(QString cardID, QString accountType) //Gets accountid
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     accountManager = new QNetworkAccessManager(this);
-    connect(accountManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(accountIdSlot(QNetworkReply*)));
+    connect(accountManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(accountIdSlot(QNetworkReply*)));
 
     reply = accountManager->get(request, QJsonDocument(jsonObj).toJson());
 }
@@ -262,7 +262,7 @@ void RestDLL::getAccountID(QString cardID, QString accountType) //Gets accountid
 void RestDLL::accountIdSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-    //set current account id tähän
+    //set current account id here
     qDebug()<<response_data; //testi
     reply->deleteLater();
     accountManager->deleteLater();
@@ -280,7 +280,8 @@ void RestDLL::checkPin(QString cardnumber, QString pincode)
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     loginManager = new QNetworkAccessManager(this);
-    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
+    connect(loginManager, SIGNAL(finished (QNetworkReply*))
+            , this, SLOT(loginSlot(QNetworkReply*)));
 
     reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
 }

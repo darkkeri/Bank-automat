@@ -27,7 +27,7 @@ public slots:
     void post_Clicked();
     void checkPin(QString idCard, QString pincode);
     void pinCompare();
-    void getAccountID(QString cardID, QString accountType);
+    void setAccountID(QString cardID, QString accountType);
 private slots:
     QString getBalance(QNetworkReply *reply);
     void checkBalance(float nostomaara);
