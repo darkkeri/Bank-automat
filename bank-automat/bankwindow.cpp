@@ -6,6 +6,8 @@ bankwindow::bankwindow(QWidget *parent)
     , ui(new Ui::bankwindow)
 {
     ui->setupUi(this);
+    ptr_restb = new RestDLL(this);
+    connect(ptr_restb,SIGNAL(getResult(QString)), this,SLOT(logsHandler(QString)));
 }
 
 bankwindow::~bankwindow()
@@ -47,7 +49,7 @@ void bankwindow::on_Button2_clicked()
 {
     switch(buttonMode){
     case 0:
-        addLogs();
+        ptr_restb->setupGetConnection(1);
         modeChange(2);
         break;
 
@@ -57,6 +59,7 @@ void bankwindow::on_Button2_clicked()
         break;
 
     case 2:
+        manageLogTable(1);
         break;
 
     case 3:
@@ -147,6 +150,7 @@ void bankwindow::on_Button5_clicked()
         break;
 
     case 2:
+        manageLogTable(2);
         break;
 
     case 3:
@@ -306,41 +310,97 @@ void bankwindow::closeWindow(){
     emit restartSignal();
 }
 
+void bankwindow::manageLogTable(short modifier)
+{
+    switch(modifier){
+    case 1: //takaisin 5
+        if(logStage>5){
+            for(int k = 0; k<=amountOfLogs; k++){
+                ui->logsTableView->hideRow(k);
+            }
+            logStage = logStage-5;
+            for(int k = logStage-5; k<=logStage; k++){
+                ui->logsTableView->showRow(k);
+            }
+        }
+        break;
+
+    case 2: //seuraavat 5
+        if(logStage<amountOfLogs){
+            for(int k = 0; k<=amountOfLogs; k++){
+                ui->logsTableView->hideRow(k);
+            }
+            if(logStage+5>amountOfLogs){
+                logStage = logStage+5;
+                for(int k = logStage-5; k<=amountOfLogs; k++){
+                    ui->logsTableView->showRow(k);
+                }
+                } else {
+                logStage = logStage+5;
+                    for(int k = logStage-5; k<=logStage; k++){
+                    ui->logsTableView->showRow(k);
+                    }
+                }
+            }
+        break;
+        }
+    }
+
+
 void bankwindow::openWindow(){
     show();
     modeChange(0);
 }
 
-void bankwindow::logsHandler(QString& rawlogs){
-    //    4 | 2022-01-01T06:00:00.000Z | testievent | 200 | 1
-    /*
-    QString data ="5 | 2022-01-01T06:00:00.000Z | testievent | 3000.45 | 2\r7 | 2023-04-01T06:03:00.000Z | testausEvent | 20040.00 | 2\r";
+void bankwindow::logsHandler(QString rawlogs){
+    Logs logObj; //NEED TO ONLY CREATE ONCE
+    logList.clear();
+    qDebug()<<"logHandler ran"<<rawlogs;
+    amountOfLogs = 0;
 
-    //Alla sijoitetaan jokainen sana jokaiselle tapahtumalle
-    dateStart = data.section(" | ", 1, 1);
-    dateEnd = data.section(" | ", 1, 1);
-    event = data.section(" | ", 2, 100);
-    amount = data.section(" | ", 3, 3);
+    while(logFlag == false){
+    oneLog = rawlogs.section("\r", amountOfLogs, amountOfLogs);
+        qDebug()<<amountOfLogs<<"section is this: "<<oneLog;
+        if(oneLog == ""){
+            logFlag = true;
+            qDebug()<<"loop stopped vecause oneLog is empty";
+        } else {
+            qDebug()<<"Onelog is not empty so create item";
+                //    4 | 2022-01-01T06:00:00.000Z | testievent | 200 | 1
+
+            //QString data ="5 | 2022-01-01T06:00:00.000Z | testievent | 3000.45 | 2\r7 | 2023-04-01T06:03:00.000Z | testausEvent | 20040.00 | 2\r";
+
+            //Alla sijoitetaan jokainen sana jokaiselle tapahtumalle
+            dateStart = oneLog.section(" | ", 1, 1);
+            dateEnd = oneLog.section(" | ", 1, 1);
+            event = oneLog.section(" | ", 2, 100);
+            amount = oneLog.section(" | ", 3, 3);
 
 
-    //Lisätään amountin eteen "-" ja perään "€"
-    amount.prepend("-");
-    amount.append("€");
+            //Lisätään amountin eteen "-" ja perään "€"
+            amount.prepend("-");
+            amount.append("€");
 
 
-    //Rikotaan päivämäärä paloihin, joista palat on date1 = "2022-01-01" ja date2 = "06:00"
-    date1 = dateStart.remove(10, 14);
-    date2 = dateEnd.remove(0, 11);
-    date2 = dateEnd.remove(5, 8);
+            //Rikotaan päivämäärä paloihin, joista palat on date1 = "2022-01-01" ja date2 = "06:00"
+            date1 = dateStart.remove(10, 14);
+            date2 = dateEnd.remove(0, 11);
+            date2 = dateEnd.remove(5, 8);
 
 
-    //Lisätään "06:00" perään väli eli = "06:00 ". Tämän jälkeen lisätään date 1 ja date 2 yhteen kokonaisuuteen = "06:00 2022-01-01"
-    date2.append(" ");
-    finalDate = date2 + date1;
+            //Lisätään "06:00" perään väli eli = "06:00 ". Tämän jälkeen lisätään date 1 ja date 2 yhteen kokonaisuuteen = "06:00 2022-01-01"
+            date2.append(" ");
+            finalDate = date2 + date1;
 
-    qDebug()<<" finalDate ="<<finalDate<<"\n\ event = "<<event<<"\n\ amount = "<<amount;
-*/
-    QStandardItemModel *table_model = new QStandardItemModel(logList.size(),2);
+            qDebug()<<" finalDate ="<<finalDate<<"\n\ event = "<<event<<"\n\ amount = "<<amount;
+
+            logObj.setType(event); logObj.setAmount(amount); logObj.setDate(finalDate); logList.append(logObj);
+            amountOfLogs++;
+        }
+    }
+    logFlag = false;
+
+    QStandardItemModel *table_model = new QStandardItemModel(logList.size(),3);
     table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Type"));
     table_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Amount"));
     table_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Date & Time"));
@@ -354,21 +414,25 @@ void bankwindow::logsHandler(QString& rawlogs){
         table_model->setItem(row, 2, datei);
     }
     ui->logsTableView->setModel(table_model);
-    //ui->logsTableView->setRowHidden(/*row, true*/);
+    for(int k = 0; k<=amountOfLogs; k++){
+        ui->logsTableView->hideRow(k);
+    }
+    logStage = 4;
+    for(int k = logStage-5; k<=logStage; k++){
+        ui->logsTableView->showRow(k);
+    }
+
 }
 
-void bankwindow::addLogs(){
+
+
+void bankwindow::on_pushButton_clicked() //DELETE THIS
+{
     Logs logObj;
 
     logObj.setType("asdasdasdas"); logObj.setAmount("asdasd"); logObj.setDate("afgafgg"); logList.append(logObj);
 
-}
-
-
-
-void bankwindow::on_pushButton_clicked()
-{
-    QStandardItemModel *table_model = new QStandardItemModel(logList.size(),2);
+    QStandardItemModel *table_model = new QStandardItemModel(logList.size(),3);
     table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Type"));
     table_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Amount"));
     table_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Date & Time"));
@@ -383,4 +447,5 @@ void bankwindow::on_pushButton_clicked()
     }
     ui->logsTableView->setModel(table_model);
 }
+
 
