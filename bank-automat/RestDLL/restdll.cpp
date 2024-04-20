@@ -243,6 +243,32 @@ void RestDLL::setWebToken(const QByteArray &newWebToken)
     qDebug()<<webToken;
 }
 
+void RestDLL::getAccountID(QString cardID, QString accountType) //Gets accountid by cardID and accountType
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("idCards", cardID);
+    jsonObj.insert("type", accountType);
+
+    QString site_url="http://localhost:3000/accountId";
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    accountManager = new QNetworkAccessManager(this);
+    connect(accountManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(accountIdSlot(QNetworkReply*)));
+
+    reply = accountManager->get(request, QJsonDocument(jsonObj).toJson());
+}
+
+void RestDLL::accountIdSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    //set current account id tähän
+    qDebug()<<response_data; //testi
+    reply->deleteLater();
+    accountManager->deleteLater();
+}
+
+
 void RestDLL::checkPin(QString cardnumber, QString pincode)
 {
     QJsonObject jsonObj;

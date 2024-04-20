@@ -27,6 +27,7 @@ public slots:
     void post_Clicked();
     void checkPin(QString idCard, QString pincode);
     void pinCompare();
+    void getAccountID(QString cardID, QString accountType);
 private slots:
     QString getBalance(QNetworkReply *reply);
     void checkBalance(float nostomaara);
@@ -41,6 +42,7 @@ private slots:
     QString data_seperator(QString data);
 
 
+    void accountIdSlot(QNetworkReply *reply);
 private:
 
     int accountID = 3;
@@ -48,6 +50,8 @@ private:
     QNetworkAccessManager *getManager;
     QNetworkAccessManager *postManager;
     QNetworkAccessManager *loginManager;
+    QNetworkAccessManager *accountManager;
+
     QNetworkReply *reply;
     QByteArray response_data;
 
