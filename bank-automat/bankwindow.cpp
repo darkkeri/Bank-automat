@@ -7,7 +7,7 @@ bankwindow::bankwindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->logsTableView->setVisible(false);
-    ptr_restb = new RestDLL(this);
+    ptr_restb = RestDLL::getInstance();
     connect(ptr_restb,SIGNAL(getLogsSignal(QString)), this,SLOT(logsHandler(QString)));
     connect(ptr_restb,SIGNAL(getBalanceSignal(QString)), this,SLOT(balanceHandler(QString)));
 
@@ -86,7 +86,6 @@ void bankwindow::on_Button3_clicked()
 {
     switch(buttonMode){
     case 0:
-        qDebug()<<"account id set to->"<<;
         ptr_restb->setupGetConnection(4);
         modeChange(3);
         break;

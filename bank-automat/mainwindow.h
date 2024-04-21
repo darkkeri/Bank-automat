@@ -39,6 +39,7 @@ private:
     PIN_UI_DLL *ptr_pinui;
     RestDLL *ptr_rest;
 
+
 private slots:
     void cardSignalHandler(); //Delete after testing is done
     void on_OKButton_clicked(); //Delete after testing is done

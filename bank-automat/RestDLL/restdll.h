@@ -13,12 +13,18 @@ class RESTDLL_EXPORT RestDLL : public QObject
 {
     Q_OBJECT
 public:
-    RestDLL(QObject *parent);
+    RestDLL();
     ~RestDLL();
-
+    // singleton juttu
+    static RestDLL* getInstance();
+    QString getName() const;
+    void setName(const QString &value);
+    //
     void setWebToken(const QByteArray &newWebToken);
 
     void setAccountBalance(int newAccountBalance);
+
+    int getAccountID() const;
 
 signals:
     void cardTypeSignal(QString); //multicard
@@ -36,7 +42,7 @@ public slots:
     void setupGetConnection(int switchCase);
     void checkPin(QString pincode);
     void getCardID(QString cardnumber);
-    void getAccountID(QString accountType);
+    void accountIDbyType(QString accountType);
     void checkBalance(int id);
 private slots:
     void getBalanceSlot(QNetworkReply *reply);
@@ -54,7 +60,10 @@ private slots:
     void accountIdSlot(QNetworkReply *reply);
 
 private:
-
+    // toinen singleton juttu
+    static RestDLL* instance;
+    QString name;
+    //
     int accountID;
     int cardsID = 4;
     int accountBalance;

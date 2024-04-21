@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ptr_rfid = new RFID_DLL(this);
     ptr_pinui = new PIN_UI_DLL(this);
-    ptr_rest = new RestDLL(this);
+    ptr_rest = RestDLL::getInstance();
     secWindow = new bankwindow(this);
 
 
@@ -61,7 +61,10 @@ void MainWindow::secondViewOpen(){
     if (cardSignal == true && pinSignal == true){
         hide();
         if(bviewflag == false){
+            qDebug()<<"account id ->"<<ptr_rest->getAccountID();
             secWindow->exec();
+            qDebug()<<"account id ->"<<ptr_rest->getAccountID();
+
         } else {
             secWindow->openWindow();
         }
@@ -100,10 +103,10 @@ void MainWindow::pinCheckHandler(bool pinCheck)
             ui->creditButton->setVisible(true);
             ui->debitButton->setVisible(true);
         } else if (cardType == "debit"){
-            ptr_rest->getAccountID("0");
+            ptr_rest->accountIDbyType("0");
             secondViewOpen();
         } else if (cardType == "credit"){
-            ptr_rest->getAccountID("1");
+            ptr_rest->accountIDbyType("1");
             secondViewOpen();
         }
     } else {
@@ -124,7 +127,7 @@ void MainWindow::on_debitButton_clicked() //credit and debit maybe could be one 
     //RESTAPI Credit or Debit function that takes true or false as a variable to choose right account and returns nothing
     qDebug()<< "multicard debit chosen";
     cardType = "debit";
-    ptr_rest->getAccountID("0");
+    ptr_rest->accountIDbyType("0");
     secondViewOpen();
 }
 
@@ -133,7 +136,7 @@ void MainWindow::on_creditButton_clicked()
     //RESTAPI Credit or Debit function that takes true or false as a variable to choose right account and returns nothing
     qDebug()<< "multicard credit chosen";
     cardType = "credit";
-    ptr_rest->getAccountID("1");
+    ptr_rest->accountIDbyType("1");
     secondViewOpen();
 
 
@@ -156,9 +159,9 @@ void MainWindow::on_OFFButton_clicked()
 
 void MainWindow::on_btnLogin_clicked() //TEST
 {
-    QString cardID = ui->cardnumberLineEdit->text();
-    QString accountType = ui->pincodeLineEdit->text();
-    ptr_rest->getAccountID(accountType);
+    //QString cardsID = ui->cardnumberLineEdit->text();
+    //QString accountType = ui->pincodeLineEdit->text();
+    ptr_rest->accountIDbyType("1");
 
 
 }

@@ -2,7 +2,7 @@
 
 #include "environment.h"
 
-RestDLL::RestDLL(QObject *parent):QObject(parent)
+RestDLL::RestDLL():QObject()
 {
     qDebug()<<"DLL luotu";
 }
@@ -10,6 +10,28 @@ RestDLL::RestDLL(QObject *parent):QObject(parent)
 RestDLL::~RestDLL()
 {
     qDebug()<<"RESTDLL RÄJÄHTI";
+}
+
+RestDLL* RestDLL::instance = nullptr;
+
+RestDLL* RestDLL::getInstance()
+{
+    if (instance == nullptr)
+    {
+        instance = new RestDLL();
+    }
+
+    return instance;
+}
+
+QString RestDLL::getName() const
+{
+    return name;
+}
+
+void RestDLL::setName(const QString &value)
+{
+    name = value;
 }
 
 void RestDLL::setupGetConnection(int switchCase)
@@ -286,7 +308,7 @@ void RestDLL::cardsIdSlot(QNetworkReply *reply)
     setupGetConnection(5); //cardtypecheck
 }
 
-void RestDLL::getAccountID(QString accountType) //Gets accountid by cardID and accountType
+void RestDLL::accountIDbyType(QString accountType) //Gets accountid by cardID and accountType
 {
     QString accountTypetest = "debit";
     QJsonObject jsonObj;
@@ -319,6 +341,11 @@ void RestDLL::accountIdSlot(QNetworkReply *reply)
     reply->deleteLater();
     accountManager->deleteLater();
     qDebug()<<"account id set to->"<<accountID;
+}
+
+int RestDLL::getAccountID() const
+{
+    return accountID;
 }
 
 
