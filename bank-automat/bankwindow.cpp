@@ -6,8 +6,11 @@ bankwindow::bankwindow(QWidget *parent)
     , ui(new Ui::bankwindow)
 {
     ui->setupUi(this);
+    ui->logsTableView->setVisible(false);
     ptr_restb = new RestDLL(this);
-    connect(ptr_restb,SIGNAL(getResult(QString)), this,SLOT(logsHandler(QString)));
+    connect(ptr_restb,SIGNAL(getLogsSignal(QString)), this,SLOT(logsHandler(QString)));
+    connect(ptr_restb,SIGNAL(getBalanceSignal(QString)), this,SLOT(balanceHandler(QString)));
+
 }
 
 bankwindow::~bankwindow()
@@ -83,6 +86,7 @@ void bankwindow::on_Button3_clicked()
 {
     switch(buttonMode){
     case 0:
+        ptr_restb->setupGetConnection(4);
         modeChange(3);
         break;
 
@@ -184,6 +188,7 @@ void bankwindow::on_Button6_clicked()
         break;
 
     case 2:
+        ui->logsTableView->setVisible(false);
         modeChange(0);
         break;
 
@@ -234,6 +239,7 @@ void bankwindow::modeChange(short newmode)
     break;
 
     case 2: //tilitapahtumat
+    ui->logsTableView->setVisible(true);
     ui->statusLabel->setText("Tilitapahtumat");
     ui->buttonLabel1->setText("");
     ui->buttonLabel2->setText("Edelliset");
@@ -256,7 +262,6 @@ void bankwindow::modeChange(short newmode)
     ui->buttonLabel4->setText("");
     ui->buttonLabel5->setText("");
     ui->buttonLabel6->setText("Takaisin");
-    ui->infoLabel1->setText("Tilin saldo"); //Add balance here
     ui->infoLabel2->setText("Kortin luottoraja");//Add if statement for credit card here
     ui->infoLabel3->setText("");
     ui->infoLabel4->setText("");
@@ -319,7 +324,7 @@ void bankwindow::manageLogTable(short modifier)
                 ui->logsTableView->hideRow(k);
             }
             logStage = logStage-5;
-            for(int k = logStage-5; k<=logStage; k++){
+            for(int k = logStage-4; k<=logStage; k++){
                 ui->logsTableView->showRow(k);
             }
         }
@@ -332,12 +337,13 @@ void bankwindow::manageLogTable(short modifier)
             }
             if(logStage+5>amountOfLogs){
                 logStage = logStage+5;
-                for(int k = logStage-5; k<=amountOfLogs; k++){
+                for(int k = logStage-4; k<=amountOfLogs; k++){
                     ui->logsTableView->showRow(k);
                 }
                 } else {
                 logStage = logStage+5;
-                    for(int k = logStage-5; k<=logStage; k++){
+                    qDebug()<<logStage;
+                    for(int k = logStage-4; k<=logStage; k++){
                     ui->logsTableView->showRow(k);
                     }
                 }
@@ -373,7 +379,7 @@ void bankwindow::logsHandler(QString rawlogs){
             //Alla sijoitetaan jokainen sana jokaiselle tapahtumalle
             dateStart = oneLog.section(" | ", 1, 1);
             dateEnd = oneLog.section(" | ", 1, 1);
-            event = oneLog.section(" | ", 2, 100);
+            event = oneLog.section(" | ", 2, 2);
             amount = oneLog.section(" | ", 3, 3);
 
 
@@ -421,7 +427,11 @@ void bankwindow::logsHandler(QString rawlogs){
     for(int k = logStage-5; k<=logStage; k++){
         ui->logsTableView->showRow(k);
     }
+}
 
+void bankwindow::balanceHandler(QString balance)
+{
+    ui->infoLabel1->setText("Tilin saldo: "+balance);
 }
 
 
