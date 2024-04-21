@@ -104,7 +104,7 @@ void RestDLL::getBalanceSlot(QNetworkReply *reply)      //Kutsutaan setupgetconn
     qDebug()<<balance;
     //get qstring menee get_handleriin exessä:
     setAccountBalance(balance.toInt());
-    emit getResult(balance);
+    emit getBalanceSignal(balance);
     reply->deleteLater();
     getManager->deleteLater();
 
@@ -131,7 +131,7 @@ void RestDLL::getCardsSlot(QNetworkReply *reply)
 
     qDebug()<<cardData;
     //get qstring menee get_handleriin exessä:
-    emit getResult(cardData);
+    emit getCardsSignal(cardData);
 
     reply->deleteLater();
     getManager->deleteLater();
@@ -176,7 +176,7 @@ void RestDLL::getLogsSlot(QNetworkReply *reply){
     }
     qDebug()<<get;
     //get qstring menee get_handleriin exessä:
-    emit getResult(get);
+    emit getLogsSignal(get);
 
     reply->deleteLater();
     getManager->deleteLater();
@@ -243,7 +243,7 @@ void RestDLL::getAccountSlot(QNetworkReply *reply)
     // }
     qDebug()<<accountData;
     //get qstring menee get_handleriin exessä:
-    emit getResult(accountData);
+    emit getAccountSignal(accountData);
 
     reply->deleteLater();
     getManager->deleteLater();
@@ -295,7 +295,7 @@ void RestDLL::getAccountID(QString cardID, QString accountType) //Gets accountid
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     accountManager = new QNetworkAccessManager(this);
-    connect(accountManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(accountIdSlot(QNetworkReply*)));
+    connect(accountManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(accountIdSlot(QNetworkReply*)));
 
     reply = accountManager->get(request, QJsonDocument(jsonObj).toJson());
 }
@@ -303,7 +303,7 @@ void RestDLL::getAccountID(QString cardID, QString accountType) //Gets accountid
 void RestDLL::accountIdSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-    //set current account id tähän
+    //set current account id here
     qDebug()<<response_data; //testi
     reply->deleteLater();
     accountManager->deleteLater();
@@ -321,7 +321,8 @@ void RestDLL::checkPin(QString cardnumber, QString pincode)
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     loginManager = new QNetworkAccessManager(this);
-    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
+    connect(loginManager, SIGNAL(finished (QNetworkReply*))
+            , this, SLOT(loginSlot(QNetworkReply*)));
 
     reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
 }

@@ -24,8 +24,13 @@ public:
 
 signals:
     void boolResult(bool);
-    void getResult(QString);
-    void pinCheckSignal(bool);
+    void getResult(QString);  //need to delete someday, only used in test or other stuff but code wont build without it
+    void getBalanceSignal(QString);
+    void getLogsSignal(QString);
+    void getAccountSignal(QString);//Not in use but Arttu said it works
+    void getCardsSignal(QString);//Not in use but Arttu said it works
+
+    void pinCheckSignal(bool); //WORKS, need to add webtoken later
 public slots:
 
     void setupGetConnection(int switchCase);

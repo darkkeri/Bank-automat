@@ -35,6 +35,7 @@ private slots:
     void on_Button6_clicked();
 
     void logsHandler(QString rawlogs);
+    void balanceHandler(QString);
 
     void on_pushButton_clicked();
 
