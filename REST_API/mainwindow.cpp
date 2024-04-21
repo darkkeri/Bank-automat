@@ -33,11 +33,11 @@ void MainWindow::get_Handler(QString n)
 void MainWindow::on_btnGet_clicked()
 {
     int idvalue = ui->getByIdLineEdit->text().toInt();
-    ptr_dll->setupGetConnection(idvalue,1);
+    ptr_dll->setupGetConnection(idvalue);
 }
 void MainWindow::on_BtnLogin_clicked()
 {
-    ptr_dll->setupGetConnection(4,1);
+    ptr_dll->setupGetConnection(4);
 
     ptr_dll->checkBalance(2.22,1);
     QString cardnumber = ui->cardnumberLineEdit->text();
