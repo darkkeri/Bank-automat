@@ -63,5 +63,4 @@ router.get('/:accountN', function(request, response){
     });
 });
 
-
 module.exports = router;
