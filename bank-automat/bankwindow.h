@@ -58,10 +58,6 @@ private:
     QString date2;
     QString finalDate;
     //
-    QVector<QString> oneLogVector;
-    QVector<QString> logDateVector;
-    QVector<QString> logEventVector;
-    QVector<QString> logAmountVector;
 
     QList<Logs> logList;
 

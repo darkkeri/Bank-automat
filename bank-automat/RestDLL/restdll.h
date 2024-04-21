@@ -18,25 +18,25 @@ public:
 
     void setWebToken(const QByteArray &newWebToken);
 
-    void setAccountID(int newAccountID);
-
     void setAccountBalance(int newAccountBalance);
 
 signals:
-    void boolResult(bool);
+    void cardTypeSignal(QString); //multicard
     void getResult(QString);  //need to delete someday, only used in test or other stuff but code wont build without it
-    void getBalanceSignal(QString);
-    void getLogsSignal(QString);
+    void getBalanceSignal(QString); //OK
+    void getLogsSignal(QString); //OK
+    void pinCheckSignal(bool); //OK, need to add webtoken later
+
+
     void getAccountSignal(QString);//Not in use but Arttu said it works
     void getCardsSignal(QString);//Not in use but Arttu said it works
 
-    void pinCheckSignal(bool); //WORKS, need to add webtoken later
 public slots:
 
     void setupGetConnection(int switchCase);
-    void checkPin(QString idCard, QString pincode);
+    void checkPin(QString pincode);
     void getCardID(QString cardnumber);
-    void getAccountID(QString cardID, QString accountType);
+    void getAccountID(QString accountType);
     void checkBalance(int id);
 private slots:
     void getBalanceSlot(QNetworkReply *reply);
@@ -55,7 +55,7 @@ private slots:
 
 private:
 
-    int accountID = 3;
+    int accountID;
     int cardsID = 4;
     int accountBalance;
 
