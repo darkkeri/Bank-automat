@@ -23,7 +23,8 @@ public:
     void setAccountBalance(int newAccountBalance);
 
 signals:
-    void getResult(QString); //need to delete someday, only used in test or other stuff but code wont build without it
+    void boolResult(bool);
+    void getResult(QString);  //need to delete someday, only used in test or other stuff but code wont build without it
     void getBalanceSignal(QString);
     void getLogsSignal(QString);
     void getAccountSignal(QString);//Not in use but Arttu said it works
@@ -33,35 +34,37 @@ signals:
 public slots:
 
     void setupGetConnection(int switchCase);
-    void post_Clicked();
     void checkPin(QString idCard, QString pincode);
-    void pinCompare();
+    void getCardID(QString cardnumber);
     void getAccountID(QString cardID, QString accountType);
-    void checkBalance(float nostomaara,int id);
+    void checkBalance(int id);
 private slots:
-    void getBalance(QNetworkReply *reply);
+    void getBalanceSlot(QNetworkReply *reply);
 
     void postSlot(QNetworkReply *reply);
-    void getCards(QNetworkReply *reply);
+    void getCardsSlot(QNetworkReply *reply);
     void loginSlot(QNetworkReply *reply);
-    void getAccount(QNetworkReply *reply);
-
-    void getLogs(QNetworkReply *reply);
+    void getAccountSlot(QNetworkReply *reply);
+    void multicardCheckSlot(QNetworkReply *reply);
+    void getLogsSlot(QNetworkReply *reply);
 
     void postLogs(QString date, QString event, float amount, int idAccount);
-    QString data_seperator(QString data);
 
-
+    void cardsIdSlot(QNetworkReply *reply);
     void accountIdSlot(QNetworkReply *reply);
+
 private:
 
     int accountID = 3;
-    int cardsID = 1;
+    int cardsID = 4;
     int accountBalance;
+
+
     QNetworkAccessManager *getManager;
     QNetworkAccessManager *postManager;
     QNetworkAccessManager *loginManager;
     QNetworkAccessManager *accountManager;
+    QNetworkAccessManager *cardsIDManager;
 
     QNetworkReply *reply;
     QByteArray response_data;
