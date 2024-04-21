@@ -12,7 +12,7 @@ RestDLL::~RestDLL()
     qDebug()<<"RESTDLL RÄJÄHTI";
 }
 
-void RestDLL::setupGetConnection(int switchCase, int id)
+void RestDLL::setupGetConnection(int switchCase)
 {
 
     QString urlAddress = "/logs/";
@@ -92,40 +92,6 @@ void RestDLL::pinCompare()
     reply = getManager->get(request);
 }
 
-void RestDLL::test()
-{
-    QString urlAddress = "/logs/";
-    QString site_url=Environment::getBaseURL()+urlAddress;
-    qDebug()<<site_url;
-    QNetworkRequest request((site_url));
-    getManager = new QNetworkAccessManager(this);
-    reply = getManager->get(request);
-    columnName[0]="idLogs";
-    columnName[1]="date";
-    columnName[2]="event";
-    columnName[3]="amount";
-    columnName[4]="idAccount";
-    response_data=reply->readAll();
-    qDebug()<<"DATA : "+response_data;
-    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
-    QJsonArray json_array = json_doc.array();
-    QString get;
-    foreach(const QJsonValue &value, json_array) {
-        QJsonObject json_obj = value.toObject();
-        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+" | "+json_obj[columnName[2]].toString()+
-               " | "+json_obj[columnName[3]].toString()+" | "+QString::number(json_obj[columnName[4]].toInt())+"\r";
-    }
-    qDebug()<<get;
-    //get qstring menee get_handleriin exessä:
-    emit getResult(get);
-
-    reply->deleteLater();
-    getManager->deleteLater();
-
-
-
-}
-
 void RestDLL::getBalance(QNetworkReply *reply)
 {
     qDebug()<<"GETBALANCESSA!";
@@ -137,7 +103,7 @@ void RestDLL::getBalance(QNetworkReply *reply)
     qDebug()<<balance;
     //get qstring menee get_handleriin exessä:
     setAccountBalance(balance.toInt());
-    emit getResult(balance);
+    emit getBalanceSignal(balance);
     reply->deleteLater();
     getManager->deleteLater();
 
@@ -172,7 +138,7 @@ void RestDLL::getCards(QNetworkReply *reply)
 
     qDebug()<<cardData;
     //get qstring menee get_handleriin exessä:
-    emit getResult(cardData);
+    emit getCardsSignal(cardData);
 
     reply->deleteLater();
     getManager->deleteLater();
@@ -215,7 +181,7 @@ void RestDLL::getLogs(QNetworkReply *reply){
     }
     qDebug()<<get;
     //get qstring menee get_handleriin exessä:
-    emit getResult(get);
+    emit getLogsSignal(get);
 
     reply->deleteLater();
     getManager->deleteLater();
@@ -288,7 +254,7 @@ void RestDLL::getAccount(QNetworkReply *reply)
     // }
     qDebug()<<accountData;
     //get qstring menee get_handleriin exessä:
-    emit getResult(accountData);
+    emit getAccountSignal(accountData);
 
     reply->deleteLater();
     getManager->deleteLater();

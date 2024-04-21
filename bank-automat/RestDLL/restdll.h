@@ -23,11 +23,16 @@ public:
     void setAccountBalance(int newAccountBalance);
 
 signals:
-    void getResult(QString);
-    void pinCheckSignal(bool);
+    void getResult(QString); //need to delete someday, only used in test or other stuff but code wont build without it
+    void getBalanceSignal(QString);
+    void getLogsSignal(QString);
+    void getAccountSignal(QString);//Not in use but Arttu said it works
+    void getCardsSignal(QString);//Not in use but Arttu said it works
+
+    void pinCheckSignal(bool); //WORKS, need to add webtoken later
 public slots:
 
-    void setupGetConnection(int switchCase, int id);
+    void setupGetConnection(int switchCase);
     void post_Clicked();
     void checkPin(QString idCard, QString pincode);
     void pinCompare();
@@ -35,7 +40,6 @@ public slots:
     void setAccountID(QString cardID, QString accountType);
 =======
     void getAccountID(QString cardID, QString accountType);
-    void test();
     void checkBalance(float nostomaara,int id);
 >>>>>>> abf009fd28fcd2ac1e9e94130abb42f16e05a57e
 private slots:
