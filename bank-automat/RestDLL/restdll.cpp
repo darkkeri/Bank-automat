@@ -12,7 +12,7 @@ RestDLL::~RestDLL()
     qDebug()<<"RESTDLL RÄJÄHTI";
 }
 
-void RestDLL::setupGetConnection(int switchCase, int id)
+void RestDLL::setupGetConnection(int switchCase)
 {
 
     QString urlAddress = "/logs/";

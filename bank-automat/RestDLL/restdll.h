@@ -27,7 +27,7 @@ signals:
     void pinCheckSignal(bool);
 public slots:
 
-    void setupGetConnection(int switchCase, int id);
+    void setupGetConnection(int switchCase);
     void post_Clicked();
     void checkPin(QString idCard, QString pincode);
     void pinCompare();
