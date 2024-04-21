@@ -267,7 +267,7 @@ void RestDLL::setWebToken(const QByteArray &newWebToken)
     qDebug()<<webToken;
 }
 
-void RestDLL::setAccountID(QString cardID, QString accountType) //Gets accountid by cardID and accountType
+void RestDLL::getAccountID(QString cardID, QString accountType) //Gets accountid by cardID and accountType
 {
     QJsonObject jsonObj;
     jsonObj.insert("idCards", cardID);
