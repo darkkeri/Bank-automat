@@ -233,14 +233,6 @@ void RestDLL::getAccountSlot(QNetworkReply *reply)
     QJsonObject json_obj = json_doc.object();
     QString accountData = json_obj["balance"].toString()+" | "+json_obj["accountnumber"].toString()+
                           " | "+QString::number(json_obj["accounttype"].toInt());
-
-
-
-    // foreach(const QJsonValue &value, json_array) {
-    //     QJsonObject json_obj = value.toObject();
-    //     get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+
-    //            " | "+json_obj[columnName[2]].toString()+" | "+QString::number(json_obj[columnName[3]].toInt())+"\r";
-    // }
     qDebug()<<accountData;
     //get qstring menee get_handleriin exessä:
     emit getAccountSignal(accountData);
@@ -276,10 +268,16 @@ void RestDLL::getCardID(QString cardnumber) //Gets accountid by cardID and accou
 void RestDLL::cardsIdSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-
-    //set current account id tähän
-    qDebug()<<response_data; //testi
-    //emit dadad;
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonArray json_array = json_doc.array();
+    QString cardsIdData;
+    foreach(const QJsonValue &value, json_array) {      //Ei toimi jostain syystä objektilla
+        QJsonObject json_obj = value.toObject();        //joten arrayllä mennään
+        cardsIdData+=QString::number(json_obj["idCards"].toInt());
+    }
+    qDebug()<<cardsIdData;
+    cardsID = cardsIdData.toInt();
+    emit getCardIDSignal(cardsIdData);
     reply->deleteLater();
     cardsIDManager->deleteLater();
 }

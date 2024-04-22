@@ -13,8 +13,6 @@ MainWindow::MainWindow(QWidget *parent)
     ptr_pinui = new PIN_UI_DLL(this);
     ptr_rest = new RestDLL(this);
     secWindow = new bankwindow(this);
-
-
     //TEST
     connect(ui->cardSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
     connect(ui->pinSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
@@ -145,7 +143,4 @@ void MainWindow::on_btnLogin_clicked() //TEST
     QString cardID = ui->cardnumberLineEdit->text();
     QString accountType = ui->pincodeLineEdit->text();
     ptr_rest->getAccountID(cardID,accountType);
-
-
 }
-

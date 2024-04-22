@@ -29,7 +29,7 @@ signals:
     void getLogsSignal(QString);
     void getAccountSignal(QString);//Not in use but Arttu said it works
     void getCardsSignal(QString);//Not in use but Arttu said it works
-
+    void getCardIDSignal(QString);
     void pinCheckSignal(bool); //WORKS, need to add webtoken later
 public slots:
 
