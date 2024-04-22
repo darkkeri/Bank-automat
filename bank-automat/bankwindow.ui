@@ -314,10 +314,10 @@
   <widget class="QTableView" name="logsTableView">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>240</x>
      <y>180</y>
-     <width>321</width>
-     <height>181</height>
+     <width>341</width>
+     <height>191</height>
     </rect>
    </property>
   </widget>

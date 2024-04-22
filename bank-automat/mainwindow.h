@@ -32,11 +32,13 @@ private:
 
     bool bviewflag = false;
     bool pinuiflag = false;
+    QString cardType;
 
     bankwindow *secWindow;
     RFID_DLL *ptr_rfid;
     PIN_UI_DLL *ptr_pinui;
     RestDLL *ptr_rest;
+
 
 private slots:
     void cardSignalHandler(); //Delete after testing is done
@@ -46,6 +48,7 @@ private slots:
     void cardHandler(QString&);
     void pinHandler(QString);
     void pinCheckHandler(bool);
+    void CardCheckHandler(QString);
     void restart();
 
     void on_debitButton_clicked();
