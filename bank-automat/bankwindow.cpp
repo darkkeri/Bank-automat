@@ -7,7 +7,7 @@ bankwindow::bankwindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->logsTableView->setVisible(false);
-    ptr_restb = new RestDLL(this);
+    ptr_restb = RestDLL::getInstance();
     connect(ptr_restb,SIGNAL(getLogsSignal(QString)), this,SLOT(logsHandler(QString)));
     connect(ptr_restb,SIGNAL(getBalanceSignal(QString)), this,SLOT(balanceHandler(QString)));
 
@@ -398,7 +398,7 @@ void bankwindow::logsHandler(QString rawlogs){
             date2.append(" ");
             finalDate = date2 + date1;
 
-            qDebug()<<" finalDate ="<<finalDate<<"\n\ event = "<<event<<"\n\ amount = "<<amount;
+            //qDebug()<<" finalDate ="<<finalDate<<"\n\ event = "<<event<<"\n\ amount = "<<amount;
 
             logObj.setType(event); logObj.setAmount(amount); logObj.setDate(finalDate); logList.append(logObj);
             amountOfLogs++;
@@ -433,8 +433,6 @@ void bankwindow::balanceHandler(QString balance)
 {
     ui->infoLabel1->setText("Tilin saldo: "+balance);
 }
-
-
 
 void bankwindow::on_pushButton_clicked() //DELETE THIS
 {
