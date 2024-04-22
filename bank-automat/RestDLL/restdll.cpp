@@ -2,7 +2,7 @@
 
 #include "environment.h"
 
-RestDLL::RestDLL(QObject *parent):QObject(parent)
+RestDLL::RestDLL():QObject()
 {
     qDebug()<<"DLL luotu";
 }
@@ -12,11 +12,35 @@ RestDLL::~RestDLL()
     qDebug()<<"RESTDLL RÄJÄHTI";
 }
 
+RestDLL* RestDLL::instance = nullptr;
+
+RestDLL* RestDLL::getInstance()
+{
+    if (instance == nullptr)
+    {
+        instance = new RestDLL();
+    }
+
+    return instance;
+}
+
+QString RestDLL::getName() const
+{
+    return name;
+}
+
+void RestDLL::setName(const QString &value)
+{
+    name = value;
+}
+
 void RestDLL::setupGetConnection(int switchCase)
 {
-
+    qDebug()<<"start of monsteri account id set to->"<<accountID;
+    qDebug()<<"REST API: setupGetConnection ran";
     QString urlAddress = "/logs/";
     QString stringID;
+    qDebug()<<"before switch, account id set to->"<<accountID;
     switch (switchCase){
     case 1:
         //HAETAAN LOGIT idAccountin perusteella
@@ -38,8 +62,10 @@ void RestDLL::setupGetConnection(int switchCase)
         break;
     case 4:
         //ACCOUNTIN balance sarake idAccountin perusteella
+        qDebug()<<"monsteri account: "<<accountID;
         urlAddress = "/account/";
         stringID = QString::number(accountID);      //getBalance
+        qDebug()<<"monsteri account on nyt: "<<accountID;
         if(accountID == 0) stringID="";
         break;
     case 5:
@@ -144,11 +170,7 @@ void RestDLL::multicardCheckSlot(QNetworkReply *reply)
     QJsonObject json_obj = json_doc.object();
     QString cardTypeData=json_obj["type"].toString();
     qDebug()<<cardTypeData;
-    bool multicard;
-    if(cardTypeData == "multicard"){ multicard = true;}
-    else{ multicard = false;}
-    qDebug()<<multicard;
-    emit boolResult(multicard);
+    emit cardTypeSignal(cardTypeData);
 
     reply->deleteLater();
     getManager->deleteLater();
@@ -207,11 +229,6 @@ void RestDLL::setAccountBalance(int newAccountBalance)
     accountBalance = newAccountBalance;
 }
 
-void RestDLL::setAccountID(int newAccountID)
-{
-    accountID = newAccountID;
-}
-
 void RestDLL::postSlot(QNetworkReply *reply)    //turha, malli
 {
     response_data=reply->readAll();
@@ -250,7 +267,7 @@ void RestDLL::setWebToken(const QByteArray &newWebToken)
     qDebug()<<webToken;
 }
 
-void RestDLL::getCardID(QString cardnumber) //Gets accountid by cardID and accountType
+void RestDLL::getCardID(QString cardnumber)
 {
     QJsonObject jsonObj;
     jsonObj.insert("cardnumber", cardnumber);
@@ -265,6 +282,7 @@ void RestDLL::getCardID(QString cardnumber) //Gets accountid by cardID and accou
 
     reply = cardsIDManager->get(request, QJsonDocument(jsonObj).toJson());
 }
+
 void RestDLL::cardsIdSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
@@ -277,16 +295,16 @@ void RestDLL::cardsIdSlot(QNetworkReply *reply)
     }
     qDebug()<<cardsIdData;
     cardsID = cardsIdData.toInt();
-    emit getCardIDSignal(cardsIdData);
     reply->deleteLater();
     cardsIDManager->deleteLater();
+    setupGetConnection(5); //cardtypecheck
 }
 
-void RestDLL::getAccountID(QString cardID, QString accountType) //Gets accountid by cardID and accountType
+void RestDLL::accountIDbyType(QString accountType) //Gets accountid by cardID and accountType
 {
     QJsonObject jsonObj;
-    jsonObj.insert("idCards", cardID);
-    jsonObj.insert("type", accountType);
+    jsonObj.insert("idCards", cardsID);
+    jsonObj.insert("accounttype", accountType);
 
     QString site_url="http://localhost:3000/accountId";
     QNetworkRequest request((site_url));
@@ -302,24 +320,37 @@ void RestDLL::accountIdSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
     //set current account id here
-    qDebug()<<response_data; //testi
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonArray json_array = json_doc.array();
+    QString cardsIdData;
+    foreach(const QJsonValue &value, json_array) {      //Ei toimi jostain syystä objektilla
+        QJsonObject json_obj = value.toObject();        //joten arrayllä mennään
+        cardsIdData+=QString::number(json_obj["idAccount"].toInt());
+    }
+    accountID = cardsIdData.toInt();
+    qDebug()<<"account id set to->"<<accountID;
     reply->deleteLater();
     accountManager->deleteLater();
+    qDebug()<<"account id set to->"<<accountID;
+}
+
+int RestDLL::getAccountID() const
+{
+    return accountID;
 }
 
 
-void RestDLL::checkPin(QString cardnumber, QString pincode)
+void RestDLL::checkPin(QString pincode)
 {
     QJsonObject jsonObj;
-    jsonObj.insert("cardnumber", cardnumber);
+    jsonObj.insert("idCards", cardsID);
     jsonObj.insert("pincode", pincode);
 
     QString site_url="http://localhost:3000/login";
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
     loginManager = new QNetworkAccessManager(this);
-    connect(loginManager, SIGNAL(finished (QNetworkReply*))
+    connect(loginManager, SIGNAL(finished(QNetworkReply*))
             , this, SLOT(loginSlot(QNetworkReply*)));
 
     reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
@@ -338,6 +369,7 @@ void RestDLL::loginSlot(QNetworkReply *reply)
         if(response_data!="false") {
             //Kirjautuminen onnistui
             //Kortti ID
+            qDebug()<<"checkPin ran";
             emit pinCheckSignal(true);//Tähän true signaali mainiin
 
             setWebToken(response_data);

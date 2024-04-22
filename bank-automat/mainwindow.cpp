@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ptr_rfid = new RFID_DLL(this);
     ptr_pinui = new PIN_UI_DLL(this);
-    ptr_rest = new RestDLL(this);
+    ptr_rest = RestDLL::getInstance();
     secWindow = new bankwindow(this);
     //TEST
     connect(ui->cardSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ptr_rfid,SIGNAL(signalCard(QString&)), this,SLOT(cardHandler(QString&))); //Connection from RFID to main
     connect(ptr_pinui,SIGNAL(sendNumberToMainWindow(QString)), this,SLOT(pinHandler(QString))); //Connection from PINUI to main
     connect(ptr_rest,SIGNAL(pinCheckSignal(bool)), this,SLOT(pinCheckHandler(bool)));
+    connect(ptr_rest,SIGNAL(cardTypeSignal(QString)), this,SLOT(CardCheckHandler(QString)));
 
     ptr_rfid->Read_Data();//Setup for RFID
 }
@@ -54,10 +55,14 @@ void MainWindow::on_OKButton_clicked() //TEST
 }
 
 void MainWindow::secondViewOpen(){
+    qDebug()<< "secondviewopen ran";
     if (cardSignal == true && pinSignal == true){
         hide();
         if(bviewflag == false){
+            qDebug()<<"account id ->"<<ptr_rest->getAccountID();
             secWindow->exec();
+            qDebug()<<"account id ->"<<ptr_rest->getAccountID();
+
         } else {
             secWindow->openWindow();
         }
@@ -70,33 +75,36 @@ void MainWindow::cardHandler(QString& card)
 {
     cardnumberTEST = card; //TEST
     qDebug()<< "cardHandler ran";
-        cardSignal = true;
-        qDebug()<< "cardSignal value changed";
-        //Open PIN_UI here
 
-        //short testPIN = 1234; //TEST
+        cardSignal = true; //TEST
         pinSignal = true; //TEST
-        //pinHandler(testPIN); //TEST
+        qDebug()<< "Test login possible: press ok";
+        ptr_rest->getCardID(card);
         ptr_pinui->exec();
 }
 
 void MainWindow::pinHandler(QString pin) //Gets signal from PIN_UI DLL with inputted pincode
 {
-    ptr_rest->checkPin(cardnumberTEST, pin);
+    ptr_rest->checkPin(pin);
     qDebug()<< "pinHandler ran"<<pin;
     //bool pincheck = ptr_restapi->RESTAPIDLL_PIN_function(pin);
     //bool mcardcheck = ptr_restapi->RESTAPIDLL_multiCardCheck_function();
 }
 
-void MainWindow::pinCheckHandler(bool check){
-    bool mcardCheck = true; //TEST
-    if(check == true){
+void MainWindow::pinCheckHandler(bool pinCheck)
+{
+    qDebug()<<"pincheckhandler ran";
+    if(pinCheck == true){
         qDebug()<< "pin is correct";
-        if(mcardCheck == true) {
+        if(cardType == "multicard") {
             ui->startStatuslabel->setText("Valitse kaksoiskortin tila");
             ui->creditButton->setVisible(true);
             ui->debitButton->setVisible(true);
-        } else {
+        } else if (cardType == "debit"){
+            ptr_rest->accountIDbyType("0");
+            secondViewOpen();
+        } else if (cardType == "credit"){
+            ptr_rest->accountIDbyType("1");
             secondViewOpen();
         }
     } else {
@@ -104,13 +112,20 @@ void MainWindow::pinCheckHandler(bool check){
         //Give some type of error message in PIN_UI and let the user try again (No idea how to do this, need to test)
         ptr_pinui->exec();
     }
+}
 
+void MainWindow::CardCheckHandler(QString checkresult)
+{
+    qDebug()<< "cardcheckHandler ran";
+    cardType = checkresult;
 }
 
 void MainWindow::on_debitButton_clicked() //credit and debit maybe could be one single function with manual connections?
 {
     //RESTAPI Credit or Debit function that takes true or false as a variable to choose right account and returns nothing
     qDebug()<< "multicard debit chosen";
+    cardType = "debit";
+    ptr_rest->accountIDbyType("0");
     secondViewOpen();
 }
 
@@ -118,6 +133,8 @@ void MainWindow::on_creditButton_clicked()
 {
     //RESTAPI Credit or Debit function that takes true or false as a variable to choose right account and returns nothing
     qDebug()<< "multicard credit chosen";
+    cardType = "credit";
+    ptr_rest->accountIDbyType("1");
     secondViewOpen();
 
 
@@ -140,7 +157,9 @@ void MainWindow::on_OFFButton_clicked()
 
 void MainWindow::on_btnLogin_clicked() //TEST
 {
-    QString cardID = ui->cardnumberLineEdit->text();
-    QString accountType = ui->pincodeLineEdit->text();
-    ptr_rest->getAccountID(cardID,accountType);
+    //QString cardsID = ui->cardnumberLineEdit->text();
+    //QString accountType = ui->pincodeLineEdit->text();
+    ptr_rest->accountIDbyType("1");
+
+
 }
