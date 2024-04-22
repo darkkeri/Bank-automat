@@ -10,7 +10,7 @@ bankwindow::bankwindow(QWidget *parent)
     ptr_restb = RestDLL::getInstance();
     connect(ptr_restb,SIGNAL(getLogsSignal(QString)), this,SLOT(logsHandler(QString)));
     connect(ptr_restb,SIGNAL(getBalanceSignal(QString)), this,SLOT(balanceHandler(QString)));
-
+    connect(ptr_restb,SIGNAL(getCardsSignal(QString)), this,SLOT(cardsHandler(QString)));
 }
 
 bankwindow::~bankwindow()
@@ -27,7 +27,7 @@ void bankwindow::on_Button1_clicked()
 
     case 1:
         //deduct chosen sum from balance
-        cardCheck();
+        //cardCheck();
         break;
 
     case 2:
@@ -58,7 +58,7 @@ void bankwindow::on_Button2_clicked()
 
     case 1:
         //deduct chosen sum from balance
-        cardCheck();
+        //cardCheck();
         break;
 
     case 2:
@@ -86,13 +86,16 @@ void bankwindow::on_Button3_clicked()
 {
     switch(buttonMode){
     case 0:
-        ptr_restb->setupGetConnection(4);
+        ptr_restb->setupGetConnection(4); //getBalance
+        if(cardType == "credit"){
+            ptr_restb->setupGetConnection(2); //getCards
+        }
         modeChange(3);
         break;
 
     case 1:
         //input desired sum using pin_ui and then deduct
-        cardCheck();
+        //cardCheck();
         break;
 
     case 2:
@@ -121,7 +124,7 @@ void bankwindow::on_Button4_clicked()
 
     case 1:
         //deduct chosen sum from balance
-        cardCheck();
+        //cardCheck();
         break;
 
     case 2:
@@ -150,7 +153,7 @@ void bankwindow::on_Button5_clicked()
 
     case 1:
         //deduct chosen sum from balance
-        cardCheck();
+        //cardCheck();
         break;
 
     case 2:
@@ -247,11 +250,11 @@ void bankwindow::modeChange(short newmode)
     ui->buttonLabel4->setText("");
     ui->buttonLabel5->setText("Seuraavat");
     ui->buttonLabel6->setText("Takaisin");
-    ui->infoLabel1->setText("tapahtumia");
-    ui->infoLabel2->setText("tapahtumia");
-    ui->infoLabel3->setText("tapahtumia");
-    ui->infoLabel4->setText("tapahtumia");
-    ui->infoLabel5->setText("tapahtumia");
+    ui->infoLabel1->setText("");
+    ui->infoLabel2->setText("");
+    ui->infoLabel3->setText("");
+    ui->infoLabel4->setText("");
+    ui->infoLabel5->setText("");
     break;
 
     case 3: //saldo
@@ -262,7 +265,6 @@ void bankwindow::modeChange(short newmode)
     ui->buttonLabel4->setText("");
     ui->buttonLabel5->setText("");
     ui->buttonLabel6->setText("Takaisin");
-    ui->infoLabel2->setText("Kortin luottoraja");//Add if statement for credit card here
     ui->infoLabel3->setText("");
     ui->infoLabel4->setText("");
     ui->infoLabel5->setText("");
@@ -313,6 +315,12 @@ void bankwindow::cardCheck(){
 void bankwindow::closeWindow(){
     hide();
     emit restartSignal();
+}
+
+void bankwindow::setCardType(QString mainCardType)
+{
+    cardType = mainCardType;
+    qDebug()<<"bankwindow cardType is "<<cardType;
 }
 
 void bankwindow::manageLogTable(short modifier)
@@ -432,6 +440,15 @@ void bankwindow::logsHandler(QString rawlogs){
 void bankwindow::balanceHandler(QString balance)
 {
     ui->infoLabel1->setText("Tilin saldo: "+balance);
+}
+
+void bankwindow::cardsHandler(QString rawCards)
+{
+    qDebug()<<"cardsHandler:"<<rawCards;
+    rawCards = rawCards.section(" | ", 6, 6);
+    ui->infoLabel2->setText("Kortin luottoraja: "+rawCards);
+
+
 }
 
 void bankwindow::on_pushButton_clicked() //DELETE THIS
