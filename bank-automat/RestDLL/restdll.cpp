@@ -310,10 +310,9 @@ void RestDLL::cardsIdSlot(QNetworkReply *reply)
 
 void RestDLL::accountIDbyType(QString accountType) //Gets accountid by cardID and accountType
 {
-    QString accountTypetest = "debit";
     QJsonObject jsonObj;
     jsonObj.insert("idCards", cardsID);
-    jsonObj.insert("type", accountTypetest);
+    jsonObj.insert("accounttype", accountType);
 
     QString site_url="http://localhost:3000/accountId";
     QNetworkRequest request((site_url));
