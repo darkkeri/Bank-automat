@@ -7,8 +7,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 router.post('/',function(request, response){
-    if(request.body.cardnumber && request.body.pincode){
-        cards.login(request.body.cardnumber, function(err,result){
+    if(request.body.idCards && request.body.pincode){
+        cards.login(request.body.idCards, function(err,result){
             if(err){
                 console.log(err.errno);
                 response.json(err.errno);
@@ -18,7 +18,7 @@ router.post('/',function(request, response){
                     bcrypt.compare(request.body.pincode, result[0].pincode, function(err, compareResult){
                         if(compareResult){
                             console.log("Kirjautuminen ok")
-                            const token = genToken({cardnumber: request.body.cardnumber});
+                            const token = genToken({idCards: request.body.idCards});
                             response.send(token);
                         }
                         else{

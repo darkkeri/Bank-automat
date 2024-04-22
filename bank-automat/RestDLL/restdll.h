@@ -13,55 +13,67 @@ class RESTDLL_EXPORT RestDLL : public QObject
 {
     Q_OBJECT
 public:
-    RestDLL(QObject *parent);
+    RestDLL();
     ~RestDLL();
-
+    // singleton juttu
+    static RestDLL* getInstance();
+    QString getName() const;
+    void setName(const QString &value);
+    //
     void setWebToken(const QByteArray &newWebToken);
-
-    void setAccountID(int newAccountID);
 
     void setAccountBalance(int newAccountBalance);
 
+    int getAccountID() const;
+
 signals:
-    void getResult(QString); //need to delete someday, only used in test or other stuff but code wont build without it
-    void getBalanceSignal(QString);
-    void getLogsSignal(QString);
+    void cardTypeSignal(QString); //multicard
+    void getResult(QString);  //need to delete someday, only used in test or other stuff but code wont build without it
+    void getBalanceSignal(QString); //OK
+    void getLogsSignal(QString); //OK
+    void pinCheckSignal(bool); //OK, need to add webtoken later
+
+
     void getAccountSignal(QString);//Not in use but Arttu said it works
     void getCardsSignal(QString);//Not in use but Arttu said it works
 
-    void pinCheckSignal(bool); //WORKS, need to add webtoken later
 public slots:
 
     void setupGetConnection(int switchCase);
-    void post_Clicked();
-    void checkPin(QString idCard, QString pincode);
-    void pinCompare();
-    void getAccountID(QString cardID, QString accountType);
-    void checkBalance(float nostomaara,int id);
+    void checkPin(QString pincode);
+    void getCardID(QString cardnumber);
+    void accountIDbyType(QString accountType);
+    void checkBalance(int id);
 private slots:
-    void getBalance(QNetworkReply *reply);
+    void getBalanceSlot(QNetworkReply *reply);
 
     void postSlot(QNetworkReply *reply);
-    void getCards(QNetworkReply *reply);
+    void getCardsSlot(QNetworkReply *reply);
     void loginSlot(QNetworkReply *reply);
-    void getAccount(QNetworkReply *reply);
-
-    void getLogs(QNetworkReply *reply);
+    void getAccountSlot(QNetworkReply *reply);
+    void multicardCheckSlot(QNetworkReply *reply);
+    void getLogsSlot(QNetworkReply *reply);
 
     void postLogs(QString date, QString event, float amount, int idAccount);
-    QString data_seperator(QString data);
 
-
+    void cardsIdSlot(QNetworkReply *reply);
     void accountIdSlot(QNetworkReply *reply);
-private:
 
-    int accountID = 3;
-    int cardsID = 1;
+private:
+    // toinen singleton juttu
+    static RestDLL* instance;
+    QString name;
+    //
+    int accountID;
+    int cardsID = 4;
     int accountBalance;
+
+
     QNetworkAccessManager *getManager;
     QNetworkAccessManager *postManager;
     QNetworkAccessManager *loginManager;
     QNetworkAccessManager *accountManager;
+    QNetworkAccessManager *cardsIDManager;
 
     QNetworkReply *reply;
     QByteArray response_data;
