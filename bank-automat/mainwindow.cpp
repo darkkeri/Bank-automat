@@ -34,6 +34,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//***********************************************************************TEST
 void MainWindow::cardSignalHandler(){ //TEST
     qDebug()<< "cardSignalHandler ran";
     QPushButton *clickedButton = qobject_cast<QPushButton *>(sender());
@@ -46,7 +47,6 @@ void MainWindow::cardSignalHandler(){ //TEST
         pinSignal = true;
         qDebug()<< "pinSignal value changed";
     }
-
 }
 
 void MainWindow::on_OKButton_clicked() //TEST
@@ -55,16 +55,14 @@ void MainWindow::on_OKButton_clicked() //TEST
     connect(this, SIGNAL(secondViewOpenSignal()), this, SLOT(secondViewOpen()));
     emit secondViewOpenSignal();
 }
+//***********************************************************************
 
 void MainWindow::secondViewOpen(){
     qDebug()<< "secondviewopen ran";
     if (cardSignal == true && pinSignal == true){
         hide();
         if(bviewflag == false){
-            qDebug()<<"account id ->"<<ptr_rest->getAccountID();
             secWindow->exec();
-            qDebug()<<"account id ->"<<ptr_rest->getAccountID();
-
         } else {
             secWindow->openWindow();
         }
@@ -75,12 +73,13 @@ void MainWindow::secondViewOpen(){
 
 void MainWindow::cardHandler(QString& card)
 {
-    cardnumberTEST = card; //TEST
     qDebug()<< "cardHandler ran";
-
+        //*******************************************TEST
         cardSignal = true; //TEST
         pinSignal = true; //TEST
         qDebug()<< "Test login possible: press ok";
+        //*******************************************
+
         ptr_rest->getCardID(card);
         ptr_pinui->exec();
 }
@@ -89,8 +88,6 @@ void MainWindow::pinHandler(QString pin) //Gets signal from PIN_UI DLL with inpu
 {
     ptr_rest->checkPin(pin);
     qDebug()<< "pinHandler ran"<<pin;
-    //bool pincheck = ptr_restapi->RESTAPIDLL_PIN_function(pin);
-    //bool mcardcheck = ptr_restapi->RESTAPIDLL_multiCardCheck_function();
 }
 
 void MainWindow::pinCheckHandler(bool pinCheck)
@@ -124,7 +121,6 @@ void MainWindow::CardCheckHandler(QString checkresult)
 
 void MainWindow::on_debitButton_clicked() //credit and debit maybe could be one single function with manual connections?
 {
-    //RESTAPI Credit or Debit function that takes true or false as a variable to choose right account and returns nothing
     qDebug()<< "multicard debit chosen";
     cardType = "debit";
     ptr_rest->accountIDbyType("0");
@@ -133,13 +129,10 @@ void MainWindow::on_debitButton_clicked() //credit and debit maybe could be one 
 
 void MainWindow::on_creditButton_clicked()
 {
-    //RESTAPI Credit or Debit function that takes true or false as a variable to choose right account and returns nothing
     qDebug()<< "multicard credit chosen";
     cardType = "credit";
     ptr_rest->accountIDbyType("1");
     secondViewOpen();
-
-
 }
 
 void MainWindow::restart()
