@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ptr_rest,SIGNAL(pinCheckSignal(bool)), this,SLOT(pinCheckHandler(bool)));
     connect(ptr_rest,SIGNAL(cardTypeSignal(QString)), this,SLOT(CardCheckHandler(QString)));
 
+
     ptr_rfid->Read_Data();//Setup for RFID
 }
 
@@ -117,12 +118,14 @@ void MainWindow::CardCheckHandler(QString checkresult)
 {
     qDebug()<< "cardcheckHandler ran";
     cardType = checkresult;
+    secWindow->setCardType(cardType);
 }
 
 void MainWindow::on_debitButton_clicked() //credit and debit maybe could be one single function with manual connections?
 {
     qDebug()<< "multicard debit chosen";
     cardType = "debit";
+    secWindow->setCardType(cardType);
     ptr_rest->accountIDbyType("0");
     secondViewOpen();
 }
@@ -131,6 +134,7 @@ void MainWindow::on_creditButton_clicked()
 {
     qDebug()<< "multicard credit chosen";
     cardType = "credit";
+    secWindow->setCardType(cardType);
     ptr_rest->accountIDbyType("1");
     secondViewOpen();
 }

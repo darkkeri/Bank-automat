@@ -145,12 +145,13 @@ void RestDLL::checkBalance(int id) // WIP tuleva saldon miinustus systeemi nosto
 
 void RestDLL::getCardsSlot(QNetworkReply *reply)
 {
-    qDebug()<<"getCardsSlot ran: "+response_data;
     response_data=reply->readAll();
+    qDebug()<<"getCardsSlot ran: "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonObject json_obj = json_doc.object();
+
     QString cardData=json_obj["cardnumber"].toString()+" | "+json_obj["pincode"].toString()+" | "+json_obj["type"].toString()+
-                       " | "+QString::number(json_obj["tries"].toInt())+" | "+QString::number(json_obj["active"].toInt());
+                       " | "+QString::number(json_obj["tries"].toInt())+" | "+QString::number(json_obj["active"].toInt())+" | "+QString::number(json_obj["creditlimit"].toInt());
     //get qstring menee get_handleriin exessä:
     emit getCardsSignal(cardData);
 
