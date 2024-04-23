@@ -24,6 +24,6 @@ const account = {
     nosto(idAccount, amount, callback){
         return db.query("CALL nosto(?,?)",[idAccount, amount], callback);
     }
-}   
+}
 
 module.exports = account;
