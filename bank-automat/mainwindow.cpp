@@ -158,7 +158,7 @@ void MainWindow::on_btnLogin_clicked() //TEST
 {
     //QString cardsID = ui->cardnumberLineEdit->text();
     //QString accountType = ui->pincodeLineEdit->text();
-    ptr_rest->accountIDbyType("1");
+    ptr_rest->nosto("100");
 
 
 }
