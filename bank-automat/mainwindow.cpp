@@ -25,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ptr_rfid->Read_Data();//Setup for RFID
+
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -158,6 +162,5 @@ void MainWindow::on_btnLogin_clicked() //TEST
     //QString cardsID = ui->cardnumberLineEdit->text();
     //QString accountType = ui->pincodeLineEdit->text();
     ptr_rest->nosto("100");
-
 
 }
