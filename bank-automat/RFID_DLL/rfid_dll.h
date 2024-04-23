@@ -13,7 +13,6 @@
 class RFID_DLL_EXPORT RFID_DLL : public QObject
 {
     Q_OBJECT
-public:
     RFID_DLL(QObject *parent);
 
 public slots:
