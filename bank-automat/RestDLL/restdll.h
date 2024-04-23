@@ -32,6 +32,7 @@ signals:
     void getBalanceSignal(QString); //OK
     void getLogsSignal(QString); //OK
     void pinCheckSignal(bool); //OK, need to add webtoken later
+    void getWithdrawSignal(QString);
 
 
     void getAccountSignal(QString);//Not in use but Arttu said it works

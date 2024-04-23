@@ -11,6 +11,7 @@ bankwindow::bankwindow(QWidget *parent)
     connect(ptr_restb,SIGNAL(getLogsSignal(QString)), this,SLOT(logsHandler(QString)));
     connect(ptr_restb,SIGNAL(getBalanceSignal(QString)), this,SLOT(balanceHandler(QString)));
     connect(ptr_restb,SIGNAL(getCardsSignal(QString)), this,SLOT(cardsHandler(QString)));
+    connect(ptr_restb,SIGNAL(getWithdrawSignal(QString)), this,SLOT(withdrawHandler(QString)));
 }
 
 bankwindow::~bankwindow()
@@ -27,6 +28,7 @@ void bankwindow::on_Button1_clicked()
 
     case 1:
         //deduct chosen sum from balance
+        ptr_restb->nosto("20");
         //cardCheck();
         break;
 
@@ -58,6 +60,7 @@ void bankwindow::on_Button2_clicked()
 
     case 1:
         //deduct chosen sum from balance
+        ptr_restb->nosto("40");
         //cardCheck();
         break;
 
@@ -124,6 +127,7 @@ void bankwindow::on_Button4_clicked()
 
     case 1:
         //deduct chosen sum from balance
+        ptr_restb->nosto("50");
         //cardCheck();
         break;
 
@@ -153,6 +157,7 @@ void bankwindow::on_Button5_clicked()
 
     case 1:
         //deduct chosen sum from balance
+        ptr_restb->nosto("100");
         //cardCheck();
         break;
 
@@ -234,9 +239,9 @@ void bankwindow::modeChange(short newmode)
     case 1: //nosto
     ui->statusLabel->setText("Valitse nostosumma");
     ui->buttonLabel1->setText("20");
-    ui->buttonLabel2->setText("50");
+    ui->buttonLabel2->setText("40");
     ui->buttonLabel3->setText("Muu summa");
-    ui->buttonLabel4->setText("80");
+    ui->buttonLabel4->setText("50");
     ui->buttonLabel5->setText("100");
     ui->buttonLabel6->setText("Takaisin");
     break;
@@ -449,6 +454,11 @@ void bankwindow::cardsHandler(QString rawCards)
     ui->infoLabel2->setText("Kortin luottoraja: "+rawCards);
 
 
+}
+
+void bankwindow::withdrawHandler(QString isWithdrawOK)
+{
+    qDebug()<<isWithdrawOK;
 }
 
 void bankwindow::on_pushButton_clicked() //DELETE THIS

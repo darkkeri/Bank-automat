@@ -337,7 +337,6 @@ int RestDLL::getAccountID() const
 
 void RestDLL::nosto(QString amount)
 {
-    accountID = 3;
     QJsonObject jsonObj;
     jsonObj.insert("amount", amount);
 
