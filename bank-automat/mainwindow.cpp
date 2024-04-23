@@ -24,6 +24,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ptr_rest,SIGNAL(cardTypeSignal(QString)), this,SLOT(CardCheckHandler(QString)));
 
     ptr_rfid->Read_Data();//Setup for RFID
+
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -159,7 +163,6 @@ void MainWindow::on_btnLogin_clicked() //TEST
 {
     //QString cardsID = ui->cardnumberLineEdit->text();
     //QString accountType = ui->pincodeLineEdit->text();
-    ptr_rest->accountIDbyType("1");
-
-
+    // ptr_rest->accountIDbyType("1");
+    ptr_rest->getTries();
 }

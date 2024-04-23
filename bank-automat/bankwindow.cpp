@@ -11,6 +11,7 @@ bankwindow::bankwindow(QWidget *parent)
     connect(ptr_restb,SIGNAL(getLogsSignal(QString)), this,SLOT(logsHandler(QString)));
     connect(ptr_restb,SIGNAL(getBalanceSignal(QString)), this,SLOT(balanceHandler(QString)));
 
+    // ui->pushButton->setVisible(false);      //TESTI
 }
 
 bankwindow::~bankwindow()
