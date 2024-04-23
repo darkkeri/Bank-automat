@@ -17,7 +17,9 @@ public:
     RFID_DLL(QObject *parent);
 
 public slots:
-    void Read_Data();
+
+void Read_Data();
+
 
 private:
     QSerialPort* COMPORT;
