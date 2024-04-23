@@ -32,6 +32,7 @@ signals:
     void getBalanceSignal(QString); //OK
     void getLogsSignal(QString); //OK
     void pinCheckSignal(bool); //OK, need to add webtoken later
+    void getWithdrawSignal(QString);
 
 
     void getAccountSignal(QString);//Not in use but Arttu said it works
@@ -43,6 +44,7 @@ public slots:
     void setupGetConnection(int switchCase);
     void getBalance();
     void checkPin(QString pincode);
+    void nosto(QString amount);
     void getCardID(QString cardnumber);
     void accountIDbyType(QString accountType);
 
@@ -56,6 +58,7 @@ private slots:
     void getAccountSlot(QNetworkReply *reply);
     void multicardCheckSlot(QNetworkReply *reply);
     void getLogsSlot(QNetworkReply *reply);
+    void nostoSlot(QNetworkReply *reply);
 
     void cardsIdSlot(QNetworkReply *reply);
     void accountIdSlot(QNetworkReply *reply);
@@ -77,6 +80,7 @@ private:
     QNetworkAccessManager *loginManager;
     QNetworkAccessManager *accountManager;
     QNetworkAccessManager *cardsIDManager;
+    QNetworkAccessManager *nostoManager;
 
     QNetworkAccessManager *balanceManager;
     QNetworkAccessManager *creditlimitManager;
@@ -89,7 +93,6 @@ private:
     QMessageBox msgBox;
 
     QString columnName[10];
-
 
 };
 

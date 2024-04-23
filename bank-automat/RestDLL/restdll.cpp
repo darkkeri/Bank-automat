@@ -36,11 +36,10 @@ void RestDLL::setName(const QString &value)
 
 void RestDLL::setupGetConnection(int switchCase)
 {
-    qDebug()<<"start of monsteri account id set to->"<<accountID;
-    qDebug()<<"REST API: setupGetConnection ran";
+    qDebug()<<"setupGetConnection ran";
     QString urlAddress;
     QString stringID;
-    qDebug()<<"before switch, account id set to->"<<accountID;
+
     switch (switchCase){
     case 1:
         //HAETAAN LOGIT idAccountin perusteella
@@ -117,14 +116,14 @@ void RestDLL::getBalance()
 }
 void RestDLL::getBalanceSlot(QNetworkReply *reply)
 {
-    qDebug()<<"GETBALANCESSA!";
+    qDebug()<<"getBalanceSlot ran";
     response_data=reply->readAll();
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonObject json_obj = json_doc.object();
     QString balance=json_obj["balance"].toString();
     qDebug()<<balance;
     //get qstring menee get_handleriin exessä:
-    setAccountBalance(balance.toInt());
+    setAccountBalance(balance.toInt()); //Hmm.. en tiedä pitäskö muuttaa -Mikael
     emit getBalanceSignal(balance);
     reply->deleteLater();
     balanceManager->deleteLater();
@@ -200,7 +199,7 @@ void RestDLL::getCardsSlot(QNetworkReply *reply)
 void RestDLL::multicardCheckSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-    qDebug()<<"DATA : "+response_data;
+    qDebug()<<"multicardCheckSlot ran: "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonObject json_obj = json_doc.object();
     QString cardTypeData=json_obj["type"].toString();
@@ -221,7 +220,7 @@ void RestDLL::getLogsSlot(QNetworkReply *reply){
     columnName[3]="amount";
     columnName[4]="idAccount";
     response_data=reply->readAll();
-    //qDebug()<<"DATA : "+response_data;
+    qDebug()<<"getLogsSlot ran";
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonArray json_array = json_doc.array();
     QString get;
@@ -231,7 +230,6 @@ void RestDLL::getLogsSlot(QNetworkReply *reply){
                " | "+json_obj[columnName[2]].toString()+" | "+json_obj[columnName[3]].toString()+
                " | "+QString::number(json_obj[columnName[4]].toInt())+"\r";
     }
-    qDebug()<<get;
     //get qstring menee get_handleriin exessä:
     emit getLogsSignal(get);
 
@@ -251,7 +249,7 @@ void RestDLL::getAccountSlot(QNetworkReply *reply)
     columnName[2]="accountnumber";
     columnName[3]="accounttype";
     response_data=reply->readAll();
-    qDebug()<<"DATA : "+response_data;
+    qDebug()<<"getAccountSlot ran";
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonObject json_obj = json_doc.object();
     QString accountData = json_obj["balance"].toString()+" | "+json_obj["accountnumber"].toString()+
@@ -281,7 +279,7 @@ void RestDLL::getCardID(QString cardnumber)
     QString site_url="http://localhost:3000/cardsId";
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    qDebug()<<site_url;
+    qDebug()<<"getCardID ran";
     cardsIDManager = new QNetworkAccessManager(this);
     connect(cardsIDManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(cardsIdSlot(QNetworkReply*)));
 
@@ -298,7 +296,7 @@ void RestDLL::cardsIdSlot(QNetworkReply *reply)
         QJsonObject json_obj = value.toObject();        //joten arrayllä mennään
         cardsIdData+=QString::number(json_obj["idCards"].toInt());
     }
-    qDebug()<<cardsIdData;
+    qDebug()<<"cardsIdSlot ran with:"<<cardsIdData;
     cardsID = cardsIdData.toInt();
     reply->deleteLater();
     cardsIDManager->deleteLater();
@@ -336,13 +334,40 @@ void RestDLL::accountIdSlot(QNetworkReply *reply)
     qDebug()<<"account id set to->"<<accountID;
     reply->deleteLater();
     accountManager->deleteLater();
-    qDebug()<<"account id set to->"<<accountID;
 }
 
 int RestDLL::getAccountID() const
 {
     return accountID;
 }
+
+void RestDLL::nosto(QString amount)
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("amount", amount);
+
+    QString site_url="http://localhost:3000/account/"+QString::number(accountID);
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    nostoManager = new QNetworkAccessManager(this);
+    connect(nostoManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(nostoSlot(QNetworkReply*)));
+
+    reply = nostoManager->post(request, QJsonDocument(jsonObj).toJson());
+
+}
+
+void RestDLL::nostoSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    qDebug()<<response_data;
+
+    reply->deleteLater();
+    nostoManager->deleteLater();
+
+}
+
 
 
 void RestDLL::checkPin(QString pincode)
@@ -355,8 +380,8 @@ void RestDLL::checkPin(QString pincode)
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     loginManager = new QNetworkAccessManager(this);
-    connect(loginManager, SIGNAL(finished(QNetworkReply*))
-            , this, SLOT(loginSlot(QNetworkReply*)));
+    connect(loginManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(loginSlot(QNetworkReply*)));
 
     reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
 }
