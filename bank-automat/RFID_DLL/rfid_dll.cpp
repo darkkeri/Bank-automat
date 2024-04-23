@@ -41,6 +41,7 @@ void RFID_DLL::Read_Data()
             QString originalCard = COMPORT->readAll();
             QString cardNumber = originalCard.sliced(3, 9);
             emit signalCard(cardNumber);
+
             qDebug()<<"DLL toimii myös -> "<<cardNumber;
         }
     }

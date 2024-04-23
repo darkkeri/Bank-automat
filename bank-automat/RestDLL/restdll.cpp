@@ -38,7 +38,7 @@ void RestDLL::setupGetConnection(int switchCase)
 {
     qDebug()<<"start of monsteri account id set to->"<<accountID;
     qDebug()<<"REST API: setupGetConnection ran";
-    QString urlAddress = "/logs/";
+    QString urlAddress;
     QString stringID;
     qDebug()<<"before switch, account id set to->"<<accountID;
     switch (switchCase){
@@ -58,14 +58,6 @@ void RestDLL::setupGetConnection(int switchCase)
         //ACCOUNT TIEDOT idAccountin perusteella
         urlAddress = "/account/";
         stringID = QString::number(accountID);      //getAccount
-        if(accountID == 0) stringID="";
-        break;
-    case 4:
-        //ACCOUNTIN balance sarake idAccountin perusteella
-        qDebug()<<"monsteri account: "<<accountID;
-        urlAddress = "/account/";
-        stringID = QString::number(accountID);      //getBalance
-        qDebug()<<"monsteri account on nyt: "<<accountID;
         if(accountID == 0) stringID="";
         break;
     case 5:
@@ -101,11 +93,6 @@ void RestDLL::setupGetConnection(int switchCase)
                 this, SLOT(getAccountSlot(QNetworkReply*)));
         qDebug()<<"getAccount!";
         break;
-    case 4:
-        connect(getManager, SIGNAL(finished(QNetworkReply*)),
-                this, SLOT(getBalanceSlot(QNetworkReply*)));
-        qDebug()<<"getBalance!";
-        break;
     case 5:
         connect(getManager, SIGNAL(finished(QNetworkReply*)),
                 this, SLOT(multicardCheckSlot(QNetworkReply*)));
@@ -117,13 +104,21 @@ void RestDLL::setupGetConnection(int switchCase)
     }
     reply = getManager->get(request);
 }
-
-
-void RestDLL::getBalanceSlot(QNetworkReply *reply)      //Kutsutaan setupgetconnection(4)
+void RestDLL::getBalance()
+{
+    QString stringID = QString::number(accountID);
+    QString site_url=Environment::getBaseURL()+"/account/"+stringID;
+    QNetworkRequest request((site_url));
+    qDebug()<<site_url;
+    balanceManager = new QNetworkAccessManager(this);
+    connect(balanceManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(getBalanceSlot(QNetworkReply*)));
+    reply = balanceManager->get(request);
+}
+void RestDLL::getBalanceSlot(QNetworkReply *reply)
 {
     qDebug()<<"GETBALANCESSA!";
     response_data=reply->readAll();
-    qDebug()<<response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonObject json_obj = json_doc.object();
     QString balance=json_obj["balance"].toString();
@@ -132,28 +127,73 @@ void RestDLL::getBalanceSlot(QNetworkReply *reply)      //Kutsutaan setupgetconn
     setAccountBalance(balance.toInt());
     emit getBalanceSignal(balance);
     reply->deleteLater();
-    getManager->deleteLater();
-
+    balanceManager->deleteLater();
 }
-
-
-
 
 void RestDLL::checkBalance(int id) // WIP tuleva saldon miinustus systeemi noston tapahtuessa
 {                                   // (jos on järkevää toteuttaa proseduurin sijaan)
     qDebug()<<"fasfa";
 
 }
+void RestDLL::getCreditlimit(){
+    QString stringID = QString::number(cardsID);
+    QString site_url=Environment::getBaseURL()+"/cards/"+stringID;
+    QNetworkRequest request((site_url));
+    qDebug()<<site_url;
+    creditlimitManager = new QNetworkAccessManager(this);
+    connect(creditlimitManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(getCreditlimitSlot(QNetworkReply*)));
+    reply = creditlimitManager->get(request);
+}
+void RestDLL::getCreditlimitSlot(QNetworkReply *reply)
+{
+    qDebug()<<"GETCREDITLIMITSLOTISA";
+    response_data=reply->readAll();
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonObject json_obj = json_doc.object();
+    QString creditlimit=json_obj["creditlimit"].toString();
+    qDebug()<<creditlimit;
+    //get qstring menee get_handleriin exessä:
+    emit getCreditlimitSignal(creditlimit);
+    reply->deleteLater();
+    creditlimitManager->deleteLater();
+}
 
+void RestDLL::getTries()
+{
+    QString stringID = QString::number(cardsID);
+    QString site_url=Environment::getBaseURL()+"/cards/"+stringID;
+    QNetworkRequest request((site_url));
+    qDebug()<<site_url;
+    triesManager = new QNetworkAccessManager(this);
+    connect(triesManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(getTriesSlot(QNetworkReply*)));
+    reply = triesManager->get(request);
+}
+void RestDLL::getTriesSlot(QNetworkReply *reply)
+{
+    qDebug()<<"GetTriesSlot!";
+    response_data=reply->readAll();
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonObject json_obj = json_doc.object();
+    QString tries=QString::number(json_obj["tries"].toInt());
+    qDebug()<<tries;
+    //get qstring menee get_handleriin exessä:
+    emit getTriesSignal(tries);
+    reply->deleteLater();
+    triesManager->deleteLater();
+}
 
 void RestDLL::getCardsSlot(QNetworkReply *reply)
 {
+
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonObject json_obj = json_doc.object();
     QString cardData=json_obj["cardnumber"].toString()+" | "+json_obj["pincode"].toString()+" | "+json_obj["type"].toString()+
-                       " | "+QString::number(json_obj["tries"].toInt())+" | "+QString::number(json_obj["active"].toInt());
+                       " | "+QString::number(json_obj["tries"].toInt())+" | "+QString::number(json_obj["active"].toInt())+
+                       " | "+json_obj["creditlimit"].toString();
 
     qDebug()<<cardData;
     //get qstring menee get_handleriin exessä:
@@ -207,9 +247,13 @@ void RestDLL::getLogsSlot(QNetworkReply *reply){
 
 
 
-void RestDLL::postLogs(QString date, QString event, float amount, int idAccount) //kutsutaan mainista
+void RestDLL::postLogs(QString eventname, float amount, int idAccount) //kutsutaan mainista
 {                                                                               // WIP: uuden login postaaminen tietokantaan
     QJsonObject jsonObj;
+    QString time_format = "yyyy-MM-dd HH:mm:ss";
+    QDateTime a = QDateTime::currentDateTime();
+    QString date = a.toString(time_format);
+    qDebug()<<date;
     jsonObj.insert(columnName[1],"2023-04-01 09:03:00");
     jsonObj.insert(columnName[2],"testinges");
     jsonObj.insert(columnName[3],"20.45");
