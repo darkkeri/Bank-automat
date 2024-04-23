@@ -130,11 +130,6 @@ void RestDLL::getBalanceSlot(QNetworkReply *reply)
     balanceManager->deleteLater();
 }
 
-void RestDLL::checkBalance(int id) // WIP tuleva saldon miinustus systeemi noston tapahtuessa
-{                                   // (jos on järkevää toteuttaa proseduurin sijaan)
-    qDebug()<<"fasfa";
-
-}
 void RestDLL::getCreditlimit(){
     QString stringID = QString::number(cardsID);
     QString site_url=Environment::getBaseURL()+"/cards/"+stringID;
@@ -153,7 +148,6 @@ void RestDLL::getCreditlimitSlot(QNetworkReply *reply)
     QJsonObject json_obj = json_doc.object();
     QString creditlimit=json_obj["creditlimit"].toString();
     qDebug()<<creditlimit;
-    //get qstring menee get_handleriin exessä:
     emit getCreditlimitSignal(creditlimit);
     reply->deleteLater();
     creditlimitManager->deleteLater();
@@ -172,13 +166,14 @@ void RestDLL::getTries()
 }
 void RestDLL::getTriesSlot(QNetworkReply *reply)
 {
+
     qDebug()<<"GetTriesSlot!";
     response_data=reply->readAll();
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonObject json_obj = json_doc.object();
     QString tries=QString::number(json_obj["tries"].toInt());
     qDebug()<<tries;
-    //get qstring menee get_handleriin exessä:
+
     emit getTriesSignal(tries);
     reply->deleteLater();
     triesManager->deleteLater();
@@ -244,42 +239,9 @@ void RestDLL::getLogsSlot(QNetworkReply *reply){
     getManager->deleteLater();
 }
 
-
-
-
-void RestDLL::postLogs(QString eventname, float amount, int idAccount) //kutsutaan mainista
-{                                                                               // WIP: uuden login postaaminen tietokantaan
-    QJsonObject jsonObj;
-    QString time_format = "yyyy-MM-dd HH:mm:ss";
-    QDateTime a = QDateTime::currentDateTime();
-    QString date = a.toString(time_format);
-    qDebug()<<date;
-    jsonObj.insert(columnName[1],"2023-04-01 09:03:00");
-    jsonObj.insert(columnName[2],"testinges");
-    jsonObj.insert(columnName[3],"20.45");
-    jsonObj.insert(columnName[4],2);
-    QString site_url=Environment::getBaseURL()+"/logs";
-    QNetworkRequest request((site_url));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    postManager = new QNetworkAccessManager(this);
-    connect(postManager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(postSlot(QNetworkReply*)));
-    reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
-}
-
 void RestDLL::setAccountBalance(int newAccountBalance)
 {
     accountBalance = newAccountBalance;
-}
-
-void RestDLL::postSlot(QNetworkReply *reply)    //turha, malli
-{
-    response_data=reply->readAll();
-    qDebug()<<response_data;
-    emit getResult(response_data);
-    reply->deleteLater();
-    postManager->deleteLater();
 }
 
 void RestDLL::getAccountSlot(QNetworkReply *reply)
@@ -295,7 +257,6 @@ void RestDLL::getAccountSlot(QNetworkReply *reply)
     QString accountData = json_obj["balance"].toString()+" | "+json_obj["accountnumber"].toString()+
                           " | "+QString::number(json_obj["accounttype"].toInt());
     qDebug()<<accountData;
-    //get qstring menee get_handleriin exessä:
     emit getAccountSignal(accountData);
 
     reply->deleteLater();

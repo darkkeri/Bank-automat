@@ -7,8 +7,7 @@
 #include <QJsonDocument>
 #include <QDebug>
 #include <QMessageBox>
-// #include <QSqlQuery>
-// #include <QSqlDatabase>
+
 
 class RESTDLL_EXPORT RestDLL : public QObject
 {
@@ -46,21 +45,17 @@ public slots:
     void checkPin(QString pincode);
     void getCardID(QString cardnumber);
     void accountIDbyType(QString accountType);
-    void checkBalance(int id);
 
     void getCreditlimit();
     void getTries();
 private slots:
     void getBalanceSlot(QNetworkReply *reply);
 
-    void postSlot(QNetworkReply *reply);
     void getCardsSlot(QNetworkReply *reply);
     void loginSlot(QNetworkReply *reply);
     void getAccountSlot(QNetworkReply *reply);
     void multicardCheckSlot(QNetworkReply *reply);
     void getLogsSlot(QNetworkReply *reply);
-
-    void postLogs(QString eventname, float amount, int idAccount);
 
     void cardsIdSlot(QNetworkReply *reply);
     void accountIdSlot(QNetworkReply *reply);
@@ -75,7 +70,7 @@ private:
     int accountID = 0;
     int cardsID = 0;
     int accountBalance;
-
+    int triesamount;
 
     QNetworkAccessManager *getManager;
     QNetworkAccessManager *postManager;
