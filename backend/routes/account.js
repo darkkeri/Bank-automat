@@ -63,4 +63,16 @@ router.get('/:accountN', function(request, response){
     });
 });
 
+router.post('/:idAccount', function(request, response){
+    account.nosto(request.body.idAccount, request.body.amount, function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else{
+            console.log(result);
+            response.json(result);
+        }
+    });
+});
+
 module.exports = router;
