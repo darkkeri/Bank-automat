@@ -20,6 +20,7 @@ public:
     explicit bankwindow(QWidget *parent = nullptr);
     ~bankwindow();
     void openWindow();
+    void setCardType(QString);
 
 private slots:
     void on_Button1_clicked();
@@ -36,7 +37,8 @@ private slots:
 
     void logsHandler(QString rawlogs);
     void balanceHandler(QString);
-
+    void cardsHandler(QString);
+    void withdrawHandler(QString);
     void on_pushButton_clicked();
 
 private:
@@ -45,6 +47,7 @@ private:
     RestDLL *ptr_restb;
 
     short buttonMode = 0; //Changes mode of mainmenu
+    QString cardType;
 
     //Logs editor
     int amountOfLogs;

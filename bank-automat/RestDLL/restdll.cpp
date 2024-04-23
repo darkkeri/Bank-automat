@@ -145,12 +145,15 @@ void RestDLL::checkBalance(int id) // WIP tuleva saldon miinustus systeemi nosto
 
 void RestDLL::getCardsSlot(QNetworkReply *reply)
 {
-    qDebug()<<"getCardsSlot ran: "+response_data;
     response_data=reply->readAll();
+    qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonObject json_obj = json_doc.object();
     QString cardData=json_obj["cardnumber"].toString()+" | "+json_obj["pincode"].toString()+" | "+json_obj["type"].toString()+
-                       " | "+QString::number(json_obj["tries"].toInt())+" | "+QString::number(json_obj["active"].toInt());
+                       " | "+QString::number(json_obj["tries"].toInt())+" | "+QString::number(json_obj["active"].toInt())+
+                       " | "+json_obj["creditlimit"].toString();
+
+    qDebug()<<cardData;
     //get qstring menee get_handleriin exessä:
     emit getCardsSignal(cardData);
 
@@ -332,6 +335,34 @@ int RestDLL::getAccountID() const
     return accountID;
 }
 
+void RestDLL::nosto(QString amount)
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("amount", amount);
+
+    QString site_url="http://localhost:3000/account/"+QString::number(accountID);
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    nostoManager = new QNetworkAccessManager(this);
+    connect(nostoManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(nostoSlot(QNetworkReply*)));
+
+    reply = nostoManager->post(request, QJsonDocument(jsonObj).toJson());
+
+}
+
+void RestDLL::nostoSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    qDebug()<<response_data;
+
+    reply->deleteLater();
+    nostoManager->deleteLater();
+
+}
+
+
 
 void RestDLL::checkPin(QString pincode)
 {
@@ -343,8 +374,8 @@ void RestDLL::checkPin(QString pincode)
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     loginManager = new QNetworkAccessManager(this);
-    connect(loginManager, SIGNAL(finished(QNetworkReply*))
-            , this, SLOT(loginSlot(QNetworkReply*)));
+    connect(loginManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(loginSlot(QNetworkReply*)));
 
     reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
 }

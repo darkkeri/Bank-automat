@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ptr_rest,SIGNAL(pinCheckSignal(bool)), this,SLOT(pinCheckHandler(bool)));
     connect(ptr_rest,SIGNAL(cardTypeSignal(QString)), this,SLOT(CardCheckHandler(QString)));
 
+
     ptr_rfid->Read_Data();//Setup for RFID
 }
 
@@ -95,6 +96,7 @@ void MainWindow::pinCheckHandler(bool pinCheck)
     qDebug()<<"pincheckhandler ran";
     if(pinCheck == true){
         qDebug()<< "pin is correct";
+        ptr_pinui->close();
         if(cardType == "multicard") {
             ui->startStatuslabel->setText("Valitse kaksoiskortin tila");
             ui->creditButton->setVisible(true);
@@ -117,12 +119,14 @@ void MainWindow::CardCheckHandler(QString checkresult)
 {
     qDebug()<< "cardcheckHandler ran";
     cardType = checkresult;
+    secWindow->setCardType(cardType);
 }
 
 void MainWindow::on_debitButton_clicked() //credit and debit maybe could be one single function with manual connections?
 {
     qDebug()<< "multicard debit chosen";
     cardType = "debit";
+    secWindow->setCardType(cardType);
     ptr_rest->accountIDbyType("0");
     secondViewOpen();
 }
@@ -131,6 +135,7 @@ void MainWindow::on_creditButton_clicked()
 {
     qDebug()<< "multicard credit chosen";
     cardType = "credit";
+    secWindow->setCardType(cardType);
     ptr_rest->accountIDbyType("1");
     secondViewOpen();
 }
@@ -154,7 +159,7 @@ void MainWindow::on_btnLogin_clicked() //TEST
 {
     //QString cardsID = ui->cardnumberLineEdit->text();
     //QString accountType = ui->pincodeLineEdit->text();
-    ptr_rest->accountIDbyType("1");
+    ptr_rest->nosto("100");
 
 
 }

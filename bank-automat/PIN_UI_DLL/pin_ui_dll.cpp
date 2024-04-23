@@ -31,6 +31,7 @@ void PIN_UI_DLL::handleClick()
 {
     QString number = ui->lineEdit->text();
     emit sendNumberToMainWindow(number);
+    qDebug("handleClick ran");
     //number.toUShort()
 }
 
@@ -47,6 +48,8 @@ void PIN_UI_DLL::numberClickedHandler()
     ui->lineEdit->setEchoMode(QLineEdit::Password);
     timer->start(10000);
 }
+
+
 
 
 
