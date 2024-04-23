@@ -15,7 +15,9 @@ class RFID_DLL_EXPORT RFID_DLL : public QObject
     Q_OBJECT
 public:
     RFID_DLL(QObject *parent);
-    void Read_Data();
+
+public slots:
+void Read_Data();
 
 private:
     QSerialPort* COMPORT;
