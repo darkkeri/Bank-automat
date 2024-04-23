@@ -6,6 +6,7 @@
 RFID_DLL::RFID_DLL(QObject *parent):QObject(parent)
 {
     COMPORT = new QSerialPort();
+
     COMPORT->setPortName("COM3");
 
     COMPORT->setBaudRate(QSerialPort::BaudRate::Baud9600);

@@ -41,6 +41,7 @@ public slots:
 
     void setupGetConnection(int switchCase);
     void checkPin(QString pincode);
+    void nosto(QString amount);
     void getCardID(QString cardnumber);
     void accountIDbyType(QString accountType);
     void checkBalance(int id);
@@ -53,6 +54,7 @@ private slots:
     void getAccountSlot(QNetworkReply *reply);
     void multicardCheckSlot(QNetworkReply *reply);
     void getLogsSlot(QNetworkReply *reply);
+    void nostoSlot(QNetworkReply *reply);
 
     void postLogs(QString date, QString event, float amount, int idAccount);
 
@@ -74,6 +76,7 @@ private:
     QNetworkAccessManager *loginManager;
     QNetworkAccessManager *accountManager;
     QNetworkAccessManager *cardsIDManager;
+    QNetworkAccessManager *nostoManager;
 
     QNetworkReply *reply;
     QByteArray response_data;
@@ -82,7 +85,6 @@ private:
     QMessageBox msgBox;
 
     QString columnName[10];
-
 
 };
 

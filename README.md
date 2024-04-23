@@ -8,3 +8,4 @@ npm install dotenv
 npm install morgan
 npm install jsonwebtoken
 luodaan uusi ".env" niminen tiedosto ja kopioidaan env_examplestä sisältö siihen
+/play trololo

@@ -335,6 +335,35 @@ int RestDLL::getAccountID() const
     return accountID;
 }
 
+void RestDLL::nosto(QString amount)
+{
+    accountID = 3;
+    QJsonObject jsonObj;
+    jsonObj.insert("amount", amount);
+
+    QString site_url="http://localhost:3000/account/"+QString::number(accountID);
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    nostoManager = new QNetworkAccessManager(this);
+    connect(nostoManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(nostoSlot(QNetworkReply*)));
+
+    reply = nostoManager->post(request, QJsonDocument(jsonObj).toJson());
+
+}
+
+void RestDLL::nostoSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    qDebug()<<response_data;
+
+    reply->deleteLater();
+    nostoManager->deleteLater();
+
+}
+
+
 
 void RestDLL::checkPin(QString pincode)
 {
@@ -346,8 +375,8 @@ void RestDLL::checkPin(QString pincode)
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     loginManager = new QNetworkAccessManager(this);
-    connect(loginManager, SIGNAL(finished(QNetworkReply*))
-            , this, SLOT(loginSlot(QNetworkReply*)));
+    connect(loginManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(loginSlot(QNetworkReply*)));
 
     reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
 }
