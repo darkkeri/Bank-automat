@@ -96,6 +96,7 @@ void MainWindow::pinCheckHandler(bool pinCheck)
     qDebug()<<"pincheckhandler ran";
     if(pinCheck == true){
         qDebug()<< "pin is correct";
+        ptr_pinui->close();
         if(cardType == "multicard") {
             ui->startStatuslabel->setText("Valitse kaksoiskortin tila");
             ui->creditButton->setVisible(true);
