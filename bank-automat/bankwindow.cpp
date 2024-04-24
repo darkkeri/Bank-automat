@@ -23,6 +23,7 @@ bankwindow::~bankwindow()
 
 void bankwindow::on_Button1_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         modeChange(1);
@@ -54,6 +55,7 @@ void bankwindow::on_Button1_clicked()
 
 void bankwindow::on_Button2_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         ptr_restb->setupGetConnection(1);
@@ -89,6 +91,7 @@ void bankwindow::on_Button2_clicked()
 
 void bankwindow::on_Button3_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         ptr_restb->setupGetConnection(4); //getBalance
@@ -123,6 +126,7 @@ void bankwindow::on_Button3_clicked()
 
 void bankwindow::on_Button4_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         break;
@@ -153,6 +157,7 @@ void bankwindow::on_Button4_clicked()
 
 void bankwindow::on_Button5_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         break;
@@ -188,6 +193,7 @@ void bankwindow::on_Button5_clicked()
 
 void bankwindow::on_Button6_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         closeWindow();

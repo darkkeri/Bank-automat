@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->debitButton->setVisible(false);
 
     ptr_rfid = new RFID_DLL(this);
-    ptr_pinui = new PIN_UI_DLL(this);
+    ptr_pinui = new PINUIDLL(this);
     ptr_rest = RestDLL::getInstance();
     secWindow = new bankwindow(this);
 
@@ -114,6 +114,8 @@ void MainWindow::pinCheckHandler(bool pinCheck)
         }
     } else {
         qDebug()<< "pin is incorrect";
+        ptr_pinui->wrongPin();
+        //pinmsg.setText("Pin-koodi syötetty väärin kolme kertaa. Kortti on lukittu. Ota yhteyttä pankkiisi");
         //Give some type of error message in PIN_UI and let the user try again (No idea how to do this, need to test)
         ptr_pinui->exec();
     }
@@ -151,11 +153,6 @@ void MainWindow::restart()
     ui->startStatuslabel->setText("Syötä pankkikortti kortinlukijaan");
     ui->creditButton->setVisible(false);
     ui->debitButton->setVisible(false);
-}
-
-void MainWindow::bCloseTimerStart()
-{
-
 }
 
 void MainWindow::on_OFFButton_clicked()
