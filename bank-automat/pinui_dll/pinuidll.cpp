@@ -1,9 +1,11 @@
-#include "pin_ui_dll.h"
+#include "pinuidll.h"
+#include "ui_pinuidll.h"
 
-PIN_UI_DLL::PIN_UI_DLL(QWidget *parent):
-    QDialog(parent),
-    ui(new Ui::pinUI)
+PINUIDLL::PINUIDLL(QWidget *parent)
+    : QDialog(parent),
+    ui(new Ui::PINUIDLL)
 {
+
     ui->setupUi(this);
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(handleClick()));
     connect(ui->btn_0,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
@@ -17,39 +19,54 @@ PIN_UI_DLL::PIN_UI_DLL(QWidget *parent):
     connect(ui->btn_8,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btn_9,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btn_clear,SIGNAL(clicked(bool)),this,SLOT(clearClicked()));
+
+    pinmsg = new QMessageBox(this);
     timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &QWidget::close);
-    timer->start(10000);
+    connect(timer,SIGNAL(timeout()), this,SLOT(closePin()), Qt::UniqueConnection);
 }
 
-PIN_UI_DLL::~PIN_UI_DLL()
+PINUIDLL::~PINUIDLL()
 {
     delete ui;
 }
 
-void PIN_UI_DLL::handleClick()
+void PINUIDLL::startTimer()
+{
+    timer->start(15000);
+}
+
+void PINUIDLL::wrongPin()
+{
+    pinmsg->setText("PIN-koodi meni vaarin. Yrityksia jaljella: ");
+    pinmsg->setInformativeText("Yrityksia jaljella: ");
+    pinmsg->setText("Yrityksia jaljella: ");
+    pinmsg->exec();
+}
+
+void PINUIDLL::handleClick()
 {
     QString number = ui->lineEdit->text();
     emit sendNumberToMainWindow(number);
-    qDebug("handleClick ran");
+    ui->lineEdit->clear();
     //number.toUShort()
 }
 
-void PIN_UI_DLL::clearClicked()
+void PINUIDLL::clearClicked()
 {
     ui->lineEdit->clear();
+    startTimer();
 }
 
-void PIN_UI_DLL::numberClickedHandler()
+void PINUIDLL::numberClickedHandler()
 {
     QPushButton *button = (QPushButton *) sender();
     QString number = button->text();
     ui->lineEdit->setText(ui->lineEdit->text() + number);
     ui->lineEdit->setEchoMode(QLineEdit::Password);
-    timer->start(10000);
+    startTimer();
 }
 
-
-
-
-
+void PINUIDLL::closePin()
+{
+    close();
+}
