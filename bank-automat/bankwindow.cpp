@@ -89,7 +89,7 @@ void bankwindow::on_Button3_clicked()
 {
     switch(buttonMode){
     case 0:
-        ptr_restb->setupGetConnection(4); //getBalance
+        ptr_restb->getBalance(); //getBalance
         if(cardType == "credit"){
             ptr_restb->setupGetConnection(2); //getCards
         }

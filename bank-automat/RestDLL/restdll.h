@@ -70,8 +70,8 @@ private:
     static RestDLL* instance;
     QString name;
     //
-    int accountID = 0;
-    int cardsID = 0;
+    int accountID = 1;
+    int cardsID = 1;
     int accountBalance;
     int triesamount;
 
