@@ -67,11 +67,15 @@ router.post('/:idAccount', function(request, response){
     account.nosto(request.params.idAccount, request.body.amount, function(err, result){
         if(err){
             response.send(err);
-            response.json(false);
         }
         else{
-            console.log(result);
-            response.json(true);
+            if(result.affectedRows == 1){
+                console.log(result);
+                response.json(true);
+            }
+            else{
+                response.json(false);
+            }
         }
     });
 });

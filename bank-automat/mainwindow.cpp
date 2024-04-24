@@ -13,8 +13,6 @@ MainWindow::MainWindow(QWidget *parent)
     ptr_pinui = new PIN_UI_DLL(this);
     ptr_rest = RestDLL::getInstance();
     secWindow = new bankwindow(this);
-
-
     //TEST
     connect(ui->cardSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
     connect(ui->pinSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
@@ -27,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ptr_rfid->Read_Data();//Setup for RFID
+
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -161,6 +163,4 @@ void MainWindow::on_btnLogin_clicked() //TEST
     //QString accountType = ui->pincodeLineEdit->text();
     ptr_rest->nosto("100");
 
-
 }
-

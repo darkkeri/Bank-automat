@@ -38,6 +38,7 @@ private slots:
     void logsHandler(QString rawlogs);
     void balanceHandler(QString);
     void cardsHandler(QString);
+    void withdrawHandler(QString);
     void on_pushButton_clicked();
 
 private:
