@@ -1,25 +1,24 @@
-#ifndef PIN_UI_DLL_H
-#define PIN_UI_DLL_H
+#ifndef PINUI_DLL_H
+#define PINUI_DLL_H
 
+#include "pinuidll_global.h"
 #include <QDialog>
 #include <QDebug>
 #include <QTimer>
 #include <QLineEdit>
 #include <QPushButton>
 
-#include "PIN_UI_DLL_global.h"
-#include "ui_pinui.h"
-
 namespace Ui {
-class PIN_UI_DLL;
+class PINUI_DLL_EXPORT Pinui_dll;
+
 }
 
-class PIN_UI_DLL_EXPORT PIN_UI_DLL : public QDialog
+class PINUI_DLL_EXPORT Pinui_dll : public QDialog
 {
     Q_OBJECT
 public:
-    PIN_UI_DLL(QWidget *parent = nullptr);
-    ~PIN_UI_DLL();
+    explicit Pinui_dll(QWidget *parent = nullptr);
+    ~Pinui_dll();
 
 signals:
     void sendNumberToMainWindow(QString);
@@ -30,8 +29,8 @@ private slots:
     void numberClickedHandler();
 
 private:
-    Ui::pinUI *ui;
+    Ui::Pinui_dll *ui;
     QTimer *timer;
 };
 
-#endif // PIN_UI_DLL_H
+#endif // PINUI_DLL_H

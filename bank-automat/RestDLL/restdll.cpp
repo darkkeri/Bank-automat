@@ -423,6 +423,7 @@ void RestDLL::loginSlot(QNetworkReply *reply)
 
         }
         else {
+            emit pinCheckSignal(false);
             //Tähän false signaali mainiin
             //msgBox.setText("Väärä pinkoodi");
             //msgBox.exec();

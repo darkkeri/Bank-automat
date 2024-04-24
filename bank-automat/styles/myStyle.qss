@@ -33,3 +33,7 @@ border-radius: 6px;
 font-size:20px;
 }
 */
+
+QMessageBox {
+background-color: purple;
+}

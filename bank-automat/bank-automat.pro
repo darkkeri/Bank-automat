@@ -51,8 +51,9 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/RestDLL/build/debug/ -l
 INCLUDEPATH += $$PWD/RestDLL
 DEPENDPATH += $$PWD/RestDLL
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/PIN_UI_DLL/build/release/ -lPIN_UI_DLL
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/PIN_UI_DLL/build/debug/ -lPIN_UI_DLL
 
-INCLUDEPATH += $$PWD/PIN_UI_DLL
-DEPENDPATH += $$PWD/PIN_UI_DLL
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/pinui_dll/build/release/ -lpinui_dll
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/pinui_dll/build/debug/ -lpinui_dll
+
+INCLUDEPATH += $$PWD/pinui_dll
+DEPENDPATH += $$PWD/pinui_dll
