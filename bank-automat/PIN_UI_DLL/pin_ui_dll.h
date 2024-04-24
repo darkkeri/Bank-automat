@@ -20,14 +20,19 @@ class PIN_UI_DLL_EXPORT PIN_UI_DLL : public QDialog
 public:
     PIN_UI_DLL(QWidget *parent = nullptr);
     ~PIN_UI_DLL();
+    void startTimer();
 
 signals:
     void sendNumberToMainWindow(QString);
+
+public slots:
+    void closePin();
 
 private slots:
     void handleClick();
     void clearClicked();
     void numberClickedHandler();
+
 
 private:
     Ui::pinUI *ui;

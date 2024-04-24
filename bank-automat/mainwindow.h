@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QDebug>
 #include <QThread>
+#include <QTimer>
 #include "bankwindow.h"
 #include "RestDLL/restdll.h"
 #include "RFID_DLL/rfid_dll.h"
@@ -49,6 +50,7 @@ private slots:
     void pinCheckHandler(bool);
     void CardCheckHandler(QString);
     void restart();
+    void bCloseTimerStart();
 
     void on_debitButton_clicked();
 

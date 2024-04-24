@@ -18,13 +18,18 @@ PIN_UI_DLL::PIN_UI_DLL(QWidget *parent):
     connect(ui->btn_9,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btn_clear,SIGNAL(clicked(bool)),this,SLOT(clearClicked()));
     timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &QWidget::close);
-    timer->start(10000);
+    //connect(timer, &QTimer::timeout, this, &QWidget::close);
+    connect(timer,SIGNAL(timeout()), this,SLOT(closePin()), Qt::UniqueConnection);
 }
 
 PIN_UI_DLL::~PIN_UI_DLL()
 {
     delete ui;
+}
+
+void PIN_UI_DLL::startTimer()
+{
+    timer->start(15000);
 }
 
 void PIN_UI_DLL::handleClick()
@@ -38,6 +43,7 @@ void PIN_UI_DLL::handleClick()
 void PIN_UI_DLL::clearClicked()
 {
     ui->lineEdit->clear();
+    startTimer();
 }
 
 void PIN_UI_DLL::numberClickedHandler()
@@ -46,7 +52,12 @@ void PIN_UI_DLL::numberClickedHandler()
     QString number = button->text();
     ui->lineEdit->setText(ui->lineEdit->text() + number);
     ui->lineEdit->setEchoMode(QLineEdit::Password);
-    timer->start(10000);
+    startTimer();
+}
+
+void PIN_UI_DLL::closePin()
+{
+    close();
 }
 
 

@@ -12,6 +12,8 @@ bankwindow::bankwindow(QWidget *parent)
     connect(ptr_restb,SIGNAL(getBalanceSignal(QString)), this,SLOT(balanceHandler(QString)));
     connect(ptr_restb,SIGNAL(getCardsSignal(QString)), this,SLOT(cardsHandler(QString)));
     connect(ptr_restb,SIGNAL(getWithdrawSignal(QString)), this,SLOT(withdrawHandler(QString)));
+
+    connect(&closeTimer,SIGNAL(timeout()), this,SLOT(closeWindow()), Qt::UniqueConnection);
 }
 
 bankwindow::~bankwindow()
@@ -365,10 +367,19 @@ void bankwindow::manageLogTable(short modifier)
         }
     }
 
+void bankwindow::startTimer()
+{
+    closeTimer.start(30000);
+    qDebug()<<"startTimer ran";
+}
+
 
 void bankwindow::openWindow(){
     show();
     modeChange(0);
+    startTimer();
+    qDebug()<<"openwindow ran";
+
 }
 
 void bankwindow::logsHandler(QString rawlogs){
@@ -483,4 +494,10 @@ void bankwindow::on_pushButton_clicked() //DELETE THIS
     ui->logsTableView->setModel(table_model);
 }
 
+
+
+void bankwindow::on_pushButton_2_clicked()
+{
+    qDebug()<<closeTimer.remainingTime();
+}
 

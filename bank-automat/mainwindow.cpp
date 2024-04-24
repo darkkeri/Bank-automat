@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ptr_rfid->Read_Data();//Setup for RFID
+
 }
 
 MainWindow::~MainWindow()
@@ -63,6 +64,8 @@ void MainWindow::secondViewOpen(){
     if (cardSignal == true && pinSignal == true){
         hide();
         if(bviewflag == false){
+            secWindow->startTimer();
+            bviewflag = true;
             secWindow->exec();
         } else {
             secWindow->openWindow();
@@ -82,6 +85,7 @@ void MainWindow::cardHandler(QString& card)
         //*******************************************
 
         ptr_rest->getCardID(card);
+        ptr_pinui->startTimer();
         ptr_pinui->exec();
 }
 
@@ -96,7 +100,7 @@ void MainWindow::pinCheckHandler(bool pinCheck)
     qDebug()<<"pincheckhandler ran";
     if(pinCheck == true){
         qDebug()<< "pin is correct";
-        ptr_pinui->close();
+        ptr_pinui->closePin();
         if(cardType == "multicard") {
             ui->startStatuslabel->setText("Valitse kaksoiskortin tila");
             ui->creditButton->setVisible(true);
@@ -147,6 +151,11 @@ void MainWindow::restart()
     ui->startStatuslabel->setText("Syötä pankkikortti kortinlukijaan");
     ui->creditButton->setVisible(false);
     ui->debitButton->setVisible(false);
+}
+
+void MainWindow::bCloseTimerStart()
+{
+
 }
 
 void MainWindow::on_OFFButton_clicked()
