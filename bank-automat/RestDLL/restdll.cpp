@@ -37,7 +37,8 @@ void RestDLL::setName(const QString &value)
 void RestDLL::setupGetConnection(int switchCase)
 {
     qDebug()<<"setupGetConnection ran";
-    QString urlAddress = "/logs/";
+    QString urlAddress;
+
     QString stringID;
 
     switch (switchCase){
@@ -59,12 +60,6 @@ void RestDLL::setupGetConnection(int switchCase)
         stringID = QString::number(accountID);      //getAccount
         if(accountID == 0) stringID="";
         break;
-    case 4:
-        //ACCOUNTIN balance sarake idAccountin perusteella
-        urlAddress = "/account/";
-        stringID = QString::number(accountID);      //getBalance
-        if(accountID == 0) stringID="";
-        break;
     case 5:
         //CARDSin tyypin tarkistus: onko multicard (palauttaa bool)
         urlAddress = "/cards/";
@@ -77,6 +72,9 @@ void RestDLL::setupGetConnection(int switchCase)
     QString site_url=Environment::getBaseURL()+urlAddress+stringID;
     qDebug()<<site_url;
     QNetworkRequest request((site_url));
+    QByteArray myToken="Bearer "+webToken;
+    request.setRawHeader(QByteArray("Authorization"),(myToken));
+
     // hasu weebtoken??!?!?!?
     // QByteArray myToken="Bearer "+webToken;
     // request.setRawHeader(QByteArray("Authorization"),(myToken));
@@ -98,11 +96,6 @@ void RestDLL::setupGetConnection(int switchCase)
                 this, SLOT(getAccountSlot(QNetworkReply*)));
         qDebug()<<"getAccount!";
         break;
-    case 4:
-        connect(getManager, SIGNAL(finished(QNetworkReply*)),
-                this, SLOT(getBalanceSlot(QNetworkReply*)));
-        qDebug()<<"getBalance!";
-        break;
     case 5:
         connect(getManager, SIGNAL(finished(QNetworkReply*)),
                 this, SLOT(multicardCheckSlot(QNetworkReply*)));
@@ -114,13 +107,23 @@ void RestDLL::setupGetConnection(int switchCase)
     }
     reply = getManager->get(request);
 }
-
-
-void RestDLL::getBalanceSlot(QNetworkReply *reply)      //Kutsutaan setupgetconnection(4)
+void RestDLL::getBalance()
+{
+    QString stringID = QString::number(accountID);
+    QString site_url=Environment::getBaseURL()+"/account/"+stringID;
+    QNetworkRequest request((site_url));
+    QByteArray myToken="Bearer "+webToken;
+    request.setRawHeader(QByteArray("Authorization"),(myToken));
+    qDebug()<<site_url;
+    balanceManager = new QNetworkAccessManager(this);
+    connect(balanceManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(getBalanceSlot(QNetworkReply*)));
+    reply = balanceManager->get(request);
+}
+void RestDLL::getBalanceSlot(QNetworkReply *reply)
 {
     qDebug()<<"getBalanceSlot ran";
     response_data=reply->readAll();
-    qDebug()<<response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonObject json_obj = json_doc.object();
     QString balance=json_obj["balance"].toString();
@@ -129,22 +132,66 @@ void RestDLL::getBalanceSlot(QNetworkReply *reply)      //Kutsutaan setupgetconn
     setAccountBalance(balance.toInt()); //Hmm.. en tiedä pitäskö muuttaa -Mikael
     emit getBalanceSignal(balance);
     reply->deleteLater();
-    getManager->deleteLater();
-
+    balanceManager->deleteLater();
 }
 
-
-
-
-void RestDLL::checkBalance(int id) // WIP tuleva saldon miinustus systeemi noston tapahtuessa
-{                                   // (jos on järkevää toteuttaa proseduurin sijaan)
-    qDebug()<<"fasfa";
-
+void RestDLL::getCreditlimit(){
+    QString stringID = QString::number(cardsID);
+    QString site_url=Environment::getBaseURL()+"/cards/"+stringID;
+    QNetworkRequest request((site_url));
+    QByteArray myToken="Bearer "+webToken;
+    request.setRawHeader(QByteArray("Authorization"),(myToken));
+    qDebug()<<site_url;
+    creditlimitManager = new QNetworkAccessManager(this);
+    connect(creditlimitManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(getCreditlimitSlot(QNetworkReply*)));
+    reply = creditlimitManager->get(request);
+}
+void RestDLL::getCreditlimitSlot(QNetworkReply *reply)
+{
+    qDebug()<<"GETCREDITLIMITSLOTISA";
+    response_data=reply->readAll();
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonObject json_obj = json_doc.object();
+    QString creditlimit=json_obj["creditlimit"].toString();
+    qDebug()<<creditlimit;
+    emit getCreditlimitSignal(creditlimit);
+    reply->deleteLater();
+    creditlimitManager->deleteLater();
 }
 
+void RestDLL::getTries()
+{
+    QString stringID = QString::number(cardsID);
+    QString site_url=Environment::getBaseURL()+"/cards/"+stringID;
+    QNetworkRequest request((site_url));
+    QByteArray myToken="Bearer "+webToken;
+    request.setRawHeader(QByteArray("Authorization"),(myToken));
+
+    qDebug()<<site_url;
+    triesManager = new QNetworkAccessManager(this);
+    connect(triesManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(getTriesSlot(QNetworkReply*)));
+    reply = triesManager->get(request);
+}
+void RestDLL::getTriesSlot(QNetworkReply *reply)
+{
+
+    qDebug()<<"GetTriesSlot!";
+    response_data=reply->readAll();
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonObject json_obj = json_doc.object();
+    QString tries=QString::number(json_obj["tries"].toInt());
+    qDebug()<<tries;
+
+    emit getTriesSignal(tries);
+    reply->deleteLater();
+    triesManager->deleteLater();
+}
 
 void RestDLL::getCardsSlot(QNetworkReply *reply)
 {
+
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
@@ -201,38 +248,9 @@ void RestDLL::getLogsSlot(QNetworkReply *reply){
     getManager->deleteLater();
 }
 
-
-
-
-void RestDLL::postLogs(QString date, QString event, float amount, int idAccount) //kutsutaan mainista
-{                                                                               // WIP: uuden login postaaminen tietokantaan
-    QJsonObject jsonObj;
-    jsonObj.insert(columnName[1],"2023-04-01 09:03:00");
-    jsonObj.insert(columnName[2],"testinges");
-    jsonObj.insert(columnName[3],"20.45");
-    jsonObj.insert(columnName[4],2);
-    QString site_url=Environment::getBaseURL()+"/logs";
-    QNetworkRequest request((site_url));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    postManager = new QNetworkAccessManager(this);
-    connect(postManager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(postSlot(QNetworkReply*)));
-    reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
-}
-
 void RestDLL::setAccountBalance(int newAccountBalance)
 {
     accountBalance = newAccountBalance;
-}
-
-void RestDLL::postSlot(QNetworkReply *reply)    //turha, malli
-{
-    response_data=reply->readAll();
-    qDebug()<<response_data;
-    emit getResult(response_data);
-    reply->deleteLater();
-    postManager->deleteLater();
 }
 
 void RestDLL::getAccountSlot(QNetworkReply *reply)
@@ -248,7 +266,6 @@ void RestDLL::getAccountSlot(QNetworkReply *reply)
     QString accountData = json_obj["balance"].toString()+" | "+json_obj["accountnumber"].toString()+
                           " | "+QString::number(json_obj["accounttype"].toInt());
     qDebug()<<accountData;
-    //get qstring menee get_handleriin exessä:
     emit getAccountSignal(accountData);
 
     reply->deleteLater();
@@ -268,14 +285,14 @@ void RestDLL::getCardID(QString cardnumber)
 {
     QJsonObject jsonObj;
     jsonObj.insert("cardnumber", cardnumber);
-
-
     QString site_url="http://localhost:3000/cardsId";
     QNetworkRequest request((site_url));
+    QByteArray myToken="Bearer "+webToken;
+    request.setRawHeader(QByteArray("Authorization"),(myToken));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     qDebug()<<"getCardID ran";
     cardsIDManager = new QNetworkAccessManager(this);
-    connect(cardsIDManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(cardsIdSlot(QNetworkReply*)));
+    connect(cardsIDManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(cardsIdSlot(QNetworkReply*)));
 
     reply = cardsIDManager->get(request, QJsonDocument(jsonObj).toJson());
 }
@@ -305,6 +322,8 @@ void RestDLL::accountIDbyType(QString accountType) //Gets accountid by cardID an
 
     QString site_url="http://localhost:3000/accountId";
     QNetworkRequest request((site_url));
+    QByteArray myToken="Bearer "+webToken;
+    request.setRawHeader(QByteArray("Authorization"),(myToken));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     accountManager = new QNetworkAccessManager(this);
@@ -342,6 +361,8 @@ void RestDLL::nosto(QString amount)
 
     QString site_url="http://localhost:3000/account/"+QString::number(accountID);
     QNetworkRequest request((site_url));
+    QByteArray myToken="Bearer "+webToken;
+    request.setRawHeader(QByteArray("Authorization"),(myToken));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     nostoManager = new QNetworkAccessManager(this);
@@ -372,6 +393,8 @@ void RestDLL::checkPin(QString pincode)
 
     QString site_url="http://localhost:3000/login";
     QNetworkRequest request((site_url));
+    QByteArray myToken="Bearer "+webToken;
+    request.setRawHeader(QByteArray("Authorization"),(myToken));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     loginManager = new QNetworkAccessManager(this);
     connect(loginManager, SIGNAL(finished(QNetworkReply*)),
