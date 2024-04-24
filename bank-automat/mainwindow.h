@@ -5,10 +5,13 @@
 #include <QObject>
 #include <QDebug>
 #include <QThread>
+#include <QTimer>
+#include <QMessageBox>
 #include "bankwindow.h"
 #include "RestDLL/restdll.h"
 #include "RFID_DLL/rfid_dll.h"
-#include "PIN_UI_DLL/pin_ui_dll.h"
+#include "pinui_dll/pinuidll.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -36,8 +39,9 @@ private:
 
     bankwindow *secWindow;
     RFID_DLL *ptr_rfid;
-    PIN_UI_DLL *ptr_pinui;
+    PINUIDLL *ptr_pinui;
     RestDLL *ptr_rest;
+    QMessageBox pinmsg;
 
 private slots:
     void cardSignalHandler(); //Delete after testing is done
