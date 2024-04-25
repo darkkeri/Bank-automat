@@ -21,6 +21,7 @@ public:
     ~bankwindow();
     void openWindow();
     void setCardType(QString);
+    void startTimer();
 
 private slots:
     void on_Button1_clicked();
@@ -38,7 +39,11 @@ private slots:
     void logsHandler(QString rawlogs);
     void balanceHandler(QString);
     void cardsHandler(QString);
+    void withdrawHandler(QString);
     void on_pushButton_clicked();
+    void closeWindow();
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::bankwindow *ui;
@@ -67,11 +72,10 @@ private:
 
     void cardCheck();
 
-    void closeWindow();
-
     void manageLogTable(short);
 
     int logStage;
+    QTimer closeTimer;
 signals:
     void restartSignal();
 };

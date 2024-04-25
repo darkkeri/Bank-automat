@@ -11,6 +11,9 @@ bankwindow::bankwindow(QWidget *parent)
     connect(ptr_restb,SIGNAL(getLogsSignal(QString)), this,SLOT(logsHandler(QString)));
     connect(ptr_restb,SIGNAL(getBalanceSignal(QString)), this,SLOT(balanceHandler(QString)));
     connect(ptr_restb,SIGNAL(getCardsSignal(QString)), this,SLOT(cardsHandler(QString)));
+    connect(ptr_restb,SIGNAL(getWithdrawSignal(QString)), this,SLOT(withdrawHandler(QString)));
+
+    connect(&closeTimer,SIGNAL(timeout()), this,SLOT(closeWindow()), Qt::UniqueConnection);
 }
 
 bankwindow::~bankwindow()
@@ -20,6 +23,7 @@ bankwindow::~bankwindow()
 
 void bankwindow::on_Button1_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         modeChange(1);
@@ -27,6 +31,7 @@ void bankwindow::on_Button1_clicked()
 
     case 1:
         //deduct chosen sum from balance
+        ptr_restb->nosto("20");
         //cardCheck();
         break;
 
@@ -50,6 +55,7 @@ void bankwindow::on_Button1_clicked()
 
 void bankwindow::on_Button2_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         ptr_restb->setupGetConnection(1);
@@ -58,6 +64,7 @@ void bankwindow::on_Button2_clicked()
 
     case 1:
         //deduct chosen sum from balance
+        ptr_restb->nosto("40");
         //cardCheck();
         break;
 
@@ -84,9 +91,10 @@ void bankwindow::on_Button2_clicked()
 
 void bankwindow::on_Button3_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
-        ptr_restb->setupGetConnection(4); //getBalance
+        ptr_restb->getBalance(); //getBalance
         if(cardType == "credit"){
             ptr_restb->setupGetConnection(2); //getCards
         }
@@ -118,12 +126,14 @@ void bankwindow::on_Button3_clicked()
 
 void bankwindow::on_Button4_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         break;
 
     case 1:
         //deduct chosen sum from balance
+        ptr_restb->nosto("50");
         //cardCheck();
         break;
 
@@ -147,12 +157,14 @@ void bankwindow::on_Button4_clicked()
 
 void bankwindow::on_Button5_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         break;
 
     case 1:
         //deduct chosen sum from balance
+        ptr_restb->nosto("100");
         //cardCheck();
         break;
 
@@ -181,6 +193,7 @@ void bankwindow::on_Button5_clicked()
 
 void bankwindow::on_Button6_clicked()
 {
+    startTimer();
     switch(buttonMode){
     case 0:
         closeWindow();
@@ -234,9 +247,9 @@ void bankwindow::modeChange(short newmode)
     case 1: //nosto
     ui->statusLabel->setText("Valitse nostosumma");
     ui->buttonLabel1->setText("20");
-    ui->buttonLabel2->setText("50");
+    ui->buttonLabel2->setText("40");
     ui->buttonLabel3->setText("Muu summa");
-    ui->buttonLabel4->setText("80");
+    ui->buttonLabel4->setText("50");
     ui->buttonLabel5->setText("100");
     ui->buttonLabel6->setText("Takaisin");
     break;
@@ -360,10 +373,19 @@ void bankwindow::manageLogTable(short modifier)
         }
     }
 
+void bankwindow::startTimer()
+{
+    closeTimer.start(30000);
+    qDebug()<<"startTimer ran";
+}
+
 
 void bankwindow::openWindow(){
     show();
     modeChange(0);
+    startTimer();
+    qDebug()<<"openwindow ran";
+
 }
 
 void bankwindow::logsHandler(QString rawlogs){
@@ -451,6 +473,11 @@ void bankwindow::cardsHandler(QString rawCards)
 
 }
 
+void bankwindow::withdrawHandler(QString isWithdrawOK)
+{
+    qDebug()<<isWithdrawOK;
+}
+
 void bankwindow::on_pushButton_clicked() //DELETE THIS
 {
     Logs logObj;
@@ -473,4 +500,10 @@ void bankwindow::on_pushButton_clicked() //DELETE THIS
     ui->logsTableView->setModel(table_model);
 }
 
+
+
+void bankwindow::on_pushButton_2_clicked()
+{
+    qDebug()<<closeTimer.remainingTime();
+}
 

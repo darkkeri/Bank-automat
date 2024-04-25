@@ -10,11 +10,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->debitButton->setVisible(false);
 
     ptr_rfid = new RFID_DLL(this);
-    ptr_pinui = new PIN_UI_DLL(this);
+    ptr_pinui = new PINUIDLL(this);
     ptr_rest = RestDLL::getInstance();
     secWindow = new bankwindow(this);
-
-
     //TEST
     connect(ui->cardSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
     connect(ui->pinSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
@@ -27,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ptr_rfid->Read_Data();//Setup for RFID
+
+
 }
 
 MainWindow::~MainWindow()
@@ -63,6 +63,8 @@ void MainWindow::secondViewOpen(){
     if (cardSignal == true && pinSignal == true){
         hide();
         if(bviewflag == false){
+            secWindow->startTimer();
+            bviewflag = true;
             secWindow->exec();
         } else {
             secWindow->openWindow();
@@ -82,6 +84,7 @@ void MainWindow::cardHandler(QString& card)
         //*******************************************
 
         ptr_rest->getCardID(card);
+        ptr_pinui->startTimer();
         ptr_pinui->exec();
 }
 
@@ -96,7 +99,7 @@ void MainWindow::pinCheckHandler(bool pinCheck)
     qDebug()<<"pincheckhandler ran";
     if(pinCheck == true){
         qDebug()<< "pin is correct";
-        ptr_pinui->close();
+        ptr_pinui->closePin();
         if(cardType == "multicard") {
             ui->startStatuslabel->setText("Valitse kaksoiskortin tila");
             ui->creditButton->setVisible(true);
@@ -110,6 +113,8 @@ void MainWindow::pinCheckHandler(bool pinCheck)
         }
     } else {
         qDebug()<< "pin is incorrect";
+        ptr_pinui->wrongPin();
+        //pinmsg.setText("Pin-koodi syötetty väärin kolme kertaa. Kortti on lukittu. Ota yhteyttä pankkiisi");
         //Give some type of error message in PIN_UI and let the user try again (No idea how to do this, need to test)
         ptr_pinui->exec();
     }
@@ -159,8 +164,7 @@ void MainWindow::on_btnLogin_clicked() //TEST
 {
     //QString cardsID = ui->cardnumberLineEdit->text();
     //QString accountType = ui->pincodeLineEdit->text();
-    ptr_rest->nosto("100");
+    ptr_rest->putTries(true);
 
 
 }
-
