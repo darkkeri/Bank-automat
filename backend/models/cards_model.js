@@ -28,8 +28,12 @@ const cards = {
     },
     login(idCards, callback){
         return db.query("SELECT pincode FROM cards WHERE idCards=?",[idCards],callback);
+    },
+    putTries(idCards,triesUnResettinator, callback){
+        return db.query("CALL putTries(?,?)",[idCards,triesUnResettinator], callback);
     }
-
 }
+
+
 
 module.exports = cards;
