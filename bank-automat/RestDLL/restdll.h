@@ -47,6 +47,7 @@ public slots:
     void nosto(QString amount);
     void getCardID(QString cardnumber);
     void accountIDbyType(QString accountType);
+    void getCardType();
 
     void getCreditlimit();
     void getTries();
@@ -65,6 +66,7 @@ private slots:
 
     void getCreditlimitSlot(QNetworkReply *reply);
     void getTriesSlot(QNetworkReply *reply);
+    void getCardTypeSlot(QNetworkReply *reply);
 private:
     // toinen singleton juttu
     static RestDLL* instance;
@@ -81,6 +83,8 @@ private:
     QNetworkAccessManager *accountManager;
     QNetworkAccessManager *cardsIDManager;
     QNetworkAccessManager *nostoManager;
+    QNetworkAccessManager *cardTypeManager;
+
 
     QNetworkAccessManager *balanceManager;
     QNetworkAccessManager *creditlimitManager;
