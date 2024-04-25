@@ -31,6 +31,9 @@ const cards = {
     },
     putTries(idCards,triesUnResettinator, callback){
         return db.query("CALL putTries(?,?)",[idCards,triesUnResettinator], callback);
+    },
+    getCardtype(idCards, callback){
+        return db.query("SELECT type FROM cards WHERE idCards=?",[idCards],callback);
     }
 }
 

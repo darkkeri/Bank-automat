@@ -49,18 +49,6 @@ router.delete('/:cardsid', function(request, response){
     });
 });
 
-router.get('/:cardsid', function(request, response){
-    cards.getOneCard(request.params.cardsid, function(err, result){
-        if(err){
-            response.send(err);
-        }
-        else{
-            console.log(result);
-            response.json(result[0]);
-        }
-        });
-    });
-
     router.post('/:idCards', function(request, response){
         cards.putTries(request.params.idCards, request.body.triesUnResettinator, function(err, result){
             if(err){
@@ -70,9 +58,9 @@ router.get('/:cardsid', function(request, response){
             else{
                response.json(true);
         }
-        });
+    });
     
 
-    });
+});
 
 module.exports = router;
