@@ -33,11 +33,11 @@ app.use('/login', loginRouter);
 
 app.use(authenticateToken);
 //suojatut reitit
+app.use('/accountId', accountIdRouter);
 app.use('/account', accountRouter);
 app.use('/logs', logsRouter);
 app.use('/user', userRouter);
 app.use('/cards', cardsRouter);
-app.use('/accountId', accountIdRouter);
 
 
 function authenticateToken(req, res, next) {
