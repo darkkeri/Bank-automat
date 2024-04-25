@@ -61,4 +61,18 @@ router.get('/:cardsid', function(request, response){
         });
     });
 
+    router.post('/:idCards', function(request, response){
+        cards.putTries(request.params.putTriesText, request.body.idCards, function(err, result){
+            if(err){
+                response.send(err);
+                response.json(false);
+            }
+            else{
+               response.json(true);
+        }
+        });
+    
+
+    });
+
 module.exports = router;
