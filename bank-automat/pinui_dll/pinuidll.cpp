@@ -37,10 +37,10 @@ void PINUIDLL::startTimer()
 
 void PINUIDLL::wrongPin(QString tries)
 {
-    if(tries.toInt() == 3){
+    qDebug()<<"wrongPin PINUI: "<<tries.toInt();
+    if(tries.toInt() == 0){
         pinmsg->setText("PIN-koodi meni väärin");
-        pinmsg->setInformativeText("Liian monta yritystä, kortti lukittu");
-        pinmsg->setInformativeText("Ota yhteyttä pankkiisi");
+        pinmsg->setInformativeText("Liian monta yritystä, kortti lukittu. Ota yhteyttä pankkiisi");
         pinmsg->exec();
     } else {
         pinmsg->setText("PIN-koodi meni väärin");

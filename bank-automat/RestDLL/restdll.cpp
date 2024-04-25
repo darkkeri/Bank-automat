@@ -200,6 +200,7 @@ void RestDLL::putTriesSlot(QNetworkReply *reply)
     reply->deleteLater();
     putTriesManager->deleteLater();
 
+
 }
 
 void RestDLL::getCardsSlot(QNetworkReply *reply)

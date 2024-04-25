@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/cardsId',cardsIdRouter);
 app.use('/cardtype', cardtypeRouter);
-app.use('/cards', cardtriesRouter);
+app.use('/cardtries', cardtriesRouter);
 app.use('/login', loginRouter);
 
 
