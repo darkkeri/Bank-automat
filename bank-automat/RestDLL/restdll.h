@@ -50,7 +50,9 @@ public slots:
 
     void getCreditlimit();
     void getTries();
-    void putTries();             //Runnataan, kun käyttäjä on syöttänyt väärän pinkoodin
+    void putTries(bool triesUnResettinator);             //Runnataan, kun käyttäjä on syöttänyt väärän pinkoodin.
+                                                        // jos asetetaan true, lisätään yksi uusi yritys tietokantaan.
+                                                        // muutoin resetoi tries-arvon nollaksi tietokannassa.
 private slots:
     void getBalanceSlot(QNetworkReply *reply);
 
