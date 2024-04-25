@@ -151,10 +151,8 @@ void RestDLL::getCreditlimitSlot(QNetworkReply *reply)
 void RestDLL::getTries()
 {
     QString stringID = QString::number(cardsID);
-    QString site_url=Environment::getBaseURL()+"/cards/"+stringID;
+    QString site_url=Environment::getBaseURL()+"/cardtries/"+stringID;
     QNetworkRequest request((site_url));
-    QByteArray myToken="Bearer "+webToken;
-    request.setRawHeader(QByteArray("Authorization"),(myToken));
 
     qDebug()<<site_url;
     getTriesManager = new QNetworkAccessManager(this);
@@ -182,7 +180,7 @@ void RestDLL::putTries(bool triesUnResettinator)
     QJsonObject jsonObj;
     jsonObj.insert("triesUnResettinator", triesUnResettinator);
 
-    QString site_url="http://localhost:3000/cards/"+QString::number(cardsID);
+    QString site_url="http://localhost:3000/cardtries/"+QString::number(cardsID);
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 

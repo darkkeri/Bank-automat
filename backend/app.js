@@ -13,6 +13,7 @@ var loginRouter = require('./routes/login');
 var accountIdRouter = require('./routes/accountId');
 var cardsIdRouter = require('./routes/cardsId');
 var cardtypeRouter = require('./routes/cardtype');
+var cardtriesRouter = require('./routes/cardtries');
 
 
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/cardsId',cardsIdRouter);
 app.use('/cardtype', cardtypeRouter);
+app.use('/cards', cardtriesRouter);
 app.use('/login', loginRouter);
 
 
