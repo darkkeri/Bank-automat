@@ -59,12 +59,6 @@ void RestDLL::setupGetConnection(int switchCase)
         stringID = QString::number(accountID);      //getAccount
         if(accountID == 0) stringID="";
         break;
-    case 5:
-        //CARDSin tyypin tarkistus: onko multicard (palauttaa bool)
-        urlAddress = "/cards/";
-        stringID = QString::number(cardsID);    //MulticardCheck
-        if(cardsID == 0) stringID="";
-        break;
     default: qDebug()<<"URL error"; break;
     }
 
@@ -94,11 +88,6 @@ void RestDLL::setupGetConnection(int switchCase)
         connect(getManager, SIGNAL(finished(QNetworkReply*)),
                 this, SLOT(getAccountSlot(QNetworkReply*)));
         qDebug()<<"getAccount!";
-        break;
-    case 5:
-        connect(getManager, SIGNAL(finished(QNetworkReply*)),
-                this, SLOT(multicardCheckSlot(QNetworkReply*)));
-        qDebug()<<"multicardcheck!";
         break;
     default:
         qDebug()<<"Error";
@@ -233,6 +222,21 @@ void RestDLL::getCardsSlot(QNetworkReply *reply)
     reply->deleteLater();
     getManager->deleteLater();
 }
+
+void RestDLL::checkCardType()
+{
+    QJsonObject jsonObj;
+    QString site_url="http://localhost:3000/cardtype/"+QString::number(cardsID);
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    cardTypeManager = new QNetworkAccessManager(this);
+    connect(cardTypeManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(multicardCheckSlot(QNetworkReply*)));
+
+    reply = cardTypeManager->get(request, QJsonDocument(jsonObj).toJson());
+}
+
 void RestDLL::multicardCheckSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
@@ -362,8 +366,8 @@ void RestDLL::accountIdSlot(QNetworkReply *reply)
     reply->deleteLater();
     accountManager->deleteLater();
 }
-
-void RestDLL::getCardType() //Gets accountid by cardID and accountType
+/*
+void RestDLL::getCardType()
 {
     QJsonObject jsonObj;
 
@@ -394,7 +398,7 @@ void RestDLL::getCardTypeSlot(QNetworkReply *reply)
     reply->deleteLater();
     accountManager->deleteLater();
 }
-
+*/
 int RestDLL::getAccountID() const
 {
     return accountID;
