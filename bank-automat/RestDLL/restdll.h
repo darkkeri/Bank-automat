@@ -50,6 +50,7 @@ public slots:
 
     void getCreditlimit();
     void getTries();
+    void putTries();             //Runnataan, kun käyttäjä on syöttänyt väärän pinkoodin
 private slots:
     void getBalanceSlot(QNetworkReply *reply);
 
@@ -65,13 +66,14 @@ private slots:
 
     void getCreditlimitSlot(QNetworkReply *reply);
     void getTriesSlot(QNetworkReply *reply);
+    void putTriesSlot(QNetworkReply *reply);
 private:
     // toinen singleton juttu
     static RestDLL* instance;
     QString name;
     //
-    int accountID = 0;
-    int cardsID = 0;
+    int accountID;
+    int cardsID;
     int accountBalance;
     int triesamount;
 
@@ -84,16 +86,14 @@ private:
 
     QNetworkAccessManager *balanceManager;
     QNetworkAccessManager *creditlimitManager;
-    QNetworkAccessManager *triesManager;
+    QNetworkAccessManager *getTriesManager;
+    QNetworkAccessManager *putTriesManager;
 
     QNetworkReply *reply;
     QByteArray response_data;
 
     QByteArray webToken;
     QMessageBox msgBox;
-
-    QString columnName[10];
-
 };
 
 #endif // RESTDLL_H
