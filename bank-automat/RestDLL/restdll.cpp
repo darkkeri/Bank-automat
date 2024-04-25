@@ -38,7 +38,6 @@ void RestDLL::setupGetConnection(int switchCase)
 {
     qDebug()<<"setupGetConnection ran";
     QString urlAddress;
-
     QString stringID;
 
     switch (switchCase){
@@ -169,10 +168,10 @@ void RestDLL::getTries()
     request.setRawHeader(QByteArray("Authorization"),(myToken));
 
     qDebug()<<site_url;
-    triesManager = new QNetworkAccessManager(this);
-    connect(triesManager, SIGNAL(finished(QNetworkReply*)),
+    getTriesManager = new QNetworkAccessManager(this);
+    connect(getTriesManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(getTriesSlot(QNetworkReply*)));
-    reply = triesManager->get(request);
+    reply = getTriesManager->get(request);
 }
 void RestDLL::getTriesSlot(QNetworkReply *reply)
 {
@@ -186,7 +185,34 @@ void RestDLL::getTriesSlot(QNetworkReply *reply)
 
     emit getTriesSignal(tries);
     reply->deleteLater();
-    triesManager->deleteLater();
+    getTriesManager->deleteLater();
+}
+
+void RestDLL::putTries(bool triesUnResettinator)
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("triesUnResettinator", triesUnResettinator);
+
+    QString site_url="http://localhost:3000/cards/"+QString::number(cardsID);
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    putTriesManager = new QNetworkAccessManager(this);
+    connect(putTriesManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(putTriesSlot(QNetworkReply*)));
+
+    reply = putTriesManager->post(request, QJsonDocument(jsonObj).toJson());
+
+}
+
+void RestDLL::putTriesSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    qDebug()<<response_data;
+
+    reply->deleteLater();
+    putTriesManager->deleteLater();
+
 }
 
 void RestDLL::getCardsSlot(QNetworkReply *reply)
@@ -219,17 +245,9 @@ void RestDLL::multicardCheckSlot(QNetworkReply *reply)
 
     reply->deleteLater();
     getManager->deleteLater();
-
-
-
 }
 
 void RestDLL::getLogsSlot(QNetworkReply *reply){
-    columnName[0]="idLogs";
-    columnName[1]="date";
-    columnName[2]="event";
-    columnName[3]="amount";
-    columnName[4]="idAccount";
     response_data=reply->readAll();
     qDebug()<<"getLogsSlot ran";
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
@@ -237,9 +255,9 @@ void RestDLL::getLogsSlot(QNetworkReply *reply){
     QString get;
     foreach(const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
-        get+=QString::number(json_obj[columnName[0]].toInt())+" | "+json_obj[columnName[1]].toString()+
-               " | "+json_obj[columnName[2]].toString()+" | "+json_obj[columnName[3]].toString()+
-               " | "+QString::number(json_obj[columnName[4]].toInt())+"\r";
+        get+=QString::number(json_obj["idLogs"].toInt())+" | "+json_obj["date"].toString()+
+               " | "+json_obj["event"].toString()+" | "+json_obj["amount"].toString()+
+               " | "+QString::number(json_obj["idAccount"].toInt())+"\r";
     }
     //get qstring menee get_handleriin exessä:
     emit getLogsSignal(get);
@@ -255,10 +273,6 @@ void RestDLL::setAccountBalance(int newAccountBalance)
 
 void RestDLL::getAccountSlot(QNetworkReply *reply)
 {
-    columnName[0]="idAccount";
-    columnName[1]="balance";
-    columnName[2]="accountnumber";
-    columnName[3]="accounttype";
     response_data=reply->readAll();
     qDebug()<<"getAccountSlot ran";
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);

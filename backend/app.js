@@ -12,6 +12,8 @@ var cardsRouter = require('./routes/cards');
 var loginRouter = require('./routes/login');
 var accountIdRouter = require('./routes/accountId');
 var cardsIdRouter = require('./routes/cardsId');
+var cardtypeRouter = require('./routes/cardtype');
+
 
 
 var app = express();
@@ -25,16 +27,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 //suojaamattomat reitit
 app.use('/', indexRouter);
 app.use('/cardsId',cardsIdRouter);
+app.use('/cardtype', cardtypeRouter);
 app.use('/login', loginRouter);
 
 
 app.use(authenticateToken);
 //suojatut reitit
+app.use('/accountId', accountIdRouter);
 app.use('/account', accountRouter);
 app.use('/logs', logsRouter);
 app.use('/user', userRouter);
 app.use('/cards', cardsRouter);
-app.use('/accountId', accountIdRouter);
 
 
 function authenticateToken(req, res, next) {
