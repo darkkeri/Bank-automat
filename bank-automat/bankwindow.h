@@ -7,6 +7,7 @@
 #include <QString>
 #include "RestDLL/restdll.h"
 #include "logs.h"
+#include "pinuidll.h"
 
 namespace Ui {
 class bankwindow;
@@ -40,6 +41,7 @@ private slots:
     void balanceHandler(QString);
     void cardsHandler(QString);
     void withdrawHandler(QString);
+    void customWithdrawHandler(QString);
     void on_pushButton_clicked();
     void closeWindow();
 
@@ -69,13 +71,12 @@ private:
     QList<Logs> logList;
 
     void modeChange(short);
-
     void cardCheck();
-
     void manageLogTable(short);
 
     int logStage;
     QTimer closeTimer;
+    PINUIDLL *ptr_wdUI;
 signals:
     void restartSignal();
 };

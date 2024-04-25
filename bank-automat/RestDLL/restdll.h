@@ -94,6 +94,8 @@ private:
     QNetworkAccessManager *creditlimitManager;
     QNetworkAccessManager *getTriesManager;
     QNetworkAccessManager *putTriesManager;
+    QNetworkAccessManager *cardTypeManager;
+
 
     QNetworkReply *reply;
     QByteArray response_data;

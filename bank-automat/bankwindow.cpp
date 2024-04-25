@@ -8,10 +8,12 @@ bankwindow::bankwindow(QWidget *parent)
     ui->setupUi(this);
     ui->logsTableView->setVisible(false);
     ptr_restb = RestDLL::getInstance();
+    ptr_wdUI = new PINUIDLL(this);
     connect(ptr_restb,SIGNAL(getLogsSignal(QString)), this,SLOT(logsHandler(QString)));
     connect(ptr_restb,SIGNAL(getBalanceSignal(QString)), this,SLOT(balanceHandler(QString)));
-    connect(ptr_restb,SIGNAL(getCardsSignal(QString)), this,SLOT(cardsHandler(QString)));
+    connect(ptr_restb,SIGNAL(getCreditlimitSignal(QString)), this,SLOT(cardsHandler(QString)));
     connect(ptr_restb,SIGNAL(getWithdrawSignal(QString)), this,SLOT(withdrawHandler(QString)));
+    connect(ptr_wdUI,SIGNAL(sendNumberToBankWindow(QString)), this,SLOT(customWithdrawHandler(QString)));
 
     connect(&closeTimer,SIGNAL(timeout()), this,SLOT(closeWindow()), Qt::UniqueConnection);
 }
@@ -96,7 +98,7 @@ void bankwindow::on_Button3_clicked()
     case 0:
         ptr_restb->getBalance(); //getBalance
         if(cardType == "credit"){
-            ptr_restb->setupGetConnection(2); //getCards
+            ptr_restb->getCreditlimit(); //getCards
         }
         modeChange(3);
         break;
@@ -104,6 +106,7 @@ void bankwindow::on_Button3_clicked()
     case 1:
         //input desired sum using pin_ui and then deduct
         //cardCheck();
+        ptr_wdUI->withdrawUI();
         break;
 
     case 2:
@@ -285,6 +288,7 @@ void bankwindow::modeChange(short newmode)
 
 
     case 4: //ota rahat (maybe oma funktio)
+    closeTimer.start(10000);
     ui->statusLabel->setText("Ota rahat");
     ui->buttonLabel1->setText("");
     ui->buttonLabel2->setText("");
@@ -292,27 +296,12 @@ void bankwindow::modeChange(short newmode)
     ui->buttonLabel4->setText("");
     ui->buttonLabel5->setText("");
     ui->buttonLabel6->setText("Lopeta");
-    ui->infoLabel1->setText("Tililtä nostettu 200 euroa");
+    ui->infoLabel1->setText("Nosto onnistui");
     ui->infoLabel2->setText("");
     ui->infoLabel3->setText("");
     ui->infoLabel4->setText("");
     ui->infoLabel5->setText("");
     break;
-
-    case 5: //credit vai debit
-        ui->statusLabel->setText("Valitse credit tai debit");
-        ui->buttonLabel1->setText("");
-        ui->buttonLabel2->setText("Credit");
-        ui->buttonLabel3->setText("");
-        ui->buttonLabel4->setText("");
-        ui->buttonLabel5->setText("Debit");
-        ui->buttonLabel6->setText("Takaisin");
-        ui->infoLabel1->setText("");
-        ui->infoLabel2->setText("");
-        ui->infoLabel3->setText("");
-        ui->infoLabel4->setText("");
-        ui->infoLabel5->setText("");
-        break;
     }
 }
 
@@ -326,6 +315,8 @@ void bankwindow::cardCheck(){
 }
 
 void bankwindow::closeWindow(){
+    ptr_wdUI->clearClicked();
+    ptr_wdUI->closePin();
     hide();
     emit restartSignal();
 }
@@ -467,7 +458,6 @@ void bankwindow::balanceHandler(QString balance)
 void bankwindow::cardsHandler(QString rawCards)
 {
     qDebug()<<"cardsHandler:"<<rawCards;
-    rawCards = rawCards.section(" | ", 6, 6);
     ui->infoLabel2->setText("Kortin luottoraja: "+rawCards);
 
 
@@ -475,7 +465,23 @@ void bankwindow::cardsHandler(QString rawCards)
 
 void bankwindow::withdrawHandler(QString isWithdrawOK)
 {
-    qDebug()<<isWithdrawOK;
+    qDebug()<<"withdrawHandler ran: "<<isWithdrawOK;
+    if(isWithdrawOK == "true"){
+    modeChange(4);
+    } else {
+        if(cardType == "debit"){
+            ui->infoLabel1->setText("Nosto epäonnistui");
+            ui->infoLabel2->setText("Tilillä ei ole tarpeeksi rahaa");
+        } else if(cardType == "credit"){
+            ui->infoLabel1->setText("Nosto epäonnistui");
+            ui->infoLabel2->setText("Nosto ylittäisi korttisi luottorajan");
+        }
+    }
+}
+
+void bankwindow::customWithdrawHandler(QString customAmount)
+{
+    ptr_restb->nosto(customAmount);
 }
 
 void bankwindow::on_pushButton_clicked() //DELETE THIS

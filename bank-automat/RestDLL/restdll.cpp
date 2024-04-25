@@ -248,7 +248,7 @@ void RestDLL::multicardCheckSlot(QNetworkReply *reply)
     emit cardTypeSignal(cardTypeData);
 
     reply->deleteLater();
-    getManager->deleteLater();
+    cardTypeManager->deleteLater();
 }
 
 void RestDLL::getLogsSlot(QNetworkReply *reply){
@@ -329,7 +329,8 @@ void RestDLL::cardsIdSlot(QNetworkReply *reply)
     cardsID = cardsIdData.toInt();
     reply->deleteLater();
     cardsIDManager->deleteLater();
-    setupGetConnection(5); //cardtypecheck
+
+    checkCardType();
 }
 
 void RestDLL::accountIDbyType(QString accountType) //Gets accountid by cardID and accountType
@@ -427,7 +428,8 @@ void RestDLL::nostoSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
     qDebug()<<response_data;
-
+    QString check = response_data;
+    emit getWithdrawSignal(check);
     reply->deleteLater();
     nostoManager->deleteLater();
 

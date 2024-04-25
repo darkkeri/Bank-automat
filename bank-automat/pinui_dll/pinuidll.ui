@@ -107,7 +107,10 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
+    <item row="1" column="0" colspan="3">
+     <widget class="QLineEdit" name="lineEdit"/>
+    </item>
+    <item row="0" column="0" colspan="3">
      <widget class="QLabel" name="label">
       <property name="font">
        <font>
@@ -117,7 +120,7 @@
        </font>
       </property>
       <property name="frameShape">
-       <enum>QFrame::Box</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="text">
        <string>Syötä PIN</string>
@@ -126,9 +129,6 @@
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-    </item>
-    <item row="1" column="0" colspan="3">
-     <widget class="QLineEdit" name="lineEdit"/>
     </item>
    </layout>
   </widget>
