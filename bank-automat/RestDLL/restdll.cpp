@@ -188,12 +188,12 @@ void RestDLL::getTriesSlot(QNetworkReply *reply)
     getTriesManager->deleteLater();
 }
 
-void RestDLL::putTries()
+void RestDLL::putTries(bool triesUnResettinator)
 {
     QJsonObject jsonObj;
-    jsonObj.insert("idCards", cardsID);
+    jsonObj.insert("triesUnResettinator", triesUnResettinator);
 
-    QString site_url="http://localhost:3000/cards/1";
+    QString site_url="http://localhost:3000/cards/"+QString::number(cardsID);
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 

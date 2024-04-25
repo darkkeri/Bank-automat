@@ -62,7 +62,7 @@ router.get('/:cardsid', function(request, response){
     });
 
     router.post('/:idCards', function(request, response){
-        cards.putTries(request.params.putTriesText, request.body.idCards, function(err, result){
+        cards.putTries(request.params.idCards, request.body.triesUnResettinator, function(err, result){
             if(err){
                 response.send(err);
                 response.json(false);
