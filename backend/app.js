@@ -12,6 +12,8 @@ var cardsRouter = require('./routes/cards');
 var loginRouter = require('./routes/login');
 var accountIdRouter = require('./routes/accountId');
 var cardsIdRouter = require('./routes/cardsId');
+var cardtypeRouter = require('./routes/cardtype');
+
 
 
 var app = express();
@@ -25,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //suojaamattomat reitit
 app.use('/', indexRouter);
 app.use('/cardsId',cardsIdRouter);
+app.use('/cardtype', cardtypeRouter);
 app.use('/login', loginRouter);
 
 
