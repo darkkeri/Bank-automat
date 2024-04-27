@@ -41,7 +41,7 @@ router.post('/',function(request, response){
 });
 
 function genToken(value){
-    return jwt.sign(value, process.env.MY_TOKEN, {expiresIn: '200s'});
+    return jwt.sign(value, process.env.MY_TOKEN, {expiresIn: '600s'});
 }
 
 module.exports = router;

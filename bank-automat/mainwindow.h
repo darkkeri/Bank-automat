@@ -42,6 +42,7 @@ private:
     PINUIDLL *ptr_pinui;
     RestDLL *ptr_rest;
     QMessageBox pinmsg;
+    QString tries;
 
 private slots:
     void cardSignalHandler(); //Delete after testing is done
@@ -52,6 +53,7 @@ private slots:
     void pinHandler(QString);
     void pinCheckHandler(bool);
     void CardCheckHandler(QString);
+    void triesHandler(QString);
     void restart();
 
     void on_debitButton_clicked();

@@ -58,21 +58,7 @@ router.get('/:cardsid', function(request, response){
             console.log(result);
             response.json(result[0]);
         }
-        });
     });
-
-    router.post('/:idCards', function(request, response){
-        cards.putTries(request.params.idCards, request.body.triesUnResettinator, function(err, result){
-            if(err){
-                response.send(err);
-                response.json(false);
-            }
-            else{
-               response.json(true);
-        }
-        });
-    
-
-    });
+});
 
 module.exports = router;
