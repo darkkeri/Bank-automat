@@ -4,6 +4,9 @@ MainWindow {
 bankwindow {
     background-image: url(":/images/background2.jpg");
 }
+PINUIDLL {
+    background-image: url(":/images/background2.jpg");
+}
 
 QLabel {
 /*
