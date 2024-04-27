@@ -34,22 +34,6 @@ void bankwindow::on_Button1_clicked()
     case 1:
         //deduct chosen sum from balance
         ptr_restb->nosto("20");
-        //cardCheck();
-        break;
-
-    case 2:
-        break;
-
-    case 3:
-        break;
-
-    case 4:
-        break;
-
-    case 5:
-        break;
-
-    case 6:
         break;
     }
 }
@@ -67,25 +51,14 @@ void bankwindow::on_Button2_clicked()
     case 1:
         //deduct chosen sum from balance
         ptr_restb->nosto("40");
-        //cardCheck();
         break;
 
     case 2:
         manageLogTable(1);
         break;
 
-    case 3:
-        break;
-
-    case 4:
-        break;
-
     case 5:
-        //valitse kortin debit ominaisuus jos multikortti
         modeChange(4);
-        break;
-
-    case 6:
         break;
     }
 }
@@ -104,24 +77,7 @@ void bankwindow::on_Button3_clicked()
         break;
 
     case 1:
-        //input desired sum using pin_ui and then deduct
-        //cardCheck();
         ptr_wdUI->withdrawUI();
-        break;
-
-    case 2:
-        break;
-
-    case 3:
-        break;
-
-    case 4:
-        break;
-
-    case 5:
-        break;
-
-    case 6:
         break;
     }
 }
@@ -137,22 +93,6 @@ void bankwindow::on_Button4_clicked()
     case 1:
         //deduct chosen sum from balance
         ptr_restb->nosto("50");
-        //cardCheck();
-        break;
-
-    case 2:
-        break;
-
-    case 3:
-        break;
-
-    case 4:
-        break;
-
-    case 5:
-        break;
-
-    case 6:
         break;
     }
 }
@@ -168,27 +108,14 @@ void bankwindow::on_Button5_clicked()
     case 1:
         //deduct chosen sum from balance
         ptr_restb->nosto("100");
-        //cardCheck();
         break;
 
     case 2:
         manageLogTable(2);
         break;
 
-    case 3:
-        break;
-
-    case 4:
-
-        break;
-
     case 5:
-        //valitse kortin credit ominaisuus jos multikortti
         modeChange(4);
-        break;
-
-    case 6:
-
         break;
     }
 }
@@ -221,9 +148,6 @@ void bankwindow::on_Button6_clicked()
 
     case 5:
         modeChange(0);
-        break;
-
-    case 6:
         break;
     }
 }
@@ -305,15 +229,6 @@ void bankwindow::modeChange(short newmode)
     }
 }
 
-void bankwindow::cardCheck(){
-    bool cardtest = true;
-    if(cardtest == true) {
-        modeChange(5);
-    } else {
-        modeChange(4);
-    }
-}
-
 void bankwindow::closeWindow(){
     ptr_wdUI->clearClicked();
     ptr_wdUI->closePin();
@@ -380,7 +295,7 @@ void bankwindow::openWindow(){
 }
 
 void bankwindow::logsHandler(QString rawlogs){
-    Logs logObj; //NEED TO ONLY CREATE ONCE
+    Logs logObj;
     logList.clear();
     qDebug()<<"logHandler ran"<<rawlogs;
     amountOfLogs = 0;
@@ -418,8 +333,6 @@ void bankwindow::logsHandler(QString rawlogs){
             //Lisätään "06:00" perään väli eli = "06:00 ". Tämän jälkeen lisätään date 1 ja date 2 yhteen kokonaisuuteen = "06:00 2022-01-01"
             date2.append(" ");
             finalDate = date2 + date1;
-
-            //qDebug()<<" finalDate ="<<finalDate<<"\n\ event = "<<event<<"\n\ amount = "<<amount;
 
             logObj.setType(event); logObj.setAmount(amount); logObj.setDate(finalDate); logList.append(logObj);
             amountOfLogs++;
@@ -459,8 +372,6 @@ void bankwindow::cardsHandler(QString rawCards)
 {
     qDebug()<<"cardsHandler:"<<rawCards;
     ui->infoLabel2->setText("Kortin luottoraja: "+rawCards);
-
-
 }
 
 void bankwindow::withdrawHandler(QString isWithdrawOK)
@@ -483,33 +394,3 @@ void bankwindow::customWithdrawHandler(QString customAmount)
 {
     ptr_restb->nosto(customAmount);
 }
-
-void bankwindow::on_pushButton_clicked() //DELETE THIS
-{
-    Logs logObj;
-
-    logObj.setType("asdasdasdas"); logObj.setAmount("asdasd"); logObj.setDate("afgafgg"); logList.append(logObj);
-
-    QStandardItemModel *table_model = new QStandardItemModel(logList.size(),3);
-    table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Type"));
-    table_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Amount"));
-    table_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Date & Time"));
-
-    for (int row = 0; row < logList.size(); ++row) {
-        QStandardItem *typei = new QStandardItem(logList[row].getType());
-        table_model->setItem(row, 0, typei);
-        QStandardItem *amounti = new QStandardItem(logList[row].getAmount());
-        table_model->setItem(row, 1, amounti);
-        QStandardItem *datei = new QStandardItem(logList[row].getDate());
-        table_model->setItem(row, 2, datei);
-    }
-    ui->logsTableView->setModel(table_model);
-}
-
-
-
-void bankwindow::on_pushButton_2_clicked()
-{
-    qDebug()<<closeTimer.remainingTime();
-}
-

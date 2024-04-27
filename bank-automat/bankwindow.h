@@ -42,10 +42,8 @@ private slots:
     void cardsHandler(QString);
     void withdrawHandler(QString);
     void customWithdrawHandler(QString);
-    void on_pushButton_clicked();
     void closeWindow();
 
-    void on_pushButton_2_clicked();
 
 private:
     Ui::bankwindow *ui;
@@ -71,7 +69,6 @@ private:
     QList<Logs> logList;
 
     void modeChange(short);
-    void cardCheck();
     void manageLogTable(short);
 
     int logStage;

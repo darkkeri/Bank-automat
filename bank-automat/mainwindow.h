@@ -62,8 +62,6 @@ private slots:
 
     void on_OFFButton_clicked();
 
-    void on_btnLogin_clicked();
-
 signals:
     void secondViewOpenSignal();
 
