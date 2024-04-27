@@ -44,7 +44,7 @@ void bankwindow::on_Button2_clicked()
     startTimer();
     switch(buttonMode){
     case 0:
-        ptr_restb->setupGetConnection(1);
+        ptr_restb->getLogs();
         modeChange(2);
         break;
 
