@@ -168,13 +168,3 @@ void MainWindow::on_OFFButton_clicked()
 {
     QApplication::quit();
 }
-
-
-void MainWindow::on_btnLogin_clicked() //TEST
-{
-    //QString cardsID = ui->cardnumberLineEdit->text();
-    //QString accountType = ui->pincodeLineEdit->text();
-    ptr_rest->putTries(true);
-
-
-}
