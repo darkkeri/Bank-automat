@@ -35,18 +35,45 @@ void PINUIDLL::startTimer()
     timer->start(15000);
 }
 
-void PINUIDLL::wrongPin()
+void PINUIDLL::wrongPin(QString tries)
 {
-    pinmsg->setText("PIN-koodi meni vaarin. Yrityksia jaljella: ");
-    pinmsg->setInformativeText("Yrityksia jaljella: ");
-    pinmsg->setText("Yrityksia jaljella: ");
-    pinmsg->exec();
+    qDebug()<<"wrongPin PINUI: "<<tries.toInt();
+    if(tries.toInt() == 0){
+        pinmsg->setText("PIN-koodi meni väärin");
+        pinmsg->setInformativeText("Liian monta yritystä, kortti lukittu. Ota yhteyttä pankkiisi");
+        pinmsg->exec();
+    } else {
+        pinmsg->setText("PIN-koodi meni väärin");
+        pinmsg->setInformativeText("Yrityksiä jäljellä: "+tries);
+        pinmsg->exec();
+    }
+}
+
+void PINUIDLL::withdrawUI()
+{
+    withdrawMode = true;
+    ui->label->setText("Syötä nostosumma");
+    startTimer();
+    this->exec();
 }
 
 void PINUIDLL::handleClick()
 {
     QString number = ui->lineEdit->text();
-    emit sendNumberToMainWindow(number);
+        if(withdrawMode == false){
+            emit sendNumberToMainWindow(number);
+            closePin();
+        } else if(withdrawMode == true){
+            if(number.toInt() % 10 == 0){
+                withdrawMode = false;
+                emit sendNumberToBankWindow(number);
+                closePin();
+            } else {
+                pinmsg->setText("Nosto epäonnistui");
+                pinmsg->setInformativeText("Syöttämäsi summa ei ole jaollinen kymmenellä");
+                pinmsg->exec();
+            }
+        }
     ui->lineEdit->clear();
     //number.toUShort()
 }
@@ -62,7 +89,9 @@ void PINUIDLL::numberClickedHandler()
     QPushButton *button = (QPushButton *) sender();
     QString number = button->text();
     ui->lineEdit->setText(ui->lineEdit->text() + number);
+    if(withdrawMode == false){
     ui->lineEdit->setEchoMode(QLineEdit::Password);
+    }
     startTimer();
 }
 
