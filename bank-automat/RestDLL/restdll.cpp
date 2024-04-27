@@ -180,7 +180,7 @@ void RestDLL::putTries(bool triesUnResettinator)
     QJsonObject jsonObj;
     jsonObj.insert("triesUnResettinator", triesUnResettinator);
 
-    QString site_url="http://localhost:3000/cardtries/"+QString::number(cardsID);
+    QString site_url=Environment::getBaseURL()+"/cardtries/"+QString::number(cardsID);
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -225,7 +225,7 @@ void RestDLL::getCardsSlot(QNetworkReply *reply)
 void RestDLL::checkCardType()
 {
     QJsonObject jsonObj;
-    QString site_url="http://localhost:3000/cardtype/"+QString::number(cardsID);
+    QString site_url=Environment::getBaseURL()+"/cardtype/"+QString::number(cardsID);
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -302,7 +302,7 @@ void RestDLL::getCardID(QString cardnumber)
 {
     QJsonObject jsonObj;
     jsonObj.insert("cardnumber", cardnumber);
-    QString site_url="http://localhost:3000/cardsId";
+    QString site_url=Environment::getBaseURL()+"/cardsId";
     QNetworkRequest request((site_url));
     QByteArray myToken="Bearer "+webToken;
     request.setRawHeader(QByteArray("Authorization"),(myToken));
@@ -338,7 +338,7 @@ void RestDLL::accountIDbyType(QString accountType) //Gets accountid by cardID an
     jsonObj.insert("idCards", cardsID);
     jsonObj.insert("accounttype", accountType);
 
-    QString site_url="http://localhost:3000/accountId";
+    QString site_url=Environment::getBaseURL()+"/accountId";
     QNetworkRequest request((site_url));
     QByteArray myToken="Bearer "+webToken;
     request.setRawHeader(QByteArray("Authorization"),(myToken));
@@ -409,7 +409,7 @@ void RestDLL::nosto(QString amount)
     QJsonObject jsonObj;
     jsonObj.insert("amount", amount);
 
-    QString site_url="http://localhost:3000/account/"+QString::number(accountID);
+    QString site_url=Environment::getBaseURL()+"/account/"+QString::number(accountID);
     QNetworkRequest request((site_url));
     QByteArray myToken="Bearer "+webToken;
     request.setRawHeader(QByteArray("Authorization"),(myToken));
@@ -442,7 +442,7 @@ void RestDLL::checkPin(QString pincode)
     jsonObj.insert("idCards", cardsID);
     jsonObj.insert("pincode", pincode);
 
-    QString site_url="http://localhost:3000/login";
+    QString site_url=Environment::getBaseURL()+"/login";
     QNetworkRequest request((site_url));
     QByteArray myToken="Bearer "+webToken;
     request.setRawHeader(QByteArray("Authorization"),(myToken));

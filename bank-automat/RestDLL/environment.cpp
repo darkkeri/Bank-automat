@@ -4,5 +4,5 @@ Environment::Environment() {}
 
 QString Environment::getBaseURL()
 {
-    return "http://localhost:3000";
+    return "http://datatonttu.dy.fi:3000";
 }
