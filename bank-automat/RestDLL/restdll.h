@@ -22,32 +22,24 @@ public:
     //
     void setWebToken(const QByteArray &newWebToken);
 
-    void setAccountBalance(int newAccountBalance);
-
     int getAccountID() const;
 
 signals:
     void cardTypeSignal(QString); //multicard
-    void getResult(QString);  //need to delete someday, only used in test or other stuff but code wont build without it
     void getBalanceSignal(QString); //OK
     void getLogsSignal(QString); //OK
     void pinCheckSignal(bool); //OK, need to add webtoken later
     void getWithdrawSignal(QString);
-
-
-    void getAccountSignal(QString);//Not in use but Arttu said it works
-    void getCardsSignal(QString);//Not in use but Arttu said it works
     void getCreditlimitSignal(QString);
     void getTriesSignal(QString);
 public slots:
 
-    void setupGetConnection(int switchCase);
+    void getLogs();
     void getBalance();
     void checkPin(QString pincode);
     void nosto(QString amount);
     void getCardID(QString cardnumber);
     void accountIDbyType(QString accountType);
-
     void checkCardType();
     void getCreditlimit();
     void getTries();
@@ -57,17 +49,12 @@ public slots:
 
 private slots:
     void getBalanceSlot(QNetworkReply *reply);
-
-    void getCardsSlot(QNetworkReply *reply);
     void loginSlot(QNetworkReply *reply);
-    void getAccountSlot(QNetworkReply *reply);
     void multicardCheckSlot(QNetworkReply *reply);
     void getLogsSlot(QNetworkReply *reply);
     void nostoSlot(QNetworkReply *reply);
-
     void cardsIdSlot(QNetworkReply *reply);
     void accountIdSlot(QNetworkReply *reply);
-
     void getCreditlimitSlot(QNetworkReply *reply);
     void getTriesSlot(QNetworkReply *reply);
     void putTriesSlot(QNetworkReply *reply);
@@ -79,17 +66,13 @@ private:
     //
     int accountID;
     int cardsID;
-    int accountBalance;
-    int triesamount;
-
     QNetworkAccessManager *getManager;
+    QNetworkAccessManager *logsManager;
     QNetworkAccessManager *postManager;
     QNetworkAccessManager *loginManager;
     QNetworkAccessManager *accountManager;
     QNetworkAccessManager *cardsIDManager;
     QNetworkAccessManager *nostoManager;
-
-
     QNetworkAccessManager *balanceManager;
     QNetworkAccessManager *creditlimitManager;
     QNetworkAccessManager *getTriesManager;
