@@ -13,10 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     ptr_pinui = new PINUIDLL(this);
     ptr_rest = RestDLL::getInstance();
     secWindow = new bankwindow(this);
-    //TEST
-    connect(ui->cardSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
-    connect(ui->pinSimButton, SIGNAL(clicked()), this, SLOT(cardSignalHandler()));
-    //TEST
+
     connect(secWindow,SIGNAL(restartSignal()), this,SLOT(restart())); //Connection from bankview to mainview for resetting mainview
     connect(ptr_rfid,SIGNAL(signalCard(QString&)), this,SLOT(cardHandler(QString&))); //Connection from RFID to main
     connect(ptr_pinui,SIGNAL(sendNumberToMainWindow(QString)), this,SLOT(pinHandler(QString))); //Connection from PINUI to main
@@ -32,36 +29,11 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    //delete ptr_rfid;
     delete ui;
 }
 
-//***********************************************************************TEST
-void MainWindow::cardSignalHandler(){ //TEST
-    qDebug()<< "cardSignalHandler ran";
-    QPushButton *clickedButton = qobject_cast<QPushButton *>(sender());
-    QString name = clickedButton->objectName();
-    if (name == "cardSimButton" || name == "ptr_rfid"){
-        cardSignal = true;
-        ptr_pinui->exec();
-        qDebug()<< "cardSignal value changed";
-    } else if (name == "pinSimButton"){
-        pinSignal = true;
-        qDebug()<< "pinSignal value changed";
-    }
-}
-
-void MainWindow::on_OKButton_clicked() //TEST
-{
-    qDebug()<< "OK-button clicked";
-    connect(this, SIGNAL(secondViewOpenSignal()), this, SLOT(secondViewOpen()));
-    emit secondViewOpenSignal();
-}
-//***********************************************************************
-
 void MainWindow::secondViewOpen(){
     qDebug()<< "secondviewopen ran";
-    if (cardSignal == true && pinSignal == true){
         hide();
         if(bviewflag == false){
             secWindow->startTimer();
@@ -70,20 +42,11 @@ void MainWindow::secondViewOpen(){
         } else {
             secWindow->openWindow();
         }
-        cardSignal = false;
-        pinSignal = false;
-    }
 }
 
 void MainWindow::cardHandler(QString& card)
 {
     qDebug()<< "cardHandler ran";
-        //*******************************************TEST
-        cardSignal = true; //TEST
-        pinSignal = true; //TEST
-        qDebug()<< "Test login possible: press ok";
-        //*******************************************
-
         ptr_rest->getCardID(card);
         ptr_pinui->startTimer();
         ptr_pinui->exec();
@@ -116,10 +79,7 @@ void MainWindow::pinCheckHandler(bool pinCheck)
     } else {
         qDebug()<< "pin is incorrect";
         ptr_rest->putTries(true);
-
         ptr_rest->getTries();
-        //pinmsg.setText("Pin-koodi syötetty väärin kolme kertaa. Kortti on lukittu. Ota yhteyttä pankkiisi");
-        //Give some type of error message in PIN_UI and let the user try again (No idea how to do this, need to test)
     }
 }
 
@@ -137,7 +97,7 @@ void MainWindow::triesHandler(QString wrongTries)
     ptr_pinui->wrongPin(tries);
 }
 
-void MainWindow::on_debitButton_clicked() //credit and debit maybe could be one single function with manual connections?
+void MainWindow::on_debitButton_clicked()
 {
     qDebug()<< "multicard debit chosen";
     cardType = "debit";
@@ -159,7 +119,7 @@ void MainWindow::restart()
 {
     qDebug()<< "restart ran";
     show();
-    ui->startStatuslabel->setText("Syötä pankkikortti kortinlukijaan");
+    ui->startStatuslabel->setText("Syötä kortti");
     ui->creditButton->setVisible(false);
     ui->debitButton->setVisible(false);
 }
