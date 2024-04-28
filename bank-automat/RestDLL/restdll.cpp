@@ -195,6 +195,7 @@ void RestDLL::setWebToken(const QByteArray &newWebToken)
 {
     webToken = newWebToken;
     qDebug()<<webToken;
+    emit pinCheckSignal(true);//Tähän true signaali mainiin
 }
 
 void RestDLL::getCardID(QString cardnumber)
@@ -326,7 +327,6 @@ void RestDLL::loginSlot(QNetworkReply *reply)
         if(response_data!="false") {
             //Kirjautuminen onnistui
             qDebug()<<"checkPin ran";
-            emit pinCheckSignal(true);
 
             setWebToken(response_data);
 
