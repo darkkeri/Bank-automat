@@ -64,7 +64,7 @@ private:
     static RestDLL* instance;
     QString name;
     //
-    int accountID = 5;
+    int accountID;
     int cardsID;
     QNetworkAccessManager *getManager;
     QNetworkAccessManager *logsManager;

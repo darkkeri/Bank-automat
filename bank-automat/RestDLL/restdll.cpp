@@ -319,23 +319,20 @@ void RestDLL::checkPin(QString pincode)
 void RestDLL::loginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-    //qDebug()<<response_data;
     if(response_data=="-4078" || response_data=="") {
         //Virhe tietokantayhteydessä
     }
     else {
         if(response_data!="false") {
             //Kirjautuminen onnistui
-            //Kortti ID
             qDebug()<<"checkPin ran";
-            emit pinCheckSignal(true);//Tähän true signaali mainiin
+            emit pinCheckSignal(true);
 
             setWebToken(response_data);
 
         }
         else {
             emit pinCheckSignal(false);
-            //Tähän false signaali mainiin
         }
     }
     reply->deleteLater();
