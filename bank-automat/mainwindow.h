@@ -29,9 +29,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    bool cardSignal; //TEST
-    bool pinSignal; //TEST
-    QString cardnumberTEST; //TEST
 
     bool bviewflag = false;
     bool pinuiflag = false;
@@ -45,8 +42,6 @@ private:
     QString tries;
 
 private slots:
-    void cardSignalHandler(); //Delete after testing is done
-    void on_OKButton_clicked(); //Delete after testing is done
 
     void secondViewOpen();
     void cardHandler(QString&);

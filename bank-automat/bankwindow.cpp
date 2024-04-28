@@ -30,14 +30,12 @@ void bankwindow::on_Button1_clicked()
     case 0:
         modeChange(1);
         break;
-
     case 1:
         //deduct chosen sum from balance
         ptr_restb->nosto("20");
         break;
     }
 }
-
 
 void bankwindow::on_Button2_clicked()
 {
@@ -63,15 +61,14 @@ void bankwindow::on_Button2_clicked()
     }
 }
 
-
 void bankwindow::on_Button3_clicked()
 {
     startTimer();
     switch(buttonMode){
     case 0:
-        ptr_restb->getBalance(); //getBalance
+        ptr_restb->getBalance();
         if(cardType == "credit"){
-            ptr_restb->getCreditlimit(); //getCards
+            ptr_restb->getCreditlimit();
         }
         modeChange(3);
         break;
@@ -82,14 +79,10 @@ void bankwindow::on_Button3_clicked()
     }
 }
 
-
 void bankwindow::on_Button4_clicked()
 {
     startTimer();
     switch(buttonMode){
-    case 0:
-        break;
-
     case 1:
         //deduct chosen sum from balance
         ptr_restb->nosto("50");
@@ -97,14 +90,10 @@ void bankwindow::on_Button4_clicked()
     }
 }
 
-
 void bankwindow::on_Button5_clicked()
 {
     startTimer();
     switch(buttonMode){
-    case 0:
-        break;
-
     case 1:
         //deduct chosen sum from balance
         ptr_restb->nosto("100");
@@ -119,7 +108,6 @@ void bankwindow::on_Button5_clicked()
         break;
     }
 }
-
 
 void bankwindow::on_Button6_clicked()
 {
@@ -210,8 +198,7 @@ void bankwindow::modeChange(short newmode)
     ui->infoLabel5->setText("");
     break;
 
-
-    case 4: //ota rahat (maybe oma funktio)
+    case 4: //ota rahat
     closeTimer.start(10000);
     ui->statusLabel->setText("Ota rahat");
     ui->buttonLabel1->setText("");
@@ -230,6 +217,7 @@ void bankwindow::modeChange(short newmode)
 }
 
 void bankwindow::closeWindow(){
+    closeTimer.stop();
     ptr_wdUI->clearClicked();
     ptr_wdUI->closePin();
     hide();
@@ -285,13 +273,11 @@ void bankwindow::startTimer()
     qDebug()<<"startTimer ran";
 }
 
-
 void bankwindow::openWindow(){
     show();
     modeChange(0);
     startTimer();
     qDebug()<<"openwindow ran";
-
 }
 
 void bankwindow::logsHandler(QString rawlogs){
@@ -308,9 +294,6 @@ void bankwindow::logsHandler(QString rawlogs){
             qDebug()<<"loop stopped vecause oneLog is empty";
         } else {
             qDebug()<<"Onelog is not empty so create item";
-                //    4 | 2022-01-01T06:00:00.000Z | testievent | 200 | 1
-
-            //QString data ="5 | 2022-01-01T06:00:00.000Z | testievent | 3000.45 | 2\r7 | 2023-04-01T06:03:00.000Z | testausEvent | 20040.00 | 2\r";
 
             //Alla sijoitetaan jokainen sana jokaiselle tapahtumalle
             dateStart = oneLog.section(" | ", 1, 1);
@@ -318,17 +301,14 @@ void bankwindow::logsHandler(QString rawlogs){
             event = oneLog.section(" | ", 2, 2);
             amount = oneLog.section(" | ", 3, 3);
 
-
             //Lisätään amountin eteen "-" ja perään "€"
             amount.prepend("-");
             amount.append("€");
-
 
             //Rikotaan päivämäärä paloihin, joista palat on date1 = "2022-01-01" ja date2 = "06:00"
             date1 = dateStart.remove(10, 14);
             date2 = dateEnd.remove(0, 11);
             date2 = dateEnd.remove(5, 8);
-
 
             //Lisätään "06:00" perään väli eli = "06:00 ". Tämän jälkeen lisätään date 1 ja date 2 yhteen kokonaisuuteen = "06:00 2022-01-01"
             date2.append(" ");
